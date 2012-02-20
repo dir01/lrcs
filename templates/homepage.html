@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load typogrify %}
+
+
+{% block content %}
+<li id="item-template" class="hidden">
+    <img alt="?" src="http://cdn.last.fm/flatness/catalogue/noimage/2/default_artist_small.png" />
+    <span class="track"></span>
+    <span class="artist"></span>
+</li>
+
+<form method="get" action="/api/search/" id="search-box">
+    <div>
+        <input id="id_query">
+    </div>
+{% with request.user.lastfmprofile.name as lastfmname %}
+    {% if not lastfmname %}
+    <a href="{% url lastfmauth_login %}" id="lastfm-control">connect</a>
+    {% else %}
+    <div id="lastfm-control">
+        &mdash; connected to {{ lastfmname }}
+        (<a href="{% url lastfmauth_logout %}">disconnect</a>)
+    </div>
+    {% endif %}
+{% endwith %}
+</form>
+
+<div id="sidebar"></div>
+<script type="text/template" id="sidebar_template">
+    <div id="artist"<% if (!artist) { print('class="hidden"'); } %>>
+    <%= artist %>
+    </div>
+    <div id="album"<% if (!album) { print('class="hidden"'); } %>>
+    <%= album %>
+    </div>
+    <ol id="tracklist">
+        <% _.each(tracks, function(track){ %>
+        <li data-cid="<%= track.cid %>"<% if (track.current) print('class="active"'); %>>
+            <%= track.attributes.title %>
+        </li>
+        <% }); %>
+    </ol>
+</script>
+
+<div id="lyrics-box" class="nothing">
+    <div id="lyrics">
+        <div id="message">
+            Nothing to see here <sub>yet.</sub>
+        </div>
+        <div id="lyrics-text"></div>
+    </div>
+    <div id="lyrics-background"><img src="" alt="" id="lyrics-background-art"/></div>
+</div>
+{% endblock %}
+

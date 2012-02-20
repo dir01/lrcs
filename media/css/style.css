@@ -1,0 +1,238 @@
+
+/* Logo */
+
+#logo {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bolder;
+    padding: 0;
+    font-size: 1.6em;
+    color: white;
+    text-shadow: 1px 1px 0 black;
+    letter-spacing: -0.13em;
+
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+#logo:hover {
+    color: #FFC125;
+}
+
+
+/* Search */
+
+#id_query {
+    margin: 0;
+    font-size: 2em;
+    padding: 0.1em;
+    border: 0.1em inset #EEE;
+    width: 100%;
+    font-family: Helvetica, Arial, sans-serif;
+    color: black;
+    background: white;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#id_query::-webkit-input-placeholder { color: #CCC; }
+#id_query:-moz-placeholder { color: #CCC; }
+
+#lastfm-control {
+    float: left;
+    font-size: 0.6em;
+    padding: 0.5em 1em 0.5em 4.5em;
+    background: #DD1303 url('../images/last.fm.png') no-repeat 1em 0.5em;
+    border-top: 0.2em solid #B20200;
+    white-space: nowrap;
+    color: white;
+}
+
+a#lastfm-control {
+    opacity: 0.75;
+    text-shadow: 0 1px 0 #870802;
+    font-weight: bolder;
+}
+
+a#lastfm-control:hover { opacity: 1; }
+
+#lastfm-control a {
+    color: white;
+    text-decoration: underline;
+    font-weight: bolder;
+}
+
+/* Sidebar */
+
+#sidebar {
+    float: right;
+    position: relative;
+    z-index: 1;
+    font-size: 0.7em;
+    width: 27.5%;
+}
+
+#artist {
+    float: left;
+    padding: 0.4em 1.5em 0.4em 0.5em;
+    margin-bottom: 0.1em;
+    background: #CD5555;
+    border-left: 2px solid #8B3A3A;
+    color: white;
+    font-size: 1.3em;
+    font-weight: bolder;
+    text-shadow: -1px 0 1px black;
+}
+
+#album {
+    position: relative;
+    float: left;
+    clear: left;
+    padding: 0.4em 1.5em 0.4em 0.7em;
+    margin-bottom: 0.4em;
+    background: #CD5555;
+    border-left: 2px solid #8B3A3A;
+    color: white;
+    font-size: 0.9em;
+    text-shadow: -1px 0 1px black;
+
+    transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
+}
+
+#tracklist {
+    position: relative;
+    color: white;
+    list-style-type: decimal;
+    list-style-position: inside;
+
+    transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
+}
+
+#tracklist li {
+    clear: left;
+    float: left;
+    padding: 0.4em 1.5em 0.4em 0.5em;
+    margin-bottom: 0.1em;
+    background: #444 no-repeat right center;
+    text-decoration: underline;
+    cursor: pointer;
+
+    transition: 0.1s;
+    -o-transition: 0.1s;
+    -ms-transition: 0.1s;
+    -moz-transition: 0.1s;
+    -webkit-transition: 0.1s;
+}
+
+#tracklist li.loading {
+    padding-right: 2em;
+    background-image: url('../images/spinner-dark.gif');
+}
+
+#tracklist li:hover {
+    padding-right: 3em;
+    margin-right: -1.5em;
+}
+
+#tracklist li.active {
+    background: white;
+    color: black;
+    border-right: 2px solid #444;
+    cursor: default;
+    text-decoration: none;
+}
+
+#tracklist li.active:hover { padding-right: 1.5em; margin-right: 0; }
+
+#album.hidden, #tracklist.hidden {
+    display: block;
+    right: 100%;
+}
+
+
+/* Lyrics */
+
+#lyrics {
+    position: relative;
+    z-index: 2;
+    padding: 2em 1em;
+    font-family: Georgia, Times New Roman, serif;
+    line-height: 1.2;
+    font-size: 13.5pt;
+
+    transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
+}
+
+#lyrics-background {
+    position: absolute;
+    right: -5%;
+    top: -2em;
+    width: 70%;
+    opacity: 0.1;
+    z-index: 1;
+
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+
+    transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    -ms-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -webkit-transform: rotate(-15deg);
+}
+
+#lyrics-background img {
+    width: 100%;
+    height: auto;
+    vertical-align: top;
+}
+
+#lyrics p {
+    margin: 1em 0 0;
+    padding-left: 1em;
+    border-left: 0.2em solid #eee;
+}
+
+#lyrics p:first-child { margin-top: 0; }
+
+
+/* suggestions */
+.ui-autocomplete { z-index: 2!important; }
+.suggestion-item span { display: block; }
+.suggestion-item img {
+    display: block;
+    width: 35px; height: 35px;
+    float: left;
+    margin-right: 5px;
+    -webkit-box-shadow: 1px 1px #ccc;
+    border-radius: 2px;
+}
+.suggestion-item .track {}
+.suggestion-item .artist { color: #777; }
+
+
+/* Copyright */
+
+#copyright {
+    background: silver;
+    border-color: gray;
+    color: gray;
+    display: inline-block;
+}
+
