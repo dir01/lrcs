@@ -120,7 +120,6 @@ class AZLyricsLyricsGainer(BaseSiteLyricsGainer):
         return re.sub('[^\w]', '', string.replace('&', 'and')).lower()
 
     def _extractLyricsFromPage(self, lyricsPage):
-        begin, end = '<!-- start of lyrics -->', '<!-- end of lyrics -->'
         lyrics = self._getPartOfStringBetweenTwoSubstrings(
             string = lyricsPage,
             beginSubstring = '<!-- start of lyrics -->',
