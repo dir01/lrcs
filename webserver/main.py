@@ -48,6 +48,7 @@ root = Resource()
 root.putChild('', IndexPage())
 root.putChild('js', File(os.path.join(settings.STATIC_ROOT, 'js')))
 root.putChild('css', File(os.path.join(settings.STATIC_ROOT, 'css')))
+root.putChild('images', File(os.path.join(settings.STATIC_ROOT, 'images')))
 root.putChild('lyrics', Lyrics())
 
 factory = Site(root)
