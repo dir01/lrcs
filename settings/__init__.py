@@ -1,3 +1,4 @@
+import sys
 import common
 
 
@@ -12,3 +13,8 @@ class SettingsObject(dict):
 
 settings = SettingsObject()
 settings.update_from_module(common)
+try:
+    import local
+    settings.update_from_module(local)
+except ImportError:
+    pass
