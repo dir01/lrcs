@@ -11,16 +11,13 @@
     <div>
         <input id="id_query">
     </div>
-{% with request.user.lastfmprofile.name as lastfmname %}
-    {% if not lastfmname %}
-    <a href="{% url lastfmauth_login %}" id="lastfm-control">connect</a>
-    {% else %}
     <div id="lastfm-control">
-        &mdash; connected to {{ lastfmname }}
-        (<a href="{% url lastfmauth_logout %}">disconnect</a>)
+        <a href="" id="lastfm-control">connect</a>
+        <div>
+            &mdash; connected to {{ lastfmname }}
+            (<a href="">disconnect</a>)
+        </div>
     </div>
-    {% endif %}
-{% endwith %}
 </form>
 
 <div id="sidebar"></div>
