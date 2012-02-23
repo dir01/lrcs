@@ -10,6 +10,7 @@ from twisted.web.resource import Resource, NoResource
 from jinja2_environment import jinja2_env
 from lyrics import LyricsGainer
 from settings import settings
+from utils.memoized import memoized
 
 
 class Lyrics(Resource):
@@ -37,6 +38,7 @@ class IndexPage(Resource):
     def render_GET(self, request):
         return self.get_rendered_template()
 
+    @memoized
     def get_rendered_template(self):
         unicode_template = self.get_template().render(self.get_template_context())
         string_template = unicode_template.encode('utf-8')
