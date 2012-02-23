@@ -26,7 +26,10 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         },
 
         getQueryString: function() {
-            return $.param(this.toJSON());
+            return $.param({
+                artist: this.get('artist'),
+                track: this.get('title')
+            });
         }
     });
 
@@ -99,7 +102,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
         url: function(){
             return [
-                '/lyrics/',
+                '/lyrics',
                 this.get('track').getQueryString()
             ].join('?');
         },
@@ -110,7 +113,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         },
 
         getPrettyText: function(){
-            return this.get('prettyText');
+            return this.get('lyrics');
         },
 
         isEmpty: function(){
