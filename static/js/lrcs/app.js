@@ -11,16 +11,14 @@ if (typeof lrcs === 'undefined') lrcs = {};
         },
 
         onTrackSearched: function(track){
-            console.log('track searched')
             this.currentTrack.replaceWith(track);
         },
 
-        onTrackClicked: function(track){
-            console.log('track clicked')
+        onSidebarTrackClicked: function(track){
             this.currentTrack.replaceWith(track);
         },
 
-        onTrackChanged: function(poller){
+        onLastFmNowPlayingTrackChanged: function(poller){
             var track = poller.get('track');
             this.currentTrack.replaceWith(track);
         }
@@ -52,8 +50,8 @@ if (typeof lrcs === 'undefined') lrcs = {};
         });
 
         app.searchFormView.bind('track_searched', app.onTrackSearched, app);
-        app.sidebarView.bind('track_clicked', app.onTrackClicked, app);
-        app.lastFmPoller.bind('change:track', app.onTrackChanged, app);
+        app.sidebarView.bind('track_clicked', app.onSidebarTrackClicked, app);
+        app.lastFmPoller.bind('change:track', app.onLastFmNowPlayingTrackChanged, app);
         return app;
     };
 
