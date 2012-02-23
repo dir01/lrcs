@@ -1,0 +1,11 @@
+Installation
+============
+
+1. Install Fabric v. 1.4.0
+    `sudo easy_install fabric==1.4.0`
+
+2. Clone repo
+    `git clone <url>`
+
+3. Deploy
+    `VIRTUAL_ENV="/wherever/you/want/virtualenv/to/be/installed/" fab activate:local deploy`
