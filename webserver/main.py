@@ -1,13 +1,15 @@
+import os
 import simplejson
 from functools import partial
 
-from jinja2_environment import jinja2_env
-
 from twisted.internet import reactor
 from twisted.web.server import Site, NOT_DONE_YET
+from twisted.web.static import File
 from twisted.web.resource import Resource, NoResource
 
+from jinja2_environment import jinja2_env
 from lyrics import LyricsGainer
+from settings import settings
 
 
 class Lyrics(Resource):
@@ -44,6 +46,8 @@ class IndexPage(Resource):
 
 root = Resource()
 root.putChild('', IndexPage())
+root.putChild('js', File(os.path.join(settings.STATIC_ROOT, 'js')))
+root.putChild('css', File(os.path.join(settings.STATIC_ROOT, 'css')))
 root.putChild('lyrics', Lyrics())
 
 factory = Site(root)
