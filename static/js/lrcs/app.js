@@ -4,43 +4,6 @@ if (typeof lrcs === 'undefined') lrcs = {};
 (function(){
 
     lrcs.App = Backbone.View.extend({
-        initialize: function(){
-            this.createModels();
-            this.createViews();
-            this.bindEvents();
-            this.render();
-        },
-
-        createModels: function(){
-            this.currentTrack = new lrcs.models.Track;
-            this.currentAlbum = new lrcs.models.Album({track: this.currentTrack});
-            this.currentLyrics = new lrcs.models.Lyrics({track: this.currentTrack});
-            this.lastFmPoller = new lrcs.models.LastFmPoller;
-        },
-
-        createViews: function(){
-            this.searchFormView = new lrcs.views.SearchFormView({
-                el: $('#search-box'),
-                model: this.currentTrack
-            });
-            this.sidebarView = new lrcs.views.SidebarView({
-                el: $('#sidebar'),
-                template: $('#sidebar_template'),
-                model: this.currentAlbum
-            });
-            this.lyricsView = new lrcs.views.LyricsView({
-                el: $('#lyrics-box'),
-                model: this.currentLyrics,
-                album: this.currentAlbum
-            });
-        },
-
-        bindEvents: function(){
-            this.searchFormView.bind('track_searched', this.onTrackSearched, this);
-            this.sidebarView.bind('track_clicked', this.onTrackClicked, this);
-            this.lastFmPoller.bind('change:track', this.onTrackChanged, this)
-        },
-
         render: function(){
            this.searchFormView.render();
            this.sidebarView.render();
@@ -64,8 +27,44 @@ if (typeof lrcs === 'undefined') lrcs = {};
 
     });
 
+    lrcs.buildApp = function(){
+        var app = new lrcs.App;
+        app.currentTrack = new lrcs.models.Track;
+        app.currentAlbum = new lrcs.models.Album({track: app.currentTrack});
+        app.currentLyrics = new lrcs.models.Lyrics({track: app.currentTrack});
+        app.lastFmPoller = new lrcs.models.LastFmPoller;
+
+        app.searchFormView = new lrcs.views.SearchFormView({
+            el: $('#search-box'),
+            model: app.currentTrack
+        });
+
+        app.sidebarView = new lrcs.views.SidebarView({
+            el: $('#sidebar'),
+            template: $('#sidebar_template'),
+            model: app.currentAlbum
+        });
+
+        app.lyricsView = new lrcs.views.LyricsView({
+            el: $('#lyrics-box'),
+            model: app.currentLyrics,
+            album: app.currentAlbum
+        });
+
+        app.searchFormView.bind('track_searched', app.onTrackSearched, app);
+        app.sidebarView.bind('track_clicked', app.onTrackClicked, app);
+        app.lastFmPoller.bind('change:track', app.onTrackChanged, app);
+        return app;
+    };
+
     lrcs.lastFM = new LastFmAPIAdapter({
         apiKey: $('meta[name=last-fm-api-key]').attr('content')
     });
 
 })();
+
+
+$(function(){
+    lrcs.app = lrcs.buildApp();
+    lrcs.app.render();
+});
