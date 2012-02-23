@@ -38,11 +38,17 @@ class IndexPage(Resource):
         return self.get_rendered_template()
 
     def get_rendered_template(self):
-        return self.get_template().render().encode('utf-8')
+        unicode_template = self.get_template().render(self.get_template_context())
+        string_template = unicode_template.encode('utf-8')
+        return string_template
 
     def get_template(self):
         return jinja2_env.get_template(self.TEMPLATE_NAME)
 
+    def get_template_context(self):
+        return {
+            'LASTFM_API_KEY': settings.LASTFM_API_KEY
+        }
 
 root = Resource()
 root.putChild('', IndexPage())
