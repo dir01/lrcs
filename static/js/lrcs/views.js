@@ -197,23 +197,16 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
                     var track = new lrcs.models.Track(trackData);
                     that.setCurrentSearchedTrack(track);
                     that.submitForm();
-                },
-                lastFmAPIAdapter: this.getLastFmAPIAdapter()
+                }
             });
             autocomplete.bindAutocomplete();
-        },
-
-        getLastFmAPIAdapter: function(){
-            return this.options.lastFmAPIAdapter;
         }
-
     });
 
 
     var FormSearchAutocomplete = function(options){
         this.input = options.input;
         this.onTrackSelected = options.callback;
-        this.lastfm = options.lastFmAPIAdapter;
 
         this.bindAutocomplete = function(){
             this.input.autocomplete({
@@ -226,7 +219,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
         this.processAutocompleteRequest = function(request, response){
             var that = this;
-            this.lastfm.queryTracks(
+            lrcs.lastFM.queryTracks(
                 request.term,
                 function(tracks){
                     response(that.processAutocompleteTracks(tracks));

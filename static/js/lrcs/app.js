@@ -5,7 +5,6 @@ if (typeof lrcs === 'undefined') lrcs = {};
 
     lrcs.App = Backbone.View.extend({
         initialize: function(){
-            this.createLastFmAPIAdapter();
             this.createModels();
             this.createViews();
             this.bindEvents();
@@ -16,17 +15,13 @@ if (typeof lrcs === 'undefined') lrcs = {};
             this.currentTrack = new lrcs.models.Track;
             this.currentAlbum = new lrcs.models.Album({track: this.currentTrack});
             this.currentLyrics = new lrcs.models.Lyrics({track: this.currentTrack});
-            this.lastFmPoller = new lrcs.models.LastFmPoller({
-                lastFmAPIAdapter: this.lastFmAPIAdapter,
-                username: this.getLastFmUsername()
-            })
+            this.lastFmPoller = new lrcs.models.LastFmPoller;
         },
 
         createViews: function(){
             this.searchFormView = new lrcs.views.SearchFormView({
                 el: $('#search-box'),
-                model: this.currentTrack,
-                lastFmAPIAdapter: this.lastFmAPIAdapter
+                model: this.currentTrack
             });
             this.sidebarView = new lrcs.views.SidebarView({
                 el: $('#sidebar'),
@@ -65,26 +60,12 @@ if (typeof lrcs === 'undefined') lrcs = {};
         onTrackChanged: function(poller){
             var track = poller.get('track');
             this.currentTrack.replaceWith(track);
-        },
-
-        createLastFmAPIAdapter: function(){
-            this.lastFmAPIAdapter = new LastFmAPIAdapter({
-                apiKey: this.getLastFmApiKey()
-            });
-        },
-
-        getLastFmApiKey: function(){
-            return this.getMetaValueByName('last-fm-api-key');
-        },
-
-        getLastFmUsername: function(){
-            return this.getMetaValueByName('last-fm-username');
-        },
-
-        getMetaValueByName: function(name){
-            return $('meta[name='+name+']').attr('content');
         }
 
+    });
+
+    lrcs.lastFM = new LastFmAPIAdapter({
+        apiKey: $('meta[name=last-fm-api-key]').attr('content')
     });
 
 })();

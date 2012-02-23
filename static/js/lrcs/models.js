@@ -128,8 +128,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
         defaults: {
             track: null,
-            username: '',
-            lastFmAPIAdapter: null
+            username: ''
         },
 
         initialize: function(){
@@ -151,7 +150,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         },
 
         poll: function(){
-            this.get('lastFmAPIAdapter').getLastPlayedTrack(
+            lrcs.lastFM.getLastPlayedTrack(
                 this.get('username'),
                 this.setTrackIfTrackIsNowPlaying.bind(this)
             );
