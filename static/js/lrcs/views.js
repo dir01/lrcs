@@ -21,7 +21,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         renderLyrics: function(){
             this.hideLoadingIndicator();
             if (this.hasLyrics()){
-                $(this.el).removeClass('nothing')
+                $(this.el).removeClass('nothing');
                 this.$('#lyrics-text').html(this.getLyrics().getPrettyText());
             } else {
                 $(this.el).addClass('nothing');
@@ -191,7 +191,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
         bindAutocomplete: function(){
             var that = this;
-            var autocomplete = new lrcs.views.FormSearchAutocomplete({
+            this.autocomplete = new lrcs.views.FormSearchAutocomplete({
                 input: this.$('#id_query'),
                 callback: function(trackData){
                     var track = new lrcs.models.Track(trackData);
@@ -199,7 +199,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
                     that.submitForm();
                 }
             });
-            autocomplete.bindAutocomplete();
+            this.autocomplete.bindAutocomplete();
         }
     });
 
@@ -296,7 +296,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
                 source: this.processAutocompleteRequest.bind(this),
                 select: this.processAutocompleteSelection.bind(this)
             });
-        }
+        };
 
         this.processAutocompleteRequest = function(request, response){
             var that = this;
@@ -306,11 +306,11 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
                     response(that.processAutocompleteTracks(tracks));
                 }
             );
-        }
+        };
 
         this.processAutocompleteTracks = function(tracks) {
             return $.map(tracks, this.processAutocompleteTrack.bind(this));
-        }
+        };
 
         this.processAutocompleteTrack = function(track) {
             var item = this.getAutocompleteItemTemplate();
@@ -320,12 +320,12 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
             }
             item.find('.artist').html(track.getArtist());
             item.find('.track').html(track.getTitle());
-            item.data('data', track)
+            item.data('data', track);
             return {
                 label: item,
                 value: [track.getArtist(), track.getTitle()].join(' - ')
             }
-        }
+        };
 
         this.processAutocompleteSelection = function(event, ui) {
             var track = ui.item.label.data('data');
@@ -333,7 +333,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
                 artist: track.getArtist(),
                 title: track.getTitle()
             });
-        }
+        };
 
         this.getAutocompleteItemTemplate = function() {
              return $('#item-template')
@@ -341,7 +341,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
                 .attr('id', '')
                 .removeClass('hidden')
                 .addClass('suggestion-item');
-        }
+        };
     };
 
 

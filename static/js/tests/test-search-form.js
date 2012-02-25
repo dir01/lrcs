@@ -1,7 +1,6 @@
-var FakeAutocomplete = function(){
-    this.bindAutocomplete = function(){
-
-    };
+var FakeAutocomplete = function(options){
+    this.bindAutocomplete = function(){};
+    this.callback = options.callback;
 };
 
 
@@ -21,4 +20,13 @@ test('Search input is updated according to track status', function(){
     equal('SomeArtist - SomeTitle', this.input.val());
     this.track.set({artist: '', title: ''});
     equal('', this.input.val());
+});
+
+
+test('When track is chosen in autocomplete, track_searched event is fired', function(){
+    var eventArgs;
+    var trackData = {artist: 'SomeArtist', title: 'SomeTitle'};
+    this.view.bind('track_searched', function(args){ eventArgs = args; });
+    this.view.autocomplete.callback(trackData);
+    ok(new lrcs.models.Track(trackData).equals(eventArgs));
 });
