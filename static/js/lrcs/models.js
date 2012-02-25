@@ -156,6 +156,9 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             this.stopWatching();
         },
 
+        isConnected: function(){
+            return this.get('username') != null;
+        },
         startWatching: function() {
             if (this.timer)
                 return;

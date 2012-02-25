@@ -254,7 +254,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         getTemplate: function() {
             var connector = this.getConnector(),
                 isWatching = connector.get('isWatching'),
-                isConnected = connector.get('username') != null,
+                isConnected = connector.isConnected(),
                 template;
 
             switch (true) {
