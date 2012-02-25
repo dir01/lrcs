@@ -6,6 +6,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
     lrcs.App = Backbone.View.extend({
         render: function(){
            this.searchFormView.render();
+           this.lastFmView.render();
            this.sidebarView.render();
            this.lyricsView.render();
         },
@@ -49,6 +50,14 @@ if (typeof lrcs === 'undefined') lrcs = {};
             el: $('#lyrics-box'),
             model: app.currentLyrics,
             album: app.currentAlbum
+        });
+
+        app.lastFmView = new lrcs.views.LastFmView({
+            el: $('#lastfm-control-box'),
+            model: app.lastFmConnector,
+            watchingTemplate: $('#lastfm-watching-template'),
+            idleTemplate: $('#lastfm-idle-template'),
+            disconnectedTemplate: $('#lastfm-disconnected-template')
         });
 
         app.searchFormView.bind('track_searched', app.onTrackSearched, app);

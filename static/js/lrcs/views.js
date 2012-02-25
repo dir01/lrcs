@@ -204,6 +204,87 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
     });
 
 
+    lrcs.views.LastFmView = Backbone.View.extend({
+
+        events: {
+            'click a#lastfm-control': 'connect',
+            'click #lastfm-disconnect': 'disconnect',
+            'click #lastfm-stop-watching': 'stopWatching',
+            'click #lastfm-start-watching': 'startWatching'
+        },
+
+        initialize: function() {
+            var connector = this.getConnector();
+            connector.bind('change:username', this.render, this);
+            connector.bind('change:isWatching', this.render, this);
+        },
+
+        connect: function() {
+            var connector = this.getConnector(),
+                username = prompt("Please enter your last.fm username so we can watch you");
+            if (username)
+                connector.connectTo(username);
+            else
+                connector.disconnect()
+        },
+
+        disconnect: function() {
+            this.getConnector().disconnect();
+        },
+
+        stopWatching: function() {
+            this.getConnector().stop();
+        },
+
+        startWatching: function() {
+            this.getConnector().start();
+        },
+
+        render: function() {
+            $(this.el).html(this.renderTemplate());
+        },
+
+        renderTemplate: function() {
+            return _.template(
+                this.getTemplate(),
+                this.getTemplateVariables()
+            );
+        },
+
+        getTemplate: function() {
+            var connector = this.getConnector(),
+                isWatching = connector.get('isWatching'),
+                isConnected = connector.get('username') != null,
+                template;
+
+            switch (true) {
+                case !isConnected:
+                    template = this.options.disconnectedTemplate;
+                    break;
+                case isWatching:
+                    template = this.options.watchingTemplate;
+                    break;
+                default:
+                    template = this.options.idleTemplate;
+            }
+
+            return template.html();
+        },
+
+        getTemplateVariables: function() {
+            var connector = this.getConnector();
+            return {
+                username: connector.get('username')
+            };
+        },
+
+        getConnector: function() {
+            return this.model;
+        }
+
+    });
+
+
     var FormSearchAutocomplete = function(options){
         this.input = options.input;
         this.onTrackSelected = options.callback;
