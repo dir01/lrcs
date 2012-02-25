@@ -148,7 +148,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
             var track = this.getCurrentSearchedTrack();
             if (!track.isEmpty()){
                 this.trigger('track_searched', track);
-            };
+            }
             event.preventDefault();
         },
 
@@ -191,7 +191,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
         bindAutocomplete: function(){
             var that = this;
-            var autocomplete = new FormSearchAutocomplete({
+            var autocomplete = new lrcs.views.FormSearchAutocomplete({
                 input: this.$('#id_query'),
                 callback: function(trackData){
                     var track = new lrcs.models.Track(trackData);
@@ -285,7 +285,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
     });
 
 
-    var FormSearchAutocomplete = function(options){
+    lrcs.views.FormSearchAutocomplete = function(options){
         this.input = options.input;
         this.onTrackSelected = options.callback;
 
