@@ -62,9 +62,9 @@ if (typeof lrcs === 'undefined') lrcs = {};
         app.lastFmView = new lrcs.views.LastFmView({
             el: $('#lastfm-control-box'),
             model: app.lastFmConnector,
-            watchingTemplate: $('#lastfm-watching-template'),
-            idleTemplate: $('#lastfm-idle-template'),
-            disconnectedTemplate: $('#lastfm-disconnected-template')
+            watchingTemplate: $('#lastfm-watching-template').html(),
+            idleTemplate: $('#lastfm-idle-template').html(),
+            disconnectedTemplate: $('#lastfm-disconnected-template').html()
         });
 
         app.searchFormView.bind('track_searched', app.onTrackSearched, app);

@@ -268,7 +268,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
                     template = this.options.idleTemplate;
             }
 
-            return template.html();
+            return template;
         },
 
         getTemplateVariables: function() {
