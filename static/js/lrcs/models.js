@@ -159,8 +159,9 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         isConnected: function(){
             return this.get('username') != null;
         },
+
         startWatching: function() {
-            if (this.timer)
+            if (this.isWatching())
                 return;
             this.timer = window.setInterval(this.poll.bind(this), this.delay);
             this.poll(); // launch polling right away when starting
@@ -173,6 +174,10 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             window.clearInterval(this.timer);
             delete this.timer;
             this.set({ isWatching: false });
+        },
+
+        isWatching: function(){
+            return Boolean(this.timer);
         },
 
         poll: function(){
