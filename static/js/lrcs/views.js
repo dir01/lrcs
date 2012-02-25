@@ -224,8 +224,6 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
                 username = this.promptForUsername();
             if (username)
                 connector.connectTo(username);
-            else
-                connector.disconnect()
         },
 
         promptForUsername: function(){
