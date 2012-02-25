@@ -4,7 +4,7 @@ var FakeAutocomplete = function(options){
 };
 
 
-module("Test SearchFormView", {
+module("SearchFormView", {
     setup: function() {
         this.form = $('<form id="search-box"><input id="id_query"></form>');
         this.input = this.form.find('#id_query');
