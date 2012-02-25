@@ -24,6 +24,13 @@ if (typeof lrcs === 'undefined') lrcs = {};
         onTrackChanged: function(poller){
             var track = poller.get('track');
             this.currentTrack.replaceWith(track);
+        },
+
+        onLastFmUsernameChanged: function(connector) {
+            var username = connector.get('username');
+            $.cookie('username', username, {
+                expires: 500 // days
+            });
         }
 
     });
@@ -33,7 +40,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
         app.currentTrack = new lrcs.models.Track;
         app.currentAlbum = new lrcs.models.Album({track: app.currentTrack});
         app.currentLyrics = new lrcs.models.Lyrics({track: app.currentTrack});
-        app.lastFmConnector = new lrcs.models.LastFmConnector;
+        app.lastFmConnector = new lrcs.models.LastFmConnector({ username: $.cookie('username') });
 
         app.searchFormView = new lrcs.views.SearchFormView({
             el: $('#search-box'),
@@ -63,6 +70,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
         app.searchFormView.bind('track_searched', app.onTrackSearched, app);
         app.sidebarView.bind('track_clicked', app.onTrackClicked, app);
         app.lastFmConnector.bind('change:track', app.onTrackChanged, app);
+        app.lastFmConnector.bind('change:username', app.onLastFmUsernameChanged, app);
         return app;
     };
 
