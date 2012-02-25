@@ -1,35 +1,55 @@
 {% extends 'base.jinja2' %}
 
+{% block scripts %}
+    <script type="text/template" id="lastfm-watching-template">
+        <div id="lastfm-control">
+            @<%= username %>
+            |
+            <a href="#" id="lastfm-stop-watching">stop watching</a>
+            |
+            <a href="#" id="lastfm-disconnect">disconnect</a>
+        </div>
+    </script>
+
+    <script type="text/template" id="lastfm-idle-template">
+        <div id="lastfm-control">
+            @<%= username %>
+            |
+            <a href="#" id="lastfm-start-watching">start watching</a>
+            |
+            <a href="#" id="lastfm-disconnect">disconnect</a>
+        </div>
+    </script>
+
+    <script type="text/template" id="lastfm-disconnected-template">
+        <a href="#" id="lastfm-control">connect</a>
+    </script>
+
+    <script type="text/template" id="sidebar_template">
+        <div id="artist"<% if (!artist) { print('class="hidden"'); } %>>
+        <%= artist %>
+        </div>
+        <div id="album"<% if (!album) { print('class="hidden"'); } %>>
+        <%= album %>
+        </div>
+        <ol id="tracklist">
+            <% _.each(tracks, function(track){ %>
+            <li data-cid="<%= track.cid %>"<% if (track.current) print('class="active"'); %>>
+            <%= track.attributes.title %>
+            </li>
+            <% }); %>
+        </ol>
+    </script>
+
+{% endblock %}
+
+
 {% block content %}
 <li id="item-template" class="hidden">
     <img alt="?" src="http://cdn.last.fm/flatness/catalogue/noimage/2/default_artist_small.png" />
     <span class="track"></span>
     <span class="artist"></span>
 </li>
-
-<script type="text/template" id="lastfm-watching-template">
-    <div id="lastfm-control">
-        @<%= username %>
-        |
-        <a href="#" id="lastfm-stop-watching">stop watching</a>
-        |
-        <a href="#" id="lastfm-disconnect">disconnect</a>
-    </div>
-</script>
-
-<script type="text/template" id="lastfm-idle-template">
-    <div id="lastfm-control">
-        @<%= username %>
-        |
-        <a href="#" id="lastfm-start-watching">start watching</a>
-        |
-        <a href="#" id="lastfm-disconnect">disconnect</a>
-    </div>
-</script>
-
-<script type="text/template" id="lastfm-disconnected-template">
-    <a href="#" id="lastfm-control">connect</a>
-</script>
 
 <form method="get" action="/api/search/" id="search-box">
     <div>
@@ -39,21 +59,6 @@
 </form>
 
 <div id="sidebar"></div>
-<script type="text/template" id="sidebar_template">
-    <div id="artist"<% if (!artist) { print('class="hidden"'); } %>>
-    <%= artist %>
-    </div>
-    <div id="album"<% if (!album) { print('class="hidden"'); } %>>
-    <%= album %>
-    </div>
-    <ol id="tracklist">
-        <% _.each(tracks, function(track){ %>
-        <li data-cid="<%= track.cid %>"<% if (track.current) print('class="active"'); %>>
-            <%= track.attributes.title %>
-        </li>
-        <% }); %>
-    </ol>
-</script>
 
 <div id="lyrics-box" class="nothing">
     <div id="lyrics">
