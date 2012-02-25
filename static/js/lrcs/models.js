@@ -136,7 +136,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
         defaults: {
             track: null,
-            username: null,
+            username: '',
             isWatching: false
         },
 
