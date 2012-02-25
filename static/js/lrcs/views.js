@@ -221,11 +221,15 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
         connect: function() {
             var connector = this.getConnector(),
-                username = prompt("Please enter your last.fm username so we can watch you");
+                username = this.promptForUsername();
             if (username)
                 connector.connectTo(username);
             else
                 connector.disconnect()
+        },
+
+        promptForUsername: function(){
+            return prompt("Please enter your last.fm username so we can watch you");
         },
 
         disconnect: function() {
