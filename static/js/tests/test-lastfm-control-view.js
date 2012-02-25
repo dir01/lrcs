@@ -25,3 +25,27 @@ test('disconnect', function(){
     ok(!this.lastFmConnector.isConnected());
     ok(!this.lastFmConnector.isWatching());
 });
+
+
+test('disconnected template', function(){
+    this.lastFmView.options.disconnectedTemplate = 'disconnected';
+    equal('disconnected', this.lastFmView.getTemplate());
+});
+
+
+test('watching template', function(){
+    this.lastFmConnector.connectTo('username');
+    this.lastFmConnector.set({isWatching: true});
+    this.lastFmView.options.watchingTemplate = 'watching';
+    equal('watching', this.lastFmView.getTemplate());
+    ok(_.isEqual({username: 'username'}, this.lastFmView.getTemplateVariables()));
+});
+
+
+test('idle template', function(){
+    this.lastFmConnector.connectTo('username');
+    this.lastFmConnector.set({isWatching: false});
+    this.lastFmView.options.idleTemplate = 'idle';
+    equal('idle', this.lastFmView.getTemplate());
+    ok(_.isEqual({username: 'username'}, this.lastFmView.getTemplateVariables()));
+});
