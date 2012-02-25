@@ -19,8 +19,8 @@ if (typeof lrcs === 'undefined') lrcs = {};
             this.currentTrack.replaceWith(track);
         },
 
-        onLastFmNowPlayingTrackChanged: function(poller){
-            var track = poller.get('track');
+        onLastFmNowPlayingTrackChanged: function(connector) {
+            var track = connector.get('track');
             this.currentTrack.replaceWith(track);
         },
 
