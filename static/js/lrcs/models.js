@@ -169,7 +169,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         },
 
         stopWatching: function() {
-            if (!this.timer)
+            if (!this.isWatching())
                 return;
             window.clearInterval(this.timer);
             delete this.timer;
