@@ -136,11 +136,24 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
         defaults: {
             track: null,
-            username: ''
+            username: null,
+            isWatching: false
         },
 
-        initialize: function(){
+        initialize: function() {
+            var username = this.get('username');
+            if (username != null)
+                this.start();
+        },
+
+        connectTo: function(username) {
+            this.set({ username: username });
             this.start();
+        },
+
+        disconnect: function() {
+            this.set({ username: null });
+            this.stop();
         },
 
         start: function() {
@@ -148,6 +161,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
                 return;
             this.timer = window.setInterval(this.poll.bind(this), this.delay);
             this.poll(); // launch polling right away when starting
+            this.set({ isWatching: true });
         },
 
         stop: function() {
@@ -155,6 +169,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
                 return;
             window.clearInterval(this.timer);
             delete this.timer;
+            this.set({ isWatching: false });
         },
 
         poll: function(){
