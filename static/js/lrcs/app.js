@@ -40,7 +40,9 @@ if (typeof lrcs === 'undefined') lrcs = {};
         app.currentTrack = new lrcs.models.Track;
         app.currentAlbum = new lrcs.models.Album({track: app.currentTrack});
         app.currentLyrics = new lrcs.models.Lyrics({track: app.currentTrack});
-        app.lastFmConnector = new lrcs.models.LastFmConnector({ username: $.cookie('username') });
+        app.lastFmConnector = new lrcs.models.LastFmConnector({
+            username: $.cookie('username')
+        });
 
         app.searchFormView = new lrcs.views.SearchFormView({
             el: $('#search-box'),
