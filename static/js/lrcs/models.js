@@ -143,20 +143,20 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         initialize: function() {
             var username = this.get('username');
             if (username != null)
-                this.start();
+                this.startWatching();
         },
 
         connectTo: function(username) {
             this.set({ username: username });
-            this.start();
+            this.startWatching();
         },
 
         disconnect: function() {
             this.set({ username: null });
-            this.stop();
+            this.stopWatching();
         },
 
-        start: function() {
+        startWatching: function() {
             if (this.timer)
                 return;
             this.timer = window.setInterval(this.poll.bind(this), this.delay);
@@ -164,7 +164,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             this.set({ isWatching: true });
         },
 
-        stop: function() {
+        stopWatching: function() {
             if (!this.timer)
                 return;
             window.clearInterval(this.timer);

@@ -233,11 +233,11 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         },
 
         stopWatching: function() {
-            this.getConnector().stop();
+            this.getConnector().stopWatching();
         },
 
         startWatching: function() {
-            this.getConnector().start();
+            this.getConnector().startWatching();
         },
 
         render: function() {
