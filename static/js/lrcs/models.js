@@ -112,12 +112,20 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             this.fetch();
         },
 
-        getPrettyText: function(){
+        getText: function() {
             return this.get('lyrics');
         },
 
+        getPrettyText: function() {
+            uglyText = this.getText();
+            paragraphedText = uglyText.replace(/\n\n/g, '</p><p>');
+            newLinedText = paragraphedText.replace(/\n/g, '<br/>');
+            wrappedText = '<p>' + newLinedText + '</p>';
+            return wrappedText;
+        },
+
         isEmpty: function(){
-            return !this.getPrettyText();
+            return !this.getText();
         }
 
     });
