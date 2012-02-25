@@ -12,12 +12,12 @@ if (typeof lrcs === 'undefined') lrcs = {};
         },
 
         onTrackSearched: function(track){
-            this.lastFmConnector.stop();
+            this.lastFmConnector.stopWatching();
             this.currentTrack.replaceWith(track);
         },
 
         onSidebarTrackClicked: function(track){
-            this.lastFmConnector.stop();
+            this.lastFmConnector.stopWatching();
             this.currentTrack.replaceWith(track);
         },
 
