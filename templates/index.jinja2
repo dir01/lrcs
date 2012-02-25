@@ -7,17 +7,35 @@
     <span class="artist"></span>
 </li>
 
+<script type="text/template" id="lastfm-watching-template">
+    <div id="lastfm-control">
+        @<%= username %>
+        |
+        <a href="#" id="lastfm-stop-watching">stop watching</a>
+        |
+        <a href="#" id="lastfm-disconnect">disconnect</a>
+    </div>
+</script>
+
+<script type="text/template" id="lastfm-idle-template">
+    <div id="lastfm-control">
+        @<%= username %>
+        |
+        <a href="#" id="lastfm-start-watching">start watching</a>
+        |
+        <a href="#" id="lastfm-disconnect">disconnect</a>
+    </div>
+</script>
+
+<script type="text/template" id="lastfm-disconnected-template">
+    <a href="#" id="lastfm-control">connect</a>
+</script>
+
 <form method="get" action="/api/search/" id="search-box">
     <div>
         <input id="id_query">
     </div>
-    <div id="lastfm-control">
-        <a href="" id="lastfm-control">connect</a>
-        <div>
-            &mdash; connected to {{ lastfmname }}
-            (<a href="">disconnect</a>)
-        </div>
-    </div>
+    <div id="lastfm-control-box"></div>
 </form>
 
 <div id="sidebar"></div>
