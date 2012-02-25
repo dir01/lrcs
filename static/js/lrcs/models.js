@@ -117,10 +117,10 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         },
 
         getPrettyText: function() {
-            uglyText = this.getText();
-            paragraphedText = uglyText.replace(/\n\n/g, '</p><p>');
-            newLinedText = paragraphedText.replace(/\n/g, '<br/>');
-            wrappedText = '<p>' + newLinedText + '</p>';
+            var uglyText = this.getText(),
+                paragraphedText = uglyText.replace(/\n\n/g, '</p><p>'),
+                newLinedText = paragraphedText.replace(/\n/g, '<br/>'),
+                wrappedText = '<p>' + newLinedText + '</p>';
             return wrappedText;
         },
 
