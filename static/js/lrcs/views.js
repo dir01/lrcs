@@ -113,10 +113,6 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
             return _.detect(elements, function(element) {
                 return element.cid === cid;
             });
-        },
-
-        getHtmlElementByTrack: function(track) {
-            return this.$('#tracklist li').filter('[data-cid=' + track.cid + ']');
         }
     });
 
@@ -255,8 +251,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
         getTemplate: function() {
             var connector = this.getConnector(),
-                isWatching = connector.get('isWatching'),
-                template;
+                isWatching = connector.get('isWatching');
 
             if (!connector.isConnected())
                 return this.options.disconnectedTemplate;

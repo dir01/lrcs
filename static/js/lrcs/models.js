@@ -66,18 +66,14 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         },
 
         reload: function() {
-            console.log('reloading album')
+            console.log('reloading album');
             this.fetch();
         },
 
         annotateTracksWithCurrentTrack: function() {
             var currentTrack = this.get('track');
             _.each(this.get('trackList'), function(track) {
-                if (currentTrack.equals(track)) {
-                    track.current = true;
-                } else {
-                    track.current = false;
-                }
+                track.current = currentTrack.equals(track);
             }, this);
         },
 
