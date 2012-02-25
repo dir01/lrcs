@@ -32,7 +32,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
         app.currentTrack = new lrcs.models.Track;
         app.currentAlbum = new lrcs.models.Album({track: app.currentTrack});
         app.currentLyrics = new lrcs.models.Lyrics({track: app.currentTrack});
-        app.lastFmPoller = new lrcs.models.LastFmPoller;
+        app.lastFmConnector = new lrcs.models.LastFmConnector;
 
         app.searchFormView = new lrcs.views.SearchFormView({
             el: $('#search-box'),
@@ -53,7 +53,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
 
         app.searchFormView.bind('track_searched', app.onTrackSearched, app);
         app.sidebarView.bind('track_clicked', app.onTrackClicked, app);
-        app.lastFmPoller.bind('change:track', app.onTrackChanged, app);
+        app.lastFmConnector.bind('change:track', app.onTrackChanged, app);
         return app;
     };
 

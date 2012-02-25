@@ -131,7 +131,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
     });
 
 
-    lrcs.models.LastFmPoller = Backbone.Model.extend({
+    lrcs.models.LastFmConnector = Backbone.Model.extend({
         delay: 10 * 1000, //10s
 
         defaults: {
