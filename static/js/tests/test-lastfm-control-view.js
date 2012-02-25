@@ -1,8 +1,10 @@
 module('LastFmView', {
-    setup: function(){
+    setup: function() {
         this.controlBox = $('<div></div>');
-        lrcs.models.LastFmConnector.prototype.poll = function(){};
-        lrcs.views.LastFmView.prototype.render = function(){};
+        lrcs.models.LastFmConnector.prototype.poll = function() {
+        };
+        lrcs.views.LastFmView.prototype.render = function() {
+        };
         this.lastFmConnector = new lrcs.models.LastFmConnector;
         this.lastFmView = new lrcs.views.LastFmView({
             el: this.controlBox,
@@ -12,14 +14,16 @@ module('LastFmView', {
 });
 
 
-test('connect', function(){
-    this.lastFmView.promptForUsername = function(){ return 'username'; };
+test('connect', function() {
+    this.lastFmView.promptForUsername = function() {
+        return 'username';
+    };
     this.lastFmView.connect();
     equal('username', this.lastFmConnector.get('username'));
 });
 
 
-test('disconnect', function(){
+test('disconnect', function() {
     this.lastFmConnector.connectTo('username');
     this.lastFmView.disconnect();
     ok(!this.lastFmConnector.isConnected());
@@ -27,13 +31,13 @@ test('disconnect', function(){
 });
 
 
-test('disconnected template', function(){
+test('disconnected template', function() {
     this.lastFmView.options.disconnectedTemplate = 'disconnected';
     equal('disconnected', this.lastFmView.getTemplate());
 });
 
 
-test('watching template', function(){
+test('watching template', function() {
     this.lastFmConnector.connectTo('username');
     this.lastFmConnector.set({isWatching: true});
     this.lastFmView.options.watchingTemplate = 'watching';
@@ -42,7 +46,7 @@ test('watching template', function(){
 });
 
 
-test('idle template', function(){
+test('idle template', function() {
     this.lastFmConnector.connectTo('username');
     this.lastFmConnector.set({isWatching: false});
     this.lastFmView.options.idleTemplate = 'idle';

@@ -1,22 +1,22 @@
 if (typeof lrcs === 'undefined') lrcs = {};
 
 
-(function(){
+(function() {
 
     lrcs.App = Backbone.View.extend({
-        render: function(){
-           this.searchFormView.render();
-           this.lastFmView.render();
-           this.sidebarView.render();
-           this.lyricsView.render();
+        render: function() {
+            this.searchFormView.render();
+            this.lastFmView.render();
+            this.sidebarView.render();
+            this.lyricsView.render();
         },
 
-        onTrackSearched: function(track){
+        onTrackSearched: function(track) {
             this.lastFmConnector.stopWatching();
             this.currentTrack.replaceWith(track);
         },
 
-        onSidebarTrackClicked: function(track){
+        onSidebarTrackClicked: function(track) {
             this.lastFmConnector.stopWatching();
             this.currentTrack.replaceWith(track);
         },
@@ -35,7 +35,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
 
     });
 
-    lrcs.buildApp = function(){
+    lrcs.buildApp = function() {
         var app = new lrcs.App;
         app.currentTrack = new lrcs.models.Track;
         app.currentAlbum = new lrcs.models.Album({track: app.currentTrack});
@@ -83,7 +83,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
 })();
 
 
-$(function(){
+$(function() {
     lrcs.app = lrcs.buildApp();
     lrcs.app.render();
 });

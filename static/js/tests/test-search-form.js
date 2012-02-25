@@ -1,5 +1,6 @@
-var FakeAutocomplete = function(options){
-    this.bindAutocomplete = function(){};
+var FakeAutocomplete = function(options) {
+    this.bindAutocomplete = function() {
+    };
     this.callback = options.callback;
 };
 
@@ -15,7 +16,7 @@ module("SearchFormView", {
 });
 
 
-test('Search input is updated according to track status', function(){
+test('Search input is updated according to track status', function() {
     this.track.set({artist: 'SomeArtist', title: 'SomeTitle'});
     equal('SomeArtist - SomeTitle', this.input.val());
     this.track.set({artist: '', title: ''});
@@ -23,10 +24,12 @@ test('Search input is updated according to track status', function(){
 });
 
 
-test('When track is chosen in autocomplete, track_searched event is fired', function(){
+test('When track is chosen in autocomplete, track_searched event is fired', function() {
     var eventArgs;
     var trackData = {artist: 'SomeArtist', title: 'SomeTitle'};
-    this.view.bind('track_searched', function(args){ eventArgs = args; });
+    this.view.bind('track_searched', function(args) {
+        eventArgs = args;
+    });
     this.view.autocomplete.callback(trackData);
     ok(new lrcs.models.Track(trackData).equals(eventArgs));
 });

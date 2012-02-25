@@ -2,7 +2,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
 if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
 
-(function(){
+(function() {
 
     lrcs.models.Track = Backbone.Model.extend({
         defaults: {
@@ -10,18 +10,18 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             title: ''
         },
 
-        isEmpty: function(){
+        isEmpty: function() {
             return !(
                 this.get('artist') &&
-                this.get('title')
-            );
+                    this.get('title')
+                );
         },
 
-        equals: function(track){
+        equals: function(track) {
             return _.isEqual(this.toJSON(), track.toJSON());
 
         },
-        replaceWith: function(track){
+        replaceWith: function(track) {
             this.set(track.toJSON());
         },
 
@@ -43,20 +43,20 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             trackList: []
         },
 
-        initialize: function(){
+        initialize: function() {
             this.bind('change', this.annotateTracksWithCurrentTrack, this);
             this.get('track').bind('change', this.reload, this);
         },
 
-        url: function(){
-           return [
-               '/album/',
-               this.get('track').getQueryString()
-           ].join('?');
+        url: function() {
+            return [
+                '/album/',
+                this.get('track').getQueryString()
+            ].join('?');
         },
 
-        parse: function(response){
-            response.trackList = _.map(response.trackList, function(trackTitle){
+        parse: function(response) {
+            response.trackList = _.map(response.trackList, function(trackTitle) {
                 return new lrcs.models.Track({
                     'artist': response.artist,
                     'title': trackTitle
@@ -65,15 +65,15 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             return response;
         },
 
-        reload: function(){
+        reload: function() {
             console.log('reloading album')
             this.fetch();
         },
 
-        annotateTracksWithCurrentTrack: function(){
+        annotateTracksWithCurrentTrack: function() {
             var currentTrack = this.get('track');
-            _.each(this.get('trackList'), function(track){
-                if (currentTrack.equals(track)){
+            _.each(this.get('trackList'), function(track) {
+                if (currentTrack.equals(track)) {
                     track.current = true;
                 } else {
                     track.current = false;
@@ -81,12 +81,12 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             }, this);
         },
 
-        isEmpty: function(){
+        isEmpty: function() {
             return !(
                 this.get('artist') &&
-                this.get('title') &&
-                this.get('trackList')
-            );
+                    this.get('title') &&
+                    this.get('trackList')
+                );
         }
     });
 
@@ -96,18 +96,18 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             track: new lrcs.models.Track
         },
 
-        initialize: function(){
+        initialize: function() {
             this.get('track').bind('change', this.reload, this);
         },
 
-        url: function(){
+        url: function() {
             return [
                 '/lyrics',
                 this.get('track').getQueryString()
             ].join('?');
         },
 
-        reload: function(){
+        reload: function() {
             this.trigger('loading');
             this.fetch();
         },
@@ -124,7 +124,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             return wrappedText;
         },
 
-        isEmpty: function(){
+        isEmpty: function() {
             return !this.getText();
         }
 
@@ -156,7 +156,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             this.stopWatching();
         },
 
-        isConnected: function(){
+        isConnected: function() {
             return Boolean(this.get('username'));
         },
 
@@ -176,23 +176,23 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             this.set({ isWatching: false });
         },
 
-        isWatching: function(){
+        isWatching: function() {
             return Boolean(this.timer);
         },
 
-        poll: function(){
+        poll: function() {
             lrcs.lastFM.getLastPlayedTrack(
                 this.get('username'),
                 this.setTrackIfTrackIsNowPlaying.bind(this)
             );
         },
 
-        setTrackIfTrackIsNowPlaying: function(lastFmTrack){
+        setTrackIfTrackIsNowPlaying: function(lastFmTrack) {
             if (lastFmTrack.isNowPlaying())
                 this.set({'track': this.constructTrackByLastFmTrack(lastFmTrack)});
         },
 
-        constructTrackByLastFmTrack: function(lastFmTrack){
+        constructTrackByLastFmTrack: function(lastFmTrack) {
             return new lrcs.models.Track({
                 artist: lastFmTrack.getArtist(),
                 title: lastFmTrack.getTitle()
