@@ -256,21 +256,13 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         getTemplate: function() {
             var connector = this.getConnector(),
                 isWatching = connector.get('isWatching'),
-                isConnected = connector.isConnected(),
                 template;
 
-            switch (true) {
-                case !isConnected:
-                    template = this.options.disconnectedTemplate;
-                    break;
-                case isWatching:
-                    template = this.options.watchingTemplate;
-                    break;
-                default:
-                    template = this.options.idleTemplate;
-            }
-
-            return template;
+            if (!connector.isConnected())
+                return this.options.disconnectedTemplate;
+            if (isWatching)
+                return this.options.watchingTemplate;
+            return this.options.idleTemplate;
         },
 
         getTemplateVariables: function() {
