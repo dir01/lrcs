@@ -68,23 +68,15 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
         initialize: function() {
             this.model.bind('change', this.render, this);
+            this.model.bind('album-change', this.render, this);
         },
 
         render: function() {
             var album = this.model.getAlbum();
-            if (!album || !album.get('title')) {
+            if (album.isEmpty())
                 this.renderEmpty();
-                return;
-            }
-
-            var changes = this.model.changedAttributes();
-            if (!('artist' in changes) && !('album' in changes)) {
+            else
                 this.renderTrackList();
-                return;
-            }
-
-            album.bind('change', this.renderTrackList, this);
-            album.fetch();
         },
 
         renderEmpty: function() {
@@ -92,11 +84,6 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         },
 
         renderTrackList: function() {
-            var album = this.model.getAlbum();
-            if (album.isEmpty()) {
-                $(this.el).addClass('hidden');
-                return;
-            }
             $(this.el).html(this.renderTemplate());
             $(this.el).removeClass('hidden');
         },
@@ -146,8 +133,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
             return _.detect(elements, function(element) {
                 return element.cid === cid;
             });
-        },
-
+        }
 
     });
 
