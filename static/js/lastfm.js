@@ -91,8 +91,10 @@ var lrcs = lrcs || {};
     LastFmTrack.fromDetailedTrackData = function(data) {
         var data = _.clone(data);
         data.artist = data.artist.name;
-        data.image = data.album.image;
-        data.album = data.album.name;
+        if (data.album) {
+            data.image = data.album.image;
+            data.album = data.album.name;
+        }
         return new LastFmTrack(data)
     }
 
