@@ -40,6 +40,15 @@ var lrcs = lrcs || {};
             });
         },
 
+        getAlbumInfo: function(artist, title, callback) {
+            this.api.album.getInfo({
+                artist: artist,
+                album: title
+            }, {
+                success: this.processAlbumInfoResult.bind(this, callback)
+            });
+        },
+
         proccessTracksQueryResults: function(callback, data) {
             if (typeof data.results.trackmatches.track === 'undefined')
                 return;
@@ -68,6 +77,11 @@ var lrcs = lrcs || {};
             callback(track)
         },
 
+        processAlbumInfoResult: function(callback, data) {
+            var album = LastFmAlbum.fromAlbumInfo(data.album);
+            callback(album)
+        },
+
         getLastFmApi: function() {
             var cache = new LastFMCache();
             var lastfm = new LastFM({
@@ -75,6 +89,61 @@ var lrcs = lrcs || {};
                 cache: cache
             });
             return lastfm;
+        }
+
+    }
+
+
+    var LastFmAlbum = function(data) {
+        this.data = _.clone(data);
+    }
+
+    LastFmAlbum.fromAlbumInfo = function(info) {
+        return new LastFmAlbum(info);
+    }
+
+    LastFmAlbum.prototype = {
+
+        toJSON: function() {
+            return {
+                artist: this.getArtist(),
+                title: this.getTitle(),
+                largestImage: this.getLargestImage(),
+                tracks: _.map(this.getTracks(), function(track) {
+                    return track.toJSON()
+                })
+            }
+        },
+
+        getArtist: function() {
+            return this.data.artist;
+        },
+
+        getTitle: function() {
+            return this.data.name;
+        },
+
+        getLargestImage: function() {
+            var largestImageIndex = this.data.image.length - 1;
+            return this.getImage(largestImageIndex);
+        },
+
+        getImage: function(index) {
+            return this.data.image[index]['#text'];
+        },
+
+        getTracks: function() {
+            return _.map(
+                this.data.tracks.track,
+                this.createPlaylistItemFromTrackData.bind(this)
+            );
+        },
+
+        createPlaylistItemFromTrackData: function(data) {
+            var data = _.clone(data);
+            data.album = this.getTitle();
+            data.artist = this.getArtist();
+            return LastFmTrack.fromTrackData(data);
         }
 
     }
@@ -93,7 +162,7 @@ var lrcs = lrcs || {};
         data.artist = data.artist.name;
         if (data.album) {
             data.image = data.album.image;
-            data.album = data.album.name;
+            data.album = data.album.title;
         }
         return new LastFmTrack(data)
     }
