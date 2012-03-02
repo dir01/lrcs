@@ -31,6 +31,15 @@ var lrcs = lrcs || {};
             });
         },
 
+        getTrackInfo: function(artist, title, callback) {
+            this.api.track.getInfo({
+                artist: artist,
+                track: title
+            }, {
+                success: this.processTrackInfoResult.bind(this, callback)
+            });
+        },
+
         proccessTracksQueryResults: function(callback, data) {
             if (typeof data.results.trackmatches.track === 'undefined')
                 return;
@@ -54,6 +63,11 @@ var lrcs = lrcs || {};
             callback(track);
         },
 
+        processTrackInfoResult: function(callback, data) {
+            var track = LastFmTrack.fromDetailedTrackData(data.track);
+            callback(track)
+        },
+
         getLastFmApi: function() {
             var cache = new LastFMCache();
             var lastfm = new LastFM({
@@ -74,12 +88,21 @@ var lrcs = lrcs || {};
         return new LastFmTrack(data);
     }
 
+    LastFmTrack.fromDetailedTrackData = function(data) {
+        var data = _.clone(data);
+        data.artist = data.artist.name;
+        data.image = data.album.image;
+        data.album = data.album.name;
+        return new LastFmTrack(data)
+    }
+
     LastFmTrack.prototype = {
 
         toJSON: function() {
             return {
                 artist: this.getArtist(),
                 title: this.getTitle(),
+                album: this.getAlbum(),
                 image: this.getImage(),
                 isNowPlaying: this.isNowPlaying()
             }
@@ -92,7 +115,11 @@ var lrcs = lrcs || {};
         },
 
         getTitle: function() {
-            return this.data.name
+            return this.data.name;
+        },
+
+        getAlbum: function() {
+            return this.data.album;
         },
 
         getImage: function() {
