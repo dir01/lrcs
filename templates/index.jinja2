@@ -41,15 +41,18 @@
         </ol>
     </script>
 
+    <script type="text/template" id="autocomplete-item-template">
+        <li class="suggestion-item">
+            <img alt="<%= artist %> - <% title %>" src="<% if (image) { %><%= image %><% } else { %>http://cdn.last.fm/flatness/catalogue/noimage/2/default_artist_small.png<% } %>"/>
+            <span class="track"><%= title %></span>
+            <span class="artist"><%= artist %></span>
+        </li>
+    </script>
+
 {% endblock %}
 
 
 {% block content %}
-<li id="item-template" class="hidden">
-    <img alt="?" src="http://cdn.last.fm/flatness/catalogue/noimage/2/default_artist_small.png" />
-    <span class="track"></span>
-    <span class="artist"></span>
-</li>
 
 <form method="get" action="/api/search/" id="search-box">
     <div>

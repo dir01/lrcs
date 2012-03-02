@@ -195,7 +195,6 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
                     that.submitForm();
                 }
             });
-            this.autocomplete.bindAutocomplete();
         }
     });
 
@@ -275,63 +274,60 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
 
     lrcs.views.FormSearchAutocomplete = function(options) {
-        this.input = options.input;
-        this.onTrackSelected = options.callback;
+        this.options = _.extend(this.defaults, options);
 
-        this.bindAutocomplete = function() {
-            this.input.autocomplete({
-                html: true,
-                minLength: 2,
-                source: this.processAutocompleteRequest.bind(this),
-                select: this.processAutocompleteSelection.bind(this)
-            });
-        };
+        this.options.input.autocomplete({
+            html: true,
+            minLength: 2,
+            source: this.processRequest.bind(this),
+            select: this.processSelection.bind(this)
+        });
+    }
 
-        this.processAutocompleteRequest = function(request, response) {
-            var that = this;
+    lrcs.views.FormSearchAutocomplete.prototype = {
+
+        defaults: {
+            input: null,
+            callback: function(){}
+        },
+
+        processRequest: function(request, response) {
             lrcs.lastFM.queryTracks(
                 request.term,
-                function(tracks) {
-                    response(that.processAutocompleteTracks(tracks));
-                }
+                this.processResponse.bind(this, response)
             );
-        };
+        },
 
-        this.processAutocompleteTracks = function(tracks) {
-            return $.map(tracks, this.processAutocompleteTrack.bind(this));
-        };
+        processResponse: function(response, tracks) {
+            response(this.processTracks(tracks));
+        },
 
-        this.processAutocompleteTrack = function(track) {
-            var item = this.getAutocompleteItemTemplate();
-            var image = track.getImage();
-            if (image) {
-                item.find('img').attr('src', image);
-            }
-            item.find('.artist').html(track.getArtist());
-            item.find('.track').html(track.getTitle());
-            item.data('data', track);
+        processTracks: function(tracks) {
+            return _.map(tracks, this.processTrack.bind(this));
+        },
+
+        processTrack: function(track) {
+            console.log(this.getItemTemplate());
+            var template = this.getItemTemplate(),
+                html = _.template(template, track.toJSON());
+                node = $(html);
+            node.data('track', track);
             return {
-                label: item,
+                label: node,
                 value: [track.getArtist(), track.getTitle()].join(' - ')
             }
-        };
+        },
 
-        this.processAutocompleteSelection = function(event, ui) {
-            var track = ui.item.label.data('data');
-            this.onTrackSelected({
-                artist: track.getArtist(),
-                title: track.getTitle()
-            });
-        };
+        processSelection: function(event, ui) {
+            var track = ui.item.label.data('track');
+            this.options.callback(track.toJSON());
+        },
 
-        this.getAutocompleteItemTemplate = function() {
-            return $('#item-template')
-                .clone()
-                .attr('id', '')
-                .removeClass('hidden')
-                .addClass('suggestion-item');
-        };
-    };
+        getItemTemplate: function() {
+            return $('#autocomplete-item-template').html();
+        }
+
+    }
 
 
 })();

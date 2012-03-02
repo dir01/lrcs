@@ -76,6 +76,15 @@ var lrcs = lrcs || {};
 
     LastFmTrack.prototype = {
 
+        toJSON: function() {
+            return {
+                artist: this.getArtist(),
+                title: this.getTitle(),
+                image: this.getImage(),
+                isNowPlaying: this.isNowPlaying()
+            }
+        },
+
         getArtist: function() {
             if (typeof this.data.artist == 'string')
                 return this.data.artist;
