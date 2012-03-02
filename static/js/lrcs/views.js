@@ -141,11 +141,11 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         },
 
         triggerTrackSearched: function(event) {
+            if (event)
+                event.preventDefault();
             var track = this.getCurrentSearchedTrack();
-            if (!track.isEmpty()) {
+            if (!track.isEmpty())
                 this.trigger('track_searched', track);
-            }
-            event.preventDefault();
         },
 
         getCurrentSearchedTrack: function() {
@@ -156,8 +156,8 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
             this.currentSearchedTrack.replaceWith(track);
         },
 
-        getTrack: function() {
-            return this.model;
+        getVisibleQuery: function() {
+            return [this.getArtistName(), this.getTrackTitle()].join(' - ');
         },
 
         getArtistName: function() {
@@ -168,12 +168,8 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
             return this.getTrack().get('title');
         },
 
-        getVisibleQuery: function() {
-            return [this.getArtistName(), this.getTrackTitle()].join(' - ');
-        },
-
-        submitForm: function() {
-            this.el.submit();
+        getTrack: function() {
+            return this.model;
         },
 
         setStateEmpty: function() {
@@ -189,12 +185,14 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
             var that = this;
             this.autocomplete = new lrcs.views.FormSearchAutocomplete({
                 input: this.$('#id_query'),
-                callback: function(trackData) {
-                    var track = new lrcs.models.Track(trackData);
-                    that.setCurrentSearchedTrack(track);
-                    that.submitForm();
-                }
+                callback: this.selectAutocompleteTrack.bind(this)
             });
+        },
+
+        selectAutocompleteTrack: function(trackData) {
+            var track = new lrcs.models.Track(trackData);
+            this.setCurrentSearchedTrack(track);
+            this.triggerTrackSearched();
         }
     });
 
@@ -307,7 +305,6 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         },
 
         processTrack: function(track) {
-            console.log(this.getItemTemplate());
             var template = this.getItemTemplate(),
                 html = _.template(template, track.toJSON());
                 node = $(html);
