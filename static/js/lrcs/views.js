@@ -129,14 +129,19 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         },
 
         render: function() {
-            if (this.getTrack().isEmpty()) {
-                this.setStateEmpty();
-            } else {
-                this.updateInputs();
-            }
+            if (this.getTrack().isEmpty())
+                this.renderEmpty();
+            else
+                this.renderQuery();
         },
 
-        updateInputs: function() {
+        renderEmpty: function() {
+            this.el[0].reset();
+            this.$('#id_query')
+                .attr('placeholder', "Go type in track title and artist's name");
+        },
+
+        renderQuery: function() {
             this.$('#id_query').val(this.getVisibleQuery())
         },
 
@@ -170,15 +175,6 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
         getTrack: function() {
             return this.model;
-        },
-
-        setStateEmpty: function() {
-            this.el[0].reset();
-            this.$('#id_query')
-                .attr(
-                'placeholder',
-                "Go type in track title and artist's name"
-            );
         },
 
         bindAutocomplete: function() {
