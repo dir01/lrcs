@@ -7,7 +7,7 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         initialize: function() {
             this.getLyrics().bind('change', this.renderLyrics, this);
             this.getLyrics().bind('loading', this.displayLoadingIndicator, this);
-            this.getAlbum().bind('change', this.renderCover, this);
+            this.getLyrics().get('track').bind('change', this.renderCover, this);
         },
 
         displayLoadingIndicator: function() {
@@ -40,44 +40,60 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
             );
         },
 
-        getLyrics: function() {
-            return this.model;
+        getAlbumCover: function() {
+            return this.getAlbum().get('cover');
         },
 
         getAlbum: function() {
-            return this.options.album;
+            return this.getLyrics().get('track').getAlbum();
         },
 
-        getAlbumCover: function() {
-            return this.getAlbum().get('cover');
-        }
+        getLyrics: function() {
+            return this.model;
+        },
 
     });
 
 
     lrcs.views.SidebarView = Backbone.View.extend({
+
         events: {
             'click #tracklist li': 'triggerTrackClicked'
         },
 
         initialize: function() {
-            this.getAlbum().bind('change', this.render, this);
+            this.model.bind('change', this.render, this);
         },
 
         render: function() {
-            if (this.getAlbum().isEmpty()) {
-                $(this.el).addClass('hidden');
-            } else {
-                $(this.el).html(this.renderTemplate());
-                $(this.el).removeClass('hidden');
+            var album = this.model.getAlbum();
+            if (!album || !album.get('title')) {
+                this.renderEmpty();
+                return;
             }
+
+            var changes = this.model.changedAttributes();
+            if (!('artist' in changes) && !('album' in changes)) {
+                this.renderTrackList();
+                return;
+            }
+
+            album.bind('change', this.renderTrackList, this);
+            album.fetch();
         },
 
-        triggerTrackClicked: function(event) {
-            this.trigger(
-                'track_clicked',
-                this.getTrackByHtmlElement(event.target)
-            );
+        renderEmpty: function() {
+            $(this.el).addClass('hidden');
+        },
+
+        renderTrackList: function() {
+            var album = this.model.getAlbum();
+            if (album.isEmpty()) {
+                $(this.el).addClass('hidden');
+                return;
+            }
+            $(this.el).html(this.renderTemplate());
+            $(this.el).removeClass('hidden');
         },
 
         renderTemplate: function() {
@@ -87,33 +103,47 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
             );
         },
 
-        getAlbum: function() {
-            return this.model;
-        },
-
         getTemplate: function() {
             return this.options.template.html();
         },
 
         getTemplateVariables: function() {
+            var album = this.model.getAlbum(),
+                currentTrack = this.model,
+                trackList = album.get('trackList');
+
+            _.each(trackList, function(track) {
+                track.current = track.equals(currentTrack)
+            });
+
             return {
-                artist: this.getAlbum().get('artist'),
-                album: this.getAlbum().get('title'),
-                cover: this.getAlbum().get('cover'),
-                tracks: this.getAlbum().get('trackList')
+                artist: album.get('artist'),
+                album: album.get('title'),
+                cover: album.get('cover'),
+                tracks: album.get('trackList')
             };
         },
 
+        triggerTrackClicked: function(event) {
+            this.trigger(
+                'track-clicked',
+                this.getTrackByHtmlElement(event.target)
+            );
+        },
+
         getTrackByHtmlElement: function(element) {
-            var cid = $(element).attr('data-cid');
-            return this.getElementByCid(this.getAlbum().get('trackList'), cid);
+            var cid = $(element).attr('data-cid'),
+                album = this.model.getAlbum();
+            return this.getElementByCid(album.get('trackList'), cid);
         },
 
         getElementByCid: function(elements, cid) {
             return _.detect(elements, function(element) {
                 return element.cid === cid;
             });
-        }
+        },
+
+
     });
 
 

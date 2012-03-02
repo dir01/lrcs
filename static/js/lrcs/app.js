@@ -38,7 +38,6 @@ if (typeof lrcs === 'undefined') lrcs = {};
     lrcs.buildApp = function() {
         var app = new lrcs.App;
         app.currentTrack = new lrcs.models.Track;
-        app.currentAlbum = new lrcs.models.Album({track: app.currentTrack});
         app.currentLyrics = new lrcs.models.Lyrics({track: app.currentTrack});
         app.lastFmConnector = new lrcs.models.LastFmConnector({
             username: $.cookie('username')
@@ -52,13 +51,12 @@ if (typeof lrcs === 'undefined') lrcs = {};
         app.sidebarView = new lrcs.views.SidebarView({
             el: $('#sidebar'),
             template: $('#sidebar_template'),
-            model: app.currentAlbum
+            model: app.currentTrack
         });
 
         app.lyricsView = new lrcs.views.LyricsView({
             el: $('#lyrics-box'),
-            model: app.currentLyrics,
-            album: app.currentAlbum
+            model: app.currentLyrics
         });
 
         app.lastFmView = new lrcs.views.LastFmView({
@@ -70,7 +68,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
         });
 
         app.searchFormView.bind('track_searched', app.onTrackSearched, app);
-        app.sidebarView.bind('track_clicked', app.onSidebarTrackClicked, app);
+        app.sidebarView.bind('track-clicked', app.onSidebarTrackClicked, app);
         app.lastFmConnector.bind('change:track', app.onLastFmNowPlayingTrackChanged, app);
         app.lastFmConnector.bind('change:username', app.onLastFmUsernameChanged, app);
         return app;

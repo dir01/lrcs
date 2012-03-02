@@ -5,10 +5,15 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 (function() {
 
     lrcs.models.Track = Backbone.Model.extend({
+
         defaults: {
             artist: '',
             title: '',
             album: ''
+        },
+
+        initialize: function() {
+            this.bind('change', this.updateAlbum, this);
         },
 
         isEmpty: function() {
@@ -19,9 +24,19 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         },
 
         equals: function(track) {
-            return _.isEqual(this.toJSON(), track.toJSON());
+            var importantFields = ['artist', 'album', 'title'],
+                us = this,
+                ourImportantData = {},
+                theirImportantData = {};
 
+            _.each(importantFields, function(field) {
+                ourImportantData[field] = us.get(field);
+                theirImportantData[field] = track.get(field);
+            });
+
+            return _.isEqual(ourImportantData, theirImportantData);
         },
+
         replaceWith: function(track) {
             this.set(track.toJSON());
         },
@@ -31,34 +46,37 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
                 artist: this.get('artist'),
                 track: this.get('title')
             });
+        },
+
+        updateAlbum: function() {
+            var changes = this.changedAttributes();
+            if ('artist' in changes || 'album' in changes)
+                this.album = new lrcs.models.Album({
+                    artist: this.get('artist'),
+                    title: this.get('album')
+                });
+        },
+
+        getAlbum: function() {
+            return this.album;
         }
+
     });
 
 
     lrcs.models.Album = Backbone.Model.extend({
+
         defaults: {
-            track: new lrcs.models.Track,
             artist: '',
             title: '',
             cover: '',
             trackList: []
         },
 
-        initialize: function() {
-            this.bind('change', this.annotateTracksWithCurrentTrack, this);
-            this.get('track').bind('change', this.reload, this);
-        },
-
-        reload: function() {
-            console.log('reloading album');
-            this.fetch();
-        },
-
         fetch: function() {
-            var track = this.get('track');
             lrcs.lastFM.getAlbumInfo(
-                track.get('artist'),
-                track.get('album'),
+                this.get('artist'),
+                this.get('title'),
                 this.setDetailedInfo.bind(this)
             );
         },
@@ -81,13 +99,6 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             });
         },
 
-        annotateTracksWithCurrentTrack: function() {
-            var currentTrack = this.get('track');
-            _.each(this.get('trackList'), function(track) {
-                track.current = currentTrack.equals(track);
-            }, this);
-        },
-
         isEmpty: function() {
             return !(
                 this.get('artist') &&
@@ -95,6 +106,7 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
                     this.get('trackList')
                 );
         }
+
     });
 
 
