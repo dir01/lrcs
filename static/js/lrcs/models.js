@@ -13,7 +13,8 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         },
 
         initialize: function() {
-            this.bind('change', this.updateAlbum, this);
+            this.bind('change:artist', this.updateAlbum, this);
+            this.bind('change:album', this.updateAlbum, this);
         },
 
         isEmpty: function() {
@@ -49,12 +50,10 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         },
 
         updateAlbum: function() {
-            var changes = this.changedAttributes();
-            if ('artist' in changes || 'album' in changes)
-                this.album = new lrcs.models.Album({
-                    artist: this.get('artist'),
-                    title: this.get('album')
-                });
+            this.album = new lrcs.models.Album({
+                artist: this.get('artist'),
+                title: this.get('album')
+            });
         },
 
         getAlbum: function() {
