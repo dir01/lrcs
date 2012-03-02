@@ -54,6 +54,12 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
                 artist: this.get('artist'),
                 title: this.get('album')
             });
+            this.album.bind('change', this.triggerAlbumChange, this);
+            this.album.fetch();
+        },
+
+        triggerAlbumChange: function() {
+            this.trigger('album-change');
         },
 
         getAlbum: function() {

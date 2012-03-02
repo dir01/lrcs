@@ -4,10 +4,11 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
 (function() {
     lrcs.views.LyricsView = Backbone.View.extend({
+
         initialize: function() {
             this.getLyrics().bind('change', this.renderLyrics, this);
             this.getLyrics().bind('loading', this.displayLoadingIndicator, this);
-            this.getLyrics().get('track').bind('change', this.renderCover, this);
+            this.getTrack().bind('album-change', this.renderCover, this);
         },
 
         displayLoadingIndicator: function() {
@@ -51,6 +52,10 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
         getLyrics: function() {
             return this.model;
         },
+
+        getTrack: function() {
+            return this.options.track;
+        }
 
     });
 

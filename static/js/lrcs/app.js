@@ -56,7 +56,8 @@ if (typeof lrcs === 'undefined') lrcs = {};
 
         app.lyricsView = new lrcs.views.LyricsView({
             el: $('#lyrics-box'),
-            model: app.currentLyrics
+            model: app.currentLyrics,
+            track: app.currentTrack
         });
 
         app.lastFmView = new lrcs.views.LastFmView({
