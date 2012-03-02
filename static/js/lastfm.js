@@ -1,85 +1,104 @@
-var LastFmTrack = $.klass({
-    initialize: function(data){
-        this.data = $.extend({}, data);
-    },
 
-    getArtist: function(){
-        if (typeof this.data.artist == 'string'){
-            return this.data.artist;
-        }
-        return this.data.artist['#text'];
-    },
+var lrcs = lrcs || {};
 
-    getTitle: function(){
-        return this.data.name
-    },
+(function() {
 
-    getImage: function(){
-        return this.data.image && this.data.image[0] && this.data.image[0]['#text'];
-    },
-
-    isNowPlaying: function(){
-        return Boolean(this.data['@attr'] && this.data['@attr'].nowplaying == 'true')
+    function LastFmAPIAdapter(options) {
+        this.options = _.extend(this.options, options);
+        this.api = this.getLastFmApi();
     }
-})
 
-var LastFmAPIAdapter = $.klass({
-    initialize: function(options){
-        this.options = $.extend({
+    LastFmAPIAdapter.prototype = {
+
+        options: {
             apiKey: null
-        }, options)
-        this.lastFmAPI = this.getLastFmApi();
-    },
+        },
 
-    getLastPlayedTrack: function(username, callback){
-        this.lastFmAPI.user.getRecentTracks({
-            user: username,
-            limit:1
+        getLastPlayedTrack: function(username, callback){
+            this.api.user.getRecentTracks({
+                user: username,
+                limit: 1
             }, {
                 success: this.processLastPlayedTrack.bind(this, callback)
             });
-    },
+        },
 
-    queryTracks: function(query, callback) {
-        this.lastFmAPI.track.search({
-            track: query
-        }, {
-            success: this.proccessTracksQueryResults.bind(this, callback)
-        });
-    },
+        queryTracks: function(query, callback) {
+            this.api.track.search({
+                track: query
+            }, {
+                success: this.proccessTracksQueryResults.bind(this, callback)
+            });
+        },
 
-    proccessTracksQueryResults: function(callback, data) {
-        if (typeof data.results.trackmatches.track === 'undefined')
-            return;
-        var tracks = $.map(
-            data.results.trackmatches.track,
-            this.constructLastFmTrackFromTrackData
-        );
+        proccessTracksQueryResults: function(callback, data) {
+            if (typeof data.results.trackmatches.track === 'undefined')
+                return;
 
-        callback(tracks);
-    },
+            var tracks = _.map(
+                data.results.trackmatches.track,
+                LastFmTrack.fromTrackData
+            );
 
-    processLastPlayedTrack: function(callback, data) {
-        var tracksData = data.recenttracks.track;
-        if ($.isArray(tracksData))
-            var trackData = tracksData[0];
-        else
-            var trackData = tracksData;
-        var track = this.constructLastFmTrackFromTrackData(trackData);
+            callback(tracks);
+        },
 
-        callback(track)
-    },
+        processLastPlayedTrack: function(callback, data) {
+            var tracksData = data.recenttracks.track;
+            if (_.isArray(tracksData))
+                var trackData = tracksData[0];
+            else
+                var trackData = tracksData;
+            var track = LastFmTrack.fromTrackData(trackData);
 
-    constructLastFmTrackFromTrackData: function(trackData) {
-        return new LastFmTrack(trackData);
-    },
+            callback(track);
+        },
 
-    getLastFmApi: function(){
-        var cache = new LastFMCache();
-        var lastfm = new LastFM({
-            apiKey: this.options.apiKey,
-            cache: cache
-        });
-        return lastfm;
+        getLastFmApi: function() {
+            var cache = new LastFMCache();
+            var lastfm = new LastFM({
+                apiKey: this.options.apiKey,
+                cache: cache
+            });
+            return lastfm;
+        }
+
     }
-});
+
+
+    var LastFmTrack = function(data) {
+        this.data = _.clone(data);
+    }
+
+    LastFmTrack.fromTrackData = function(data) {
+        return new LastFmTrack(data);
+    }
+
+    LastFmTrack.prototype = {
+
+        getArtist: function() {
+            if (typeof this.data.artist == 'string')
+                return this.data.artist;
+            return this.data.artist['#text'];
+        },
+
+        getTitle: function() {
+            return this.data.name
+        },
+
+        getImage: function() {
+            return this.data.image && this.data.image[0] && this.data.image[0]['#text'];
+        },
+
+        isNowPlaying: function() {
+            return Boolean(this.data['@attr'] && this.data['@attr'].nowplaying == 'true')
+        }
+
+    }
+
+
+    /* Export */
+
+    lrcs.LastFmAPIAdapter = LastFmAPIAdapter;
+
+})(lrcs);

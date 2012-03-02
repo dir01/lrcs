@@ -76,7 +76,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
         return app;
     };
 
-    lrcs.lastFM = new LastFmAPIAdapter({
+    lrcs.lastFM = new lrcs.LastFmAPIAdapter({
         apiKey: $('meta[name=last-fm-api-key]').attr('content')
     });
 
