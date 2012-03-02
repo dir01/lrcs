@@ -7,7 +7,8 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
     lrcs.models.Track = Backbone.Model.extend({
         defaults: {
             artist: '',
-            title: ''
+            title: '',
+            album: ''
         },
 
         isEmpty: function() {
@@ -48,26 +49,36 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             this.get('track').bind('change', this.reload, this);
         },
 
-        url: function() {
-            return [
-                '/album/',
-                this.get('track').getQueryString()
-            ].join('?');
-        },
-
-        parse: function(response) {
-            response.trackList = _.map(response.trackList, function(trackTitle) {
-                return new lrcs.models.Track({
-                    'artist': response.artist,
-                    'title': trackTitle
-                })
-            }, this);
-            return response;
-        },
-
         reload: function() {
             console.log('reloading album');
             this.fetch();
+        },
+
+        fetch: function() {
+            var track = this.get('track');
+            lrcs.lastFM.getAlbumInfo(
+                track.get('artist'),
+                track.get('album'),
+                this.setDetailedInfo.bind(this)
+            );
+        },
+
+        setDetailedInfo: function(album) {
+            var data = album.toJSON();
+            this.set({
+                artist: data.artist,
+                title: data.title,
+                cover: data.largestImage,
+                trackList: _.map(data.tracks, this.createTrackFromData.bind(this))
+            });
+        },
+
+        createTrackFromData: function(data) {
+            return new lrcs.models.Track({
+                artist: data.artist,
+                album: data.album,
+                title: data.title
+            });
         },
 
         annotateTracksWithCurrentTrack: function() {
@@ -185,13 +196,22 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
         setTrackIfTrackIsNowPlaying: function(lastFmTrack) {
             if (lastFmTrack.isNowPlaying())
-                this.set({'track': this.constructTrackByLastFmTrack(lastFmTrack)});
+                lrcs.lastFM.getTrackInfo(
+                    lastFmTrack.getArtist(),
+                    lastFmTrack.getTitle(),
+                    this.setNowPlayingTrack.bind(this)
+                );
+        },
+
+        setNowPlayingTrack: function(lastFmTrack) {
+            this.set({'track': this.constructTrackByLastFmTrack(lastFmTrack)});
         },
 
         constructTrackByLastFmTrack: function(lastFmTrack) {
             return new lrcs.models.Track({
                 artist: lastFmTrack.getArtist(),
-                title: lastFmTrack.getTitle()
+                title: lastFmTrack.getTitle(),
+                album: lastFmTrack.getAlbum()
             });
         }
 
