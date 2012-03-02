@@ -313,6 +313,14 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
         processSelection: function(event, ui) {
             var track = ui.item.label.data('track');
+            lrcs.lastFM.getTrackInfo(
+                track.getArtist(),
+                track.getTitle(),
+                this.processSelectedTrackInfo.bind(this)
+            );
+        },
+
+        processSelectedTrackInfo: function(track) {
             this.options.callback(track.toJSON());
         },
 
