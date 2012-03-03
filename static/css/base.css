@@ -47,6 +47,11 @@ body {
     height: 100%;
 }
 
+#logo {
+    position: relative;
+    top: -3.5em;
+}
+
 #content-box {
     display: table-cell;
     vertical-align: top;

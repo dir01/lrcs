@@ -6,8 +6,6 @@
 }
 
 #logo {
-    position: relative;
-    top: -2.95em;
     text-decoration: none;
     text-transform: uppercase;
     font-weight: bolder;
@@ -30,6 +28,7 @@
 /* Search */
 
 #search-box {
+
 }
 
 #id_query {
