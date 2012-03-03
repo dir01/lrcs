@@ -36,9 +36,13 @@ var lrcs = lrcs || {};
         setTrack: function(track) {
             var oldTrack = this.track;
             this.track = track;
+
             this.searchFormView.setTrack(track).render();
             this.sidebarView.setTrack(track).render();
+
             this.lyrics.setTrack(track).fetch();
+            this.lyricsView.displayLoadingIndicator();
+
             if (track.hasDifferentAlbumFrom(oldTrack))
                 this.album.setTrack(track).fetch();
         },
