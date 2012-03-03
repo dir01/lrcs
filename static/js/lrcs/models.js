@@ -88,11 +88,7 @@ lrcs.models = lrcs.models || {};
         },
 
         isEmpty: function() {
-            return !(
-                this.get('artist') &&
-                    this.get('title') &&
-                    this.get('trackList')
-                );
+            return this.get('trackList').length === 0;
         }
 
     });
