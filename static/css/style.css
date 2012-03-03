@@ -27,10 +27,6 @@
 
 /* Search */
 
-#search-box {
-
-}
-
 #id_query {
     margin: 0;
     font-size: 2em;
@@ -202,6 +198,7 @@ a#lastfm-control:hover {
 #sidebar-box {
     font-size: 0.7em;
     background-position: center center;
+    overflow: hidden;
 
     transition: 0.1s;
     -o-transition: 0.1s;
@@ -212,7 +209,6 @@ a#lastfm-control:hover {
 
 #sidebar-box.hidden {
     width: 0;
-    overflow: hidden;
     opacity: 0;
 }
 
