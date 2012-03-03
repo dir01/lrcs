@@ -7,7 +7,10 @@ body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 14pt;
     background: #DDDDDD;
-    padding: 6.4em 2em 3.8em 0;
+    padding-top: 6.4em; /* height of the search thingie */
+    padding-bottom: 3.8em; /* height of the footer */
+    padding-right: 2em; /* for kicks */
+    padding-left: 0;
     box-sizing: border-box;
     -o-box-sizing: border-box;
     -ms-box-sizing: border-box;
