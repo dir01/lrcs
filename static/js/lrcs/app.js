@@ -42,10 +42,11 @@ var lrcs = lrcs || {};
             this.searchFormView.setTrack(track).render();
             this.sidebarView.setTrack(track).render();
 
+            this.lyricsView.displayLoadingIndicator();
             this.lyrics.setTrack(track).fetch({
+                success: this.whenLyricsLoaded.bind(this),
                 error: this.whenLyricsHaventLoaded.bind(this)
             });
-            this.lyricsView.displayLoadingIndicator();
 
             if (track.hasDifferentAlbumFrom(oldTrack)) {
                 this.album.setTrack(track).fetch();
@@ -117,7 +118,6 @@ var lrcs = lrcs || {};
             disconnectedTemplate: lrcs.tools.template('lastfm-disconnected-template'),
         });
 
-        app.lyrics.bind('change', app.whenLyricsLoaded, app);
         app.album.bind('change', app.whenAlbumLoaded, app);
 
         app.searchFormView.bind('track-searched', app.whenSearchedForTrack, app);
