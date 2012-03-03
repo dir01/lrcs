@@ -61,5 +61,13 @@ root.putChild('lyrics', Lyrics())
 
 factory = Site(root)
 
-reactor.listenTCP(8080, factory)
-reactor.run()
+
+def main():
+    print 'Start listening on http://localhost:8080/'
+    reactor.listenTCP(8080, factory)
+    reactor.run()
+
+
+if __name__ == '__main__':
+    from utils import autoreload
+    autoreload.main(main, root=settings.PROJECT_ROOT, extensions=['.py', '.jinja2'])
