@@ -86,7 +86,7 @@ var lrcs = lrcs || {};
 
         app.sidebarView = new lrcs.views.SidebarView({
             el: $('#sidebar'),
-            template: $('#sidebar_template')
+            template: $('#sidebar-template')
         });
 
         app.lastFmView = new lrcs.views.LastFmView({
