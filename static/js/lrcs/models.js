@@ -59,7 +59,7 @@ lrcs.models = lrcs.models || {};
         fetch: function() {
             lrcs.lastFM.getAlbumInfo(
                 this.track.get('artist'),
-                this.track.get('title'),
+                this.track.get('album'),
                 this.setInfo.bind(this)
             );
         },

@@ -69,25 +69,38 @@ lrcs.views = lrcs.views || {};
 
     lrcs.views.SidebarView = Backbone.View.extend({
 
+        album: null,
+        track: null,
+
         events: {
             'click #tracklist li': 'triggerTrackClicked'
         },
 
+        setAlbum: function(album) {
+            this.album = album;
+            return this;
+        },
+
+        setTrack: function(track) {
+            this.track = track;
+            return this;
+        },
+
         render: function() {
-            var album = this.model.getAlbum();
-            if (album.isEmpty())
+            if (!this.album || this.album.isEmpty())
                 this.renderEmpty();
             else
                 this.renderTrackList();
+            return this;
         },
 
         renderEmpty: function() {
-            $(this.el).addClass('hidden');
+            this.$el.addClass('hidden');
         },
 
         renderTrackList: function() {
-            $(this.el).html(this.renderTemplate());
-            $(this.el).removeClass('hidden');
+            this.$el.html(this.renderTemplate());
+            this.$el.removeClass('hidden');
         },
 
         renderTemplate: function() {
@@ -102,19 +115,18 @@ lrcs.views = lrcs.views || {};
         },
 
         getTemplateVariables: function() {
-            var album = this.model.getAlbum(),
-                currentTrack = this.model,
-                trackList = album.get('trackList');
+            var currentTrack = this.track,
+                trackList = this.album.get('trackList');
 
             _.each(trackList, function(track) {
-                track.current = track.equals(currentTrack)
+                track.current = track.equals(currentTrack);
             });
 
             return {
-                artist: album.get('artist'),
-                album: album.get('title'),
-                cover: album.get('cover'),
-                tracks: album.get('trackList')
+                artist: this.album.get('artist'),
+                album: this.album.get('title'),
+                cover: this.album.get('cover'),
+                tracks: this.album.get('trackList')
             };
         },
 
@@ -126,9 +138,8 @@ lrcs.views = lrcs.views || {};
         },
 
         getTrackByHtmlElement: function(element) {
-            var cid = $(element).attr('data-cid'),
-                album = this.model.getAlbum();
-            return this.getElementByCid(album.get('trackList'), cid);
+            var cid = $(element).attr('data-cid');
+            return this.getElementByCid(this.album.get('trackList'), cid);
         },
 
         getElementByCid: function(elements, cid) {

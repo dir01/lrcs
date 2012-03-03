@@ -37,6 +37,7 @@ var lrcs = lrcs || {};
             var oldTrack = this.track;
             this.track = track;
             this.searchFormView.setTrack(track).render();
+            this.sidebarView.setTrack(track).render();
             this.lyrics.setTrack(track).fetch();
             this.album.setTrack(track).fetch();
         },
@@ -47,6 +48,7 @@ var lrcs = lrcs || {};
 
         whenAlbumLoaded: function(album) {
             this.lyricsView.setAlbum(album).render();
+            this.sidebarView.setAlbum(album).render();
         }
 
     });
