@@ -38,7 +38,6 @@ lrcs.views = lrcs.views || {};
         },
 
         renderLyrics: function(lyrics) {
-            this.hideLoadingIndicator();
             this.$el.removeClass('nothing');
             this.$text.html(this.getPrettyLyrics());
         },
@@ -150,6 +149,16 @@ lrcs.views = lrcs.views || {};
             return _.detect(elements, function(element) {
                 return element.cid === cid;
             });
+        },
+
+        displayLoadingIndicator: function() {
+            this.$el.addClass('loading');
+            return this;
+        },
+
+        hideLoadingIndicator: function() {
+            this.$el.removeClass('loading');
+            return this;
         }
 
     });

@@ -73,6 +73,7 @@ a#lastfm-control:hover { opacity: 1; }
     z-index: 1;
     font-size: 0.7em;
     width: 27.5%;
+    background-position: center center;
 
     transition: 0.1s;
     -o-transition: 0.1s;
@@ -88,7 +89,36 @@ a#lastfm-control:hover { opacity: 1; }
     opacity: 0;
 }
 
+#sidebar.loading {
+    background: silver url('../images/spinner-large.gif') no-repeat center 200px;
+}
+
+#sidebar.loading #artist,
+#sidebar.loading #album,
+#sidebar.loading #tracklist {
+    display: block;
+    right: 100%;
+}
+
+#artist,
+#album,
+#tracklist {
+    transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
+}
+
+#artist.hidden,
+#album.hidden,
+#tracklist.hidden {
+    display: block;
+    right: 100%;
+}
+
 #artist {
+    position: relative;
     float: left;
     padding: 0.4em 1.5em 0.4em 0.5em;
     margin-bottom: 0.1em;
@@ -111,12 +141,6 @@ a#lastfm-control:hover { opacity: 1; }
     color: white;
     font-size: 0.9em;
     text-shadow: -1px 0 1px black;
-
-    transition: 0.2s;
-    -o-transition: 0.2s;
-    -ms-transition: 0.2s;
-    -moz-transition: 0.2s;
-    -webkit-transition: 0.2s;
 }
 
 #tracklist {
@@ -124,12 +148,6 @@ a#lastfm-control:hover { opacity: 1; }
     color: white;
     list-style-type: decimal;
     list-style-position: inside;
-
-    transition: 0.2s;
-    -o-transition: 0.2s;
-    -ms-transition: 0.2s;
-    -moz-transition: 0.2s;
-    -webkit-transition: 0.2s;
 }
 
 #tracklist li {
@@ -167,11 +185,6 @@ a#lastfm-control:hover { opacity: 1; }
 }
 
 #tracklist li.active:hover { padding-right: 1.5em; margin-right: 0; }
-
-#album.hidden, #tracklist.hidden {
-    display: block;
-    right: 100%;
-}
 
 
 /* Lyrics */

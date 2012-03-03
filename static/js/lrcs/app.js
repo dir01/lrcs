@@ -43,17 +43,25 @@ var lrcs = lrcs || {};
             this.lyrics.setTrack(track).fetch();
             this.lyricsView.displayLoadingIndicator();
 
-            if (track.hasDifferentAlbumFrom(oldTrack))
+            if (track.hasDifferentAlbumFrom(oldTrack)) {
                 this.album.setTrack(track).fetch();
+                this.sidebarView.displayLoadingIndicator();
+            }
         },
 
         whenLyricsLoaded: function(lyrics) {
-            this.lyricsView.setLyrics(lyrics).render();
+            this.lyricsView
+                .setLyrics(lyrics)
+                .render()
+                .hideLoadingIndicator();
         },
 
         whenAlbumLoaded: function(album) {
             this.lyricsView.setAlbum(album).renderImage();
-            this.sidebarView.setAlbum(album).render();
+            this.sidebarView
+                .setAlbum(album)
+                .render()
+                .hideLoadingIndicator();
         }
 
     });

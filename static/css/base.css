@@ -100,12 +100,11 @@ body {
 }
 
 #lyrics-box.loading {
-    height: 100%;
-    background: silver url('../images/spinner-large.gif') no-repeat center center;
+    background: silver url('../images/spinner-large.gif') no-repeat center 200px;
 }
 
 #lyrics-box.loading #lyrics {
-    opacity: 0;
+    opacity: 0.5;
 }
 
 #footer-box {
