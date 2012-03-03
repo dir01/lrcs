@@ -30,6 +30,11 @@ lrcs.models = lrcs.models || {};
             return _.isEqual(ourImportantData, theirImportantData);
         },
 
+        hasDifferentAlbumFrom: function(track) {
+            return this.get('album') !== track.get('album') ||
+                this.get('artist') !== track.get('artist');
+        },
+
         isEmpty: function() {
             return !(
                 this.get('artist') &&

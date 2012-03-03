@@ -39,7 +39,8 @@ var lrcs = lrcs || {};
             this.searchFormView.setTrack(track).render();
             this.sidebarView.setTrack(track).render();
             this.lyrics.setTrack(track).fetch();
-            this.album.setTrack(track).fetch();
+            if (track.hasDifferentAlbumFrom(oldTrack))
+                this.album.setTrack(track).fetch();
         },
 
         whenLyricsLoaded: function(lyrics) {
