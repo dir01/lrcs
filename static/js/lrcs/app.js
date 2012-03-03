@@ -30,7 +30,9 @@ var lrcs = lrcs || {};
 
         whenNowPlayingTrackChanged: function(connector) {
             var track = connector.get('track');
-            this.setTrack(track);
+            if (!track.equals(this.track)){
+                this.setTrack(track);
+            }
         },
 
         setTrack: function(track) {
