@@ -42,7 +42,7 @@ test('watching template', function() {
     this.lastFmConnector.set({isWatching: true});
     this.lastFmView.options.watchingTemplate = 'watching';
     equal('watching', this.lastFmView.getTemplate());
-    ok(_.isEqual({username: 'username'}, this.lastFmView.getTemplateVariables()));
+    ok(_.isEqual({username: 'username'}, this.lastFmView.getTemplateContext()));
 });
 
 
@@ -51,5 +51,5 @@ test('idle template', function() {
     this.lastFmConnector.set({isWatching: false});
     this.lastFmView.options.idleTemplate = 'idle';
     equal('idle', this.lastFmView.getTemplate());
-    ok(_.isEqual({username: 'username'}, this.lastFmView.getTemplateVariables()));
+    ok(_.isEqual({username: 'username'}, this.lastFmView.getTemplateContext()));
 });
