@@ -1,6 +1,6 @@
-if (typeof lrcs === 'undefined') lrcs = {};
-if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
+var lrcs = lrcs || {};
+lrcs.models = lrcs.models || {};
 
 (function() {
 
@@ -218,4 +218,4 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
     });
 
-})();
+})(lrcs);

@@ -3,12 +3,12 @@ var lrcs = lrcs || {};
 
 (function() {
 
-    function LastFmAPIAdapter(options) {
+    lrcs.LastFmAPIAdapter = function(options) {
         this.options = _.extend(this.options, options);
         this.api = this.getLastFmApi();
     }
 
-    LastFmAPIAdapter.prototype = {
+    lrcs.LastFmAPIAdapter.prototype = {
 
         options: {
             apiKey: null
@@ -202,10 +202,5 @@ var lrcs = lrcs || {};
         }
 
     }
-
-
-    /* Export */
-
-    lrcs.LastFmAPIAdapter = LastFmAPIAdapter;
 
 })(lrcs);

@@ -1,5 +1,5 @@
-if (typeof lrcs === 'undefined') lrcs = {};
 
+var lrcs = lrcs || {};
 
 (function() {
 
@@ -96,7 +96,7 @@ if (typeof lrcs === 'undefined') lrcs = {};
         apiKey: $('meta[name=last-fm-api-key]').attr('content')
     });
 
-})();
+})(lrcs);
 
 
 $(function() {

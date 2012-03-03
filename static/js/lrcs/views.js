@@ -1,6 +1,6 @@
-if (typeof lrcs === 'undefined') lrcs = {};
-if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
+var lrcs = lrcs || {};
+lrcs.views = lrcs.views || {};
 
 (function() {
 
@@ -326,4 +326,4 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
     }
 
 
-})();
+})(lrcs);
