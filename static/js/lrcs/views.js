@@ -52,9 +52,12 @@ lrcs.views = lrcs.views || {};
         },
 
         renderImage: function() {
-            var url = this.getImageURL();
-            this.toggleImage(Boolean(url));
-            this.$image.attr('src', url);
+            var url = this.getImageURL(),
+                hasImage = Boolean(url);
+            if (hasImage)
+                this.$image
+                    .attr('src', url)
+                    .one('load', this.showImage.bind(this));
         },
 
         getPrettyLyrics: function() {
@@ -63,13 +66,6 @@ lrcs.views = lrcs.views || {};
 
         getImageURL: function() {
             return this.album.get('image');
-        },
-
-        toggleImage: function(toggle) {
-            if (toggle)
-                this.showImage();
-            else
-                this.hideImage();
         },
 
         showImage: function() {

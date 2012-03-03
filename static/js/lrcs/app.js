@@ -50,6 +50,7 @@ var lrcs = lrcs || {};
             if (track.hasDifferentAlbumFrom(oldTrack)) {
                 this.album.setTrack(track).fetch();
                 this.sidebarView.displayLoadingIndicator();
+                this.lyricsView.hideImage();
             }
         },
 
@@ -74,7 +75,9 @@ var lrcs = lrcs || {};
         },
 
         whenAlbumLoaded: function(album) {
-            this.lyricsView.setAlbum(album).renderImage();
+            this.lyricsView
+                .setAlbum(album)
+                .renderImage();
             this.sidebarView
                 .setAlbum(album)
                 .render()
