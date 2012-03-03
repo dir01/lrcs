@@ -11,6 +11,7 @@ lrcs.views = lrcs.views || {};
 
         initialize: function() {
             this.$text = this.$('#lyrics-text');
+            this.$message = this.$('#message');
             this.$image = this.$('#lyrics-background-art');
         },
 
@@ -32,21 +33,28 @@ lrcs.views = lrcs.views || {};
             return this;
         },
 
+        renderMessage: function(message) {
+            this.renderEmpty();
+            this.$message.html(message);
+            return this;
+        },
+
         renderEmpty: function() {
             this.$el.addClass('nothing');
             this.$text.html('');
+            return this;
         },
 
         renderLyrics: function(lyrics) {
             this.$el.removeClass('nothing');
             this.$text.html(this.getPrettyLyrics());
+            return this;
         },
 
         renderImage: function() {
             var url = this.getImageURL();
-            this.$image
-                .attr('src', url)
-                .css('opacity', Boolean(url) ? 1 : 0);
+            this.toggleImage(Boolean(url));
+            this.$image.attr('src', url);
         },
 
         getPrettyLyrics: function() {
@@ -55,6 +63,21 @@ lrcs.views = lrcs.views || {};
 
         getImageURL: function() {
             return this.album.get('image');
+        },
+
+        toggleImage: function(toggle) {
+            if (toggle)
+                this.showImage();
+            else
+                this.hideImage();
+        },
+
+        showImage: function() {
+            this.$image.css('opacity', 1);
+        },
+
+        hideImage: function() {
+            this.$image.css('opacity', 0);
         },
 
         displayLoadingIndicator: function() {

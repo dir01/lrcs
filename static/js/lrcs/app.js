@@ -42,7 +42,9 @@ var lrcs = lrcs || {};
             this.searchFormView.setTrack(track).render();
             this.sidebarView.setTrack(track).render();
 
-            this.lyrics.setTrack(track).fetch();
+            this.lyrics.setTrack(track).fetch({
+                error: this.whenLyricsHaventLoaded.bind(this)
+            });
             this.lyricsView.displayLoadingIndicator();
 
             if (track.hasDifferentAlbumFrom(oldTrack)) {
@@ -56,6 +58,19 @@ var lrcs = lrcs || {};
                 .setLyrics(lyrics)
                 .render()
                 .hideLoadingIndicator();
+        },
+
+        whenLyricsHaventLoaded: function(lyrics, response) {
+            this.lyricsView.hideLoadingIndicator();
+            if (response.status === 404)
+                this.whenNoLyricsFound();
+        },
+
+        whenNoLyricsFound: function(lyrics, response) {
+            this.lyricsView
+                .renderMessage("No lyrics found for “" +
+                    this.track.get('title') + "” by " +
+                    this.track.get('artist') + ".")
         },
 
         whenAlbumLoaded: function(album) {

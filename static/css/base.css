@@ -99,6 +99,7 @@ body {
     display: table-cell;
     height: 100%;
     vertical-align: middle;
+    padding: 0 40px;
 }
 
 #lyrics-box.nothing #lyrics-text {
