@@ -178,7 +178,7 @@ lrcs.views = lrcs.views || {};
         },
 
         bindAutocomplete: function() {
-            new lrcs.views.FormSearchAutocomplete({
+            this.autocomplete = new lrcs.views.FormSearchAutocomplete({
                 input: this.$query,
                 template: lrcs.tools.template('autocomplete-item-template'),
                 callback: this.selectTrack.bind(this)
