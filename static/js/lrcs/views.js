@@ -10,7 +10,7 @@ lrcs.views = lrcs.views || {};
         album: null,
 
         initialize: function() {
-            this.$text = this.$('#lyrics-text');
+            this.$text = this.$('#lyrics');
             this.$message = this.$('#message');
             this.$image = this.$('#lyrics-background-art');
         },

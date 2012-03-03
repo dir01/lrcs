@@ -76,14 +76,94 @@ a#lastfm-control:hover {
     font-weight: bolder;
 }
 
+/* Lyrics */
+
+
+#lyrics-box #message-box { display: none; }
+#lyrics-box.nothing #message-box { display: block; }
+
+#lyrics {
+    position: relative;
+    z-index: 2;
+    padding: 2em 1em;
+    background: white;
+    font-family: Droid Serif, Georgia, Times New Roman, serif;
+    line-height: 1.5;
+    font-size: 13.5pt;
+
+    transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
+}
+
+#lyrics-background {
+    position: absolute;
+    right: -5%;
+    top: -2em;
+    width: 70%;
+    opacity: 0.1;
+    z-index: 1;
+
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+
+    transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    -ms-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -webkit-transform: rotate(-15deg);
+}
+
+#lyrics-background img {
+    width: 100%;
+    height: auto;
+    vertical-align: top;
+
+    transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
+}
+
+#lyrics p {
+    margin: 1em 0 0;
+    padding-left: 1em;
+    border-left: 0.2em solid #eee;
+}
+
+#lyrics p:first-child { margin-top: 0; }
+
+
+/* Message */
+
+#message-container {
+    background: silver;
+}
+
+#message {
+    font-size: 2em;
+    font-family: Droid Serif, Georgia, Times New Roman, serif;
+    color: black;
+    text-shadow: 1px 1px 0 white;
+    text-align: center;
+    padding: 40px;
+}
+
+#message sub {
+    vertical-align: sub;
+    font-size: small;
+    margin-left: -0.7em;
+}
+
+
 /* Sidebar */
 
-#sidebar {
-    float: right;
-    position: relative;
-    z-index: 1;
+#sidebar-box {
     font-size: 0.7em;
-    width: 27.5%;
     background-position: center center;
 
     transition: 0.1s;
@@ -93,20 +173,19 @@ a#lastfm-control:hover {
     -webkit-transition: 0.1s;
 }
 
-#sidebar.hidden {
+#sidebar-box.hidden {
     display: block;
     width: 0;
     overflow: hidden;
     opacity: 0;
 }
 
-#sidebar.loading {
+#sidebar-box.loading {
     background: silver url('../images/spinner-large.gif') no-repeat center 200px;
 }
 
-#sidebar.loading #artist,
-#sidebar.loading #album,
-#sidebar.loading #tracklist {
+#sidebar-box.loading > *,
+#sidebar-box > *.hidden {
     display: block;
     right: 100%;
 }
@@ -119,13 +198,6 @@ a#lastfm-control:hover {
     -ms-transition: 0.2s;
     -moz-transition: 0.2s;
     -webkit-transition: 0.2s;
-}
-
-#artist.hidden,
-#album.hidden,
-#tracklist.hidden {
-    display: block;
-    right: 100%;
 }
 
 #artist {
@@ -198,65 +270,8 @@ a#lastfm-control:hover {
 #tracklist li.active:hover { padding-right: 1.5em; margin-right: 0; }
 
 
-/* Lyrics */
-
-#lyrics {
-    position: relative;
-    z-index: 2;
-    padding: 2em 1em;
-    font-family: Droid Serif, Georgia, Times New Roman, serif;
-    line-height: 1.5;
-    font-size: 13.5pt;
-
-    transition: 0.2s;
-    -o-transition: 0.2s;
-    -ms-transition: 0.2s;
-    -moz-transition: 0.2s;
-    -webkit-transition: 0.2s;
-}
-
-#lyrics-background {
-    position: absolute;
-    right: -5%;
-    top: -2em;
-    width: 70%;
-    opacity: 0.1;
-    z-index: 1;
-
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-
-    transform: rotate(-15deg);
-    -o-transform: rotate(-15deg);
-    -ms-transform: rotate(-15deg);
-    -moz-transform: rotate(-15deg);
-    -webkit-transform: rotate(-15deg);
-}
-
-#lyrics-background img {
-    width: 100%;
-    height: auto;
-    vertical-align: top;
-
-    transition: 0.2s;
-    -o-transition: 0.2s;
-    -ms-transition: 0.2s;
-    -moz-transition: 0.2s;
-    -webkit-transition: 0.2s;
-}
-
-#lyrics p {
-    margin: 1em 0 0;
-    padding-left: 1em;
-    border-left: 0.2em solid #eee;
-}
-
-#lyrics p:first-child { margin-top: 0; }
-
-
 /* suggestions */
-.ui-autocomplete { z-index: 2!important; }
+.ui-autocomplete { z-index: 100!important; }
 .suggestion-item span { display: block; }
 .suggestion-item img {
     display: block;
@@ -278,4 +293,5 @@ a#lastfm-control:hover {
     color: gray;
     display: inline-block;
 }
+
 

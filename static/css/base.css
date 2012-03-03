@@ -42,73 +42,55 @@ body {
     margin-bottom: -3.6em;
 }
 
-#lyrics-box {
-    background: white;
-    background-position: center center;
-    position: relative;
+#main-box {
     overflow: hidden;
-    z-index: 2;
     min-height: 100%;
-
-    transition: background 0.2s;
-    -o-transition: background 0.2s;
-    -ms-transition: background 0.2s;
-    -moz-transition: background 0.2s;
-    -webkit-transition: background 0.2s;
+    position: relative;
+    z-index: 10;
 }
 
-#lyrics-box #message-box {
-    display: none;
+.base-column {
+    margin-bottom: -99999px;
+	padding-bottom: 99999px;
+}
+
+#lyrics-box {
+    overflow: hidden;
+}
+
+#lyrics-container {
+    position: relative;
+    z-index: 25;
+}
+
+#message-box {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 50;
+}
+
+#message-container {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+#message {
+    display: table-cell;
     height: 100%;
     vertical-align: middle;
-    padding: 0 40px;
-
-    transition: 0.2s;
-    -o-transition: 0.2s;
-    -ms-transition: 0.2s;
-    -moz-transition: 0.2s;
-    -webkit-transition: 0.2s;
 }
 
-#lyrics-box #lyrics-text {
-    display: block;
+#sidebar-box {
+    float: right;
+    position: relative;
+    z-index: 5;
+    width: 27.5%;
 }
-
-#lyrics-box.nothing {
-    background: silver no-repeat center center;
-    color: black;
-    text-shadow: 1px 1px 0 white;
-    height: 100%;
-}
-
-#lyrics-box.nothing sub {
-    vertical-align: sub;
-    font-size: small;
-    margin-left: -0.7em;
-}
-
-#lyrics-box.nothing #lyrics {
-    display: table;
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    font-size: 2em;
-    text-align: center;
-    opacity: 1;
-}
-
-#lyrics-box.nothing #message-box {
-    display: table-cell;
-}
-
-#lyrics-box.nothing #lyrics-text {
-    display: none;
-}
-
-#lyrics-box.loading { background: silver url('../images/spinner-large.gif') no-repeat center 200px; }
-#lyrics-box.loading #lyrics { opacity: 0.25; }
-
-#lyrics-box.nothing.loading #message-box { opacity: 0; }
 
 #footer-box {
     position: relative;
