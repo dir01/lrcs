@@ -7,7 +7,7 @@ body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 14pt;
     background: #DDDDDD;
-    padding: 5.6em 2em 4.8em 0;
+    padding: 6.4em 2em 3.8em 0;
     box-sizing: border-box;
     -o-box-sizing: border-box;
     -ms-box-sizing: border-box;
@@ -27,73 +27,71 @@ body {
 
 .hidden { display: none; }
 
-#side-box {
-    float: left;
+
+/* Main layout */
+
+#big-bad-box {
     position: relative;
-    top: -4.6em;
-    margin-right: 1.5em;
-    min-height: 100%;
-}
-
-#search-box {
-    overflow: hidden;
-    position: relative;
-    top: -4.6em;
-    margin-bottom: -3.6em;
-}
-
-#main-box {
-    overflow: hidden;
-    min-height: 100%;
-    position: relative;
-    z-index: 10;
-}
-
-.base-column {
-    margin-bottom: -99999px;
-	padding-bottom: 99999px;
-}
-
-#lyrics-box {
-    overflow: hidden;
-}
-
-#lyrics-container {
-    position: relative;
-    z-index: 25;
-}
-
-#message-box {
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 50;
-}
-
-#message-container {
     display: table;
+    vertical-align: top;
+    height: 100%;
+    width: 100%;
+}
+
+#side-box {
+    display: table-cell;
+    vertical-align: top;
+    height: 100%;
+}
+
+#content-box {
+    display: table-cell;
+    vertical-align: top;
     width: 100%;
     height: 100%;
-}
-
-#message {
-    display: table-cell;
-    height: 100%;
-    vertical-align: middle;
-}
-
-#sidebar-box {
-    float: right;
-    position: relative;
-    z-index: 5;
-    width: 27.5%;
 }
 
 #footer-box {
     position: relative;
     padding: 1em 0;
+}
+
+
+/* Content layout */
+
+#search-box {
+    margin-top: -6.4em;
+    padding: 1em 0;
+}
+
+#main-box {
+    position: relative;
+    display: table;
+    vertical-align: top;
+    width: 100%;
+    height: 100%;
+}
+
+#lyrics-box {
+    position: relative;
+    display: table-cell;
+    vertical-align: top;
+    height: 100%;
+}
+
+#lyrics-inside-box {
+    position: relative;
+    display: table;
+    height: 100%;
+    width: 100%;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+#sidebar-box {
+    display: table-cell;
+    vertical-align: top;
+    width: 27.5%;
+    height: 100%;
 }
 
