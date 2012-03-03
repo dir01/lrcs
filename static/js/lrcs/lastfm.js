@@ -133,8 +133,15 @@ var lrcs = lrcs || {};
         },
 
         getTracks: function() {
+            var tracklist = this.data.tracks.track;
+            // sometimes, tracks.track is one single element, sanitize that
+            if (!_.isArray(tracklist))
+                if (tracklist)
+                    tracklist = [tracklist];
+                else
+                    return [];
             return _.map(
-                this.data.tracks.track,
+                tracklist,
                 this.createPlaylistItemFromTrackData.bind(this)
             );
         },
