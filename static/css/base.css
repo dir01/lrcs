@@ -57,7 +57,7 @@ body {
     -webkit-transition: 0.2s;
 }
 
-#lyrics-box #message {
+#lyrics-box #message-box {
     display: none;
 
     transition: 0.2s;
@@ -95,7 +95,7 @@ body {
     opacity: 1;
 }
 
-#lyrics-box.nothing #message {
+#lyrics-box.nothing #message-box {
     display: table-cell;
     height: 100%;
     vertical-align: middle;
@@ -109,7 +109,7 @@ body {
 #lyrics-box.loading { background: silver url('../images/spinner-large.gif') no-repeat center 200px; }
 #lyrics-box.loading #lyrics { opacity: 0.25; }
 
-#lyrics-box.nothing.loading #message { opacity: 0; }
+#lyrics-box.nothing.loading #message-box { opacity: 0; }
 
 #footer-box {
     position: relative;
