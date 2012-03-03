@@ -48,7 +48,7 @@ var lrcs = lrcs || {};
         },
 
         whenAlbumLoaded: function(album) {
-            this.lyricsView.setAlbum(album).render();
+            this.lyricsView.setAlbum(album).renderImage();
             this.sidebarView.setAlbum(album).render();
         }
 
