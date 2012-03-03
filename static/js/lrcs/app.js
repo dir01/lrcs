@@ -86,15 +86,15 @@ var lrcs = lrcs || {};
 
         app.sidebarView = new lrcs.views.SidebarView({
             el: $('#sidebar'),
-            template: $('#sidebar-template')
+            template: lrcs.tools.template('sidebar-template')
         });
 
         app.lastFmView = new lrcs.views.LastFmView({
             el: $('#lastfm-control-box'),
             model: app.lastFmConnector,
-            watchingTemplate: $('#lastfm-watching-template').html(),
-            idleTemplate: $('#lastfm-idle-template').html(),
-            disconnectedTemplate: $('#lastfm-disconnected-template').html()
+            watchingTemplate: lrcs.tools.template('lastfm-watching-template'),
+            idleTemplate: lrcs.tools.template('lastfm-idle-template'),
+            disconnectedTemplate: lrcs.tools.template('lastfm-disconnected-template'),
         });
 
         app.lyrics.bind('change', app.whenLyricsLoaded, app);

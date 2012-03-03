@@ -107,17 +107,16 @@ lrcs.views = lrcs.views || {};
         },
 
         renderTemplate: function() {
-            return _.template(
-                this.getTemplate(),
-                this.getTemplateVariables()
-            );
+            var template = this.getTemplate(),
+                context = this.getTemplateContext();
+            return template(context);
         },
 
         getTemplate: function() {
-            return this.options.template.html();
+            return this.options.template;
         },
 
-        getTemplateVariables: function() {
+        getTemplateContext: function() {
             var currentTrack = this.track,
                 trackList = this.album.get('trackList');
 
@@ -255,10 +254,9 @@ lrcs.views = lrcs.views || {};
         },
 
         renderTemplate: function() {
-            return _.template(
-                this.getTemplate(),
-                this.getTemplateVariables()
-            );
+            var template = this.getTemplate(),
+                context = this.getTemplateContext();
+            return template(context);
         },
 
         getTemplate: function() {
@@ -272,7 +270,7 @@ lrcs.views = lrcs.views || {};
             return this.options.idleTemplate;
         },
 
-        getTemplateVariables: function() {
+        getTemplateContext: function() {
             var connector = this.getConnector();
             return {
                 username: connector.get('username')
