@@ -180,6 +180,7 @@ lrcs.views = lrcs.views || {};
         bindAutocomplete: function() {
             new lrcs.views.FormSearchAutocomplete({
                 input: this.$query,
+                template: lrcs.tools.template('autocomplete-item-template'),
                 callback: this.selectTrack.bind(this)
             });
         },
@@ -318,8 +319,7 @@ lrcs.views = lrcs.views || {};
         },
 
         processTrack: function(track) {
-            var template = this.getItemTemplate(),
-                html = _.template(template, track.toJSON());
+            var html = this.options.template(track.toJSON());
                 node = $(html);
             node.data('track', track);
             return {
@@ -339,10 +339,6 @@ lrcs.views = lrcs.views || {};
 
         processSelectedTrackInfo: function(track) {
             this.options.callback(track.toJSON());
-        },
-
-        getItemTemplate: function() {
-            return $('#autocomplete-item-template').html();
         }
 
     }
