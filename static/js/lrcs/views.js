@@ -3,58 +3,65 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
 
 (function() {
+
     lrcs.views.LyricsView = Backbone.View.extend({
 
+        lyrics: null,
+        album: null,
+
         initialize: function() {
-            this.getLyrics().bind('change', this.renderLyrics, this);
-            this.getLyrics().bind('loading', this.displayLoadingIndicator, this);
-            this.getTrack().bind('album-change', this.renderCover, this);
+            this.$text = this.$('#lyrics-text');
+            this.$image = this.$('#lyrics-background-art');
+        },
+
+        setLyrics: function(lyrics) {
+            this.lyrics = lyrics;
+            return this;
+        },
+
+        setAlbum: function(album) {
+            this.album = album;
+            return this;
+        },
+
+        render: function() {
+            if (!this.lyrics || this.lyrics.isEmpty())
+                this.renderEmpty();
+            else
+                this.renderLyrics();
+            return this;
+        },
+
+        renderEmpty: function() {
+            this.$el.addClass('nothing');
+            this.$text.html('');
+        },
+
+        renderLyrics: function(lyrics) {
+            this.hideLoadingIndicator();
+            this.$el.removeClass('nothing');
+            this.$text.html(this.getPrettyLyrics());
+        },
+
+        renderImage: function() {
+            var url = this.getImageURL();
+            this.$image.attr('src', url);
+        },
+
+        getPrettyLyrics: function() {
+            return this.lyrics.getPrettyText();
+        },
+
+        getImageURL: function() {
+            return this.album.get('image');
         },
 
         displayLoadingIndicator: function() {
-            $(this.el).addClass('loading');
+            this.$el.addClass('loading');
         },
 
         hideLoadingIndicator: function() {
-            $(this.el).removeClass('loading');
-        },
-
-        renderLyrics: function() {
-            this.hideLoadingIndicator();
-            if (this.hasLyrics()) {
-                $(this.el).removeClass('nothing');
-                this.$('#lyrics-text').html(this.getLyrics().getPrettyText());
-            } else {
-                $(this.el).addClass('nothing');
-                this.$('#lyrics-text').html('')
-            }
-        },
-
-        hasLyrics: function() {
-            return !this.getLyrics().isEmpty();
-        },
-
-        renderCover: function() {
-            this.$('#lyrics-background-art').attr(
-                'src',
-                this.getAlbumCover()
-            );
-        },
-
-        getAlbumCover: function() {
-            return this.getAlbum().get('cover');
-        },
-
-        getAlbum: function() {
-            return this.getLyrics().get('track').getAlbum();
-        },
-
-        getLyrics: function() {
-            return this.model;
-        },
-
-        getTrack: function() {
-            return this.options.track;
+            this.$el.removeClass('loading');
         }
 
     });
@@ -64,11 +71,6 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
         events: {
             'click #tracklist li': 'triggerTrackClicked'
-        },
-
-        initialize: function() {
-            this.model.bind('change', this.render, this);
-            this.model.bind('album-change', this.render, this);
         },
 
         render: function() {
@@ -139,78 +141,50 @@ if (typeof lrcs.views === 'undefined') lrcs.views = {};
 
 
     lrcs.views.SearchFormView = Backbone.View.extend({
-        events: {
-            'submit': 'triggerTrackSearched'
-        },
+
+        track: null,
 
         initialize: function() {
-            this.currentSearchedTrack = new lrcs.models.Track;
-            this.getTrack().bind('change', this.render, this);
+            this.$query = this.$('#id_query');
             this.bindAutocomplete();
         },
 
+        setTrack: function(track) {
+            this.track = track;
+            return this;
+        },
+
+        bindAutocomplete: function() {
+            this.autocomplete = new lrcs.views.FormSearchAutocomplete({
+                input: this.$('#id_query'),
+                callback: this.selectTrack.bind(this)
+            });
+        },
+
+        selectTrack: function(data) {
+            var track = new lrcs.models.Track(data);
+            if (!track.isEmpty())
+                this.trigger('track-searched', track);
+        },
+
         render: function() {
-            if (this.getTrack().isEmpty())
+            if (!this.track || this.track.isEmpty())
                 this.renderEmpty();
             else
                 this.renderQuery();
+            return this;
         },
 
         renderEmpty: function() {
-            this.el[0].reset();
-            this.$('#id_query')
+            this.$query
+                .val('')
                 .attr('placeholder', "Go type in track title and artist's name");
         },
 
         renderQuery: function() {
-            this.$('#id_query').val(this.getVisibleQuery())
-        },
-
-        triggerTrackSearched: function(event) {
-            if (event)
-                event.preventDefault();
-            var track = this.getCurrentSearchedTrack();
-            if (!track.isEmpty())
-                this.trigger('track_searched', track);
-        },
-
-        getCurrentSearchedTrack: function() {
-            return this.currentSearchedTrack;
-        },
-
-        setCurrentSearchedTrack: function(track) {
-            this.currentSearchedTrack.replaceWith(track);
-        },
-
-        getVisibleQuery: function() {
-            return [this.getArtistName(), this.getTrackTitle()].join(' - ');
-        },
-
-        getArtistName: function() {
-            return this.getTrack().get('artist');
-        },
-
-        getTrackTitle: function() {
-            return this.getTrack().get('title');
-        },
-
-        getTrack: function() {
-            return this.model;
-        },
-
-        bindAutocomplete: function() {
-            var that = this;
-            this.autocomplete = new lrcs.views.FormSearchAutocomplete({
-                input: this.$('#id_query'),
-                callback: this.selectAutocompleteTrack.bind(this)
-            });
-        },
-
-        selectAutocompleteTrack: function(trackData) {
-            var track = new lrcs.models.Track(trackData);
-            this.setCurrentSearchedTrack(track);
-            this.triggerTrackSearched();
+            this.$query.val(this.track.toString())
         }
+
     });
 
 

@@ -12,16 +12,8 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             album: ''
         },
 
-        initialize: function() {
-            this.bind('change:artist', this.updateAlbum, this);
-            this.bind('change:album', this.updateAlbum, this);
-        },
-
-        isEmpty: function() {
-            return !(
-                this.get('artist') &&
-                    this.get('title')
-                );
+        toString: function() {
+            return this.get('artist') + ' - ' + this.get('title');
         },
 
         equals: function(track) {
@@ -38,33 +30,12 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
             return _.isEqual(ourImportantData, theirImportantData);
         },
 
-        replaceWith: function(track) {
-            this.set(track.toJSON());
+        isEmpty: function() {
+            return !(
+                this.get('artist') &&
+                    this.get('title')
+                );
         },
-
-        getQueryString: function() {
-            return $.param({
-                artist: this.get('artist'),
-                track: this.get('title')
-            });
-        },
-
-        updateAlbum: function() {
-            this.album = new lrcs.models.Album({
-                artist: this.get('artist'),
-                title: this.get('album')
-            });
-            this.album.bind('change', this.triggerAlbumChange, this);
-            this.album.fetch();
-        },
-
-        triggerAlbumChange: function() {
-            this.trigger('album-change');
-        },
-
-        getAlbum: function() {
-            return this.album;
-        }
 
     });
 
@@ -74,24 +45,29 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
         defaults: {
             artist: '',
             title: '',
-            cover: '',
+            image: '',
             trackList: []
+        },
+
+        setTrack: function(track) {
+            this.track = track;
+            return this;
         },
 
         fetch: function() {
             lrcs.lastFM.getAlbumInfo(
-                this.get('artist'),
-                this.get('title'),
-                this.setDetailedInfo.bind(this)
+                this.track.get('artist'),
+                this.track.get('title'),
+                this.setInfo.bind(this)
             );
         },
 
-        setDetailedInfo: function(album) {
+        setInfo: function(album) {
             var data = album.toJSON();
             this.set({
                 artist: data.artist,
                 title: data.title,
-                cover: data.largestImage,
+                image: data.largestImage,
                 trackList: _.map(data.tracks, this.createTrackFromData.bind(this))
             });
         },
@@ -116,24 +92,28 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
 
     lrcs.models.Lyrics = Backbone.Model.extend({
+
         defaults: {
-            track: new lrcs.models.Track
+            lyrics: ''
         },
 
-        initialize: function() {
-            this.get('track').bind('change', this.reload, this);
+        setTrack: function(track) {
+            this.track = track;
+            return this;
         },
 
         url: function() {
             return [
                 '/lyrics',
-                this.get('track').getQueryString()
+                this.getQueryString()
             ].join('?');
         },
 
-        reload: function() {
-            this.trigger('loading');
-            this.fetch();
+        getQueryString: function() {
+            return $.param({
+                artist: this.track.get('artist'),
+                track: this.track.get('title')
+            });
         },
 
         getText: function() {
