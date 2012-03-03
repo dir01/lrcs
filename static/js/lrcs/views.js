@@ -45,7 +45,9 @@ lrcs.views = lrcs.views || {};
 
         renderImage: function() {
             var url = this.getImageURL();
-            this.$image.attr('src', url);
+            this.$image
+                .attr('src', url)
+                .css('opacity', Boolean(url) ? 1 : 0);
         },
 
         getPrettyLyrics: function() {
@@ -58,10 +60,12 @@ lrcs.views = lrcs.views || {};
 
         displayLoadingIndicator: function() {
             this.$el.addClass('loading');
+            return this;
         },
 
         hideLoadingIndicator: function() {
             this.$el.removeClass('loading');
+            return this;
         }
 
     });

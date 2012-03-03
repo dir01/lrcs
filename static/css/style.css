@@ -214,6 +214,12 @@ a#lastfm-control:hover { opacity: 1; }
     width: 100%;
     height: auto;
     vertical-align: top;
+
+    transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
 }
 
 #lyrics p {
