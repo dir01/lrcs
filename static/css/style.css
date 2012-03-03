@@ -44,20 +44,31 @@
 #lastfm-control {
     float: left;
     font-size: 0.6em;
-    padding: 0.5em 1em 0.5em 4.5em;
-    background: #DD1303 url('../images/last.fm.png') no-repeat 1em 0.5em;
+    padding: 0 1em 0 4.5em;
+    background: #DD1303 url('../images/last.fm.png') no-repeat 1em 0.6em;
     border-top: 0.2em solid #B20200;
+    height: 2.1em;
+    line-height: 2.1em;
     white-space: nowrap;
     color: white;
 }
 
+#lastfm-control.idle {
+    border-top-color: #803933;
+    background-color: #B35047;
+}
+
 a#lastfm-control {
-    opacity: 0.75;
+    border-top-color: #803933;
+    background-color: #B35047;
     text-shadow: 0 1px 0 #870802;
     font-weight: bolder;
 }
 
-a#lastfm-control:hover { opacity: 1; }
+a#lastfm-control:hover {
+    border-top-color: #B20200;
+    background-color: #DD1303;
+}
 
 #lastfm-control a {
     color: white;
