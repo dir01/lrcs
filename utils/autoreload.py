@@ -28,6 +28,7 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+import functools
 
 import os, sys, time
 
@@ -49,31 +50,56 @@ RUN_RELOADER = True
 _mtimes = {}
 _win = (sys.platform == "win32")
 
-def code_changed():
+
+def file_changed(filename):
     global _mtimes, _win
+    stat = os.stat(filename)
+    mtime = stat.st_mtime
+    if _win:
+        mtime -= stat.st_ctime
+    if filename not in _mtimes:
+        _mtimes[filename] = mtime
+        return False
+    if mtime != _mtimes[filename]:
+        _mtimes = {}
+        return True
+    return False
+
+
+def modules_changed():
     for filename in filter(lambda v: v, map(lambda m: getattr(m, "__file__", None), sys.modules.values())):
         if filename.endswith(".pyc") or filename.endswith(".pyo"):
             filename = filename[:-1]
         if not os.path.exists(filename):
             continue # File might be in an egg, so it can't be reloaded.
-        stat = os.stat(filename)
-        mtime = stat.st_mtime
-        if _win:
-            mtime -= stat.st_ctime
-        if filename not in _mtimes:
-            _mtimes[filename] = mtime
-            continue
-        if mtime != _mtimes[filename]:
-            _mtimes = {}
+        if file_changed(filename):
             return True
     return False
 
-def reloader_thread(softexit=False):
+
+def files_changed(root, extensions):
+    for file in iterate_files(root, extensions):
+        if file_changed(file):
+            return True
+    return False
+
+
+def iterate_files(root, extensions):
+    for root_dir, dirs, files in os.walk(root):
+        for filename in files:
+            for ext in extensions:
+                if filename.endswith(ext):
+                    yield os.path.abspath(os.path.join(root_dir, filename))
+
+
+
+def reloader_thread(softexit=False, code_changed=modules_changed):
     """If ``soft_exit`` is True, we use sys.exit(); otherwise ``os_exit``
     will be used to end the process.
     """
     while RUN_RELOADER:
         if code_changed():
+            print 'Detected code change, reloading'
             # force reload
             if softexit:
                 sys.exit(3)
@@ -92,7 +118,7 @@ def restart_with_reloader():
         if exit_code != 3:
             return exit_code
 
-def python_reloader(main_func, args, kwargs, check_in_thread=True):
+def python_reloader(main_func, args, kwargs, check_in_thread=True, root=None, extensions=None):
     """
     If ``check_in_thread`` is False, ``main_func`` will be run in a separate
     thread, and the code checker in the main thread. This was the original
@@ -101,15 +127,23 @@ def python_reloader(main_func, args, kwargs, check_in_thread=True):
     This was necessary to make the thing work with Twisted
     (http://twistedmatrix.com/trac/ticket/4072).
     """
+    if not (root and extensions):
+        code_changed = modules_changed
+    else:
+        code_changed = functools.partial(files_changed, root, extensions)
+
     if os.environ.get("RUN_MAIN") == "true":
         if check_in_thread:
-            thread.start_new_thread(reloader_thread, (), {'softexit': False})
+            thread.start_new_thread(
+                reloader_thread, (),
+                {'softexit': False, 'code_changed': code_changed}
+            )
         else:
             thread.start_new_thread(main_func, args, kwargs)
 
         try:
             if not check_in_thread:
-                reloader_thread(softexit=True)
+                reloader_thread(softexit=True, code_changed=code_changed)
             else:
                 main_func(*args, **kwargs)
         except KeyboardInterrupt:
@@ -124,7 +158,7 @@ def jython_reloader(main_func, args, kwargs):
     from _systemrestart import SystemRestart
     thread.start_new_thread(main_func, args)
     while True:
-        if code_changed():
+        if modules_changed():
             raise SystemRestart
         time.sleep(1)
 
