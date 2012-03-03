@@ -50,15 +50,18 @@ body {
     z-index: 2;
     min-height: 100%;
 
-    transition: 0.2s;
-    -o-transition: 0.2s;
-    -ms-transition: 0.2s;
-    -moz-transition: 0.2s;
-    -webkit-transition: 0.2s;
+    transition: background 0.2s;
+    -o-transition: background 0.2s;
+    -ms-transition: background 0.2s;
+    -moz-transition: background 0.2s;
+    -webkit-transition: background 0.2s;
 }
 
 #lyrics-box #message-box {
     display: none;
+    height: 100%;
+    vertical-align: middle;
+    padding: 0 40px;
 
     transition: 0.2s;
     -o-transition: 0.2s;
@@ -74,7 +77,6 @@ body {
 #lyrics-box.nothing {
     background: silver no-repeat center center;
     color: black;
-    border-radius: 1em;
     text-shadow: 1px 1px 0 white;
     height: 100%;
 }
@@ -97,9 +99,6 @@ body {
 
 #lyrics-box.nothing #message-box {
     display: table-cell;
-    height: 100%;
-    vertical-align: middle;
-    padding: 0 40px;
 }
 
 #lyrics-box.nothing #lyrics-text {
