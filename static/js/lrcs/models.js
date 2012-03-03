@@ -42,6 +42,8 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
     lrcs.models.Album = Backbone.Model.extend({
 
+        track: null,
+
         defaults: {
             artist: '',
             title: '',
@@ -92,6 +94,8 @@ if (typeof lrcs.models === 'undefined') lrcs.models = {};
 
 
     lrcs.models.Lyrics = Backbone.Model.extend({
+
+        track: null,
 
         defaults: {
             lyrics: ''
