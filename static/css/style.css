@@ -90,6 +90,7 @@ a#lastfm-control:hover { opacity: 1; }
 }
 
 #sidebar.loading {
+    height: 100%;
     background: silver url('../images/spinner-large.gif') no-repeat center 200px;
 }
 
