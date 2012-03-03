@@ -166,8 +166,8 @@ lrcs.views = lrcs.views || {};
         },
 
         bindAutocomplete: function() {
-            this.autocomplete = new lrcs.views.FormSearchAutocomplete({
-                input: this.$('#id_query'),
+            new lrcs.views.FormSearchAutocomplete({
+                input: this.$query,
                 callback: this.selectTrack.bind(this)
             });
         },
