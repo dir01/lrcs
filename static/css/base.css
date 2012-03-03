@@ -59,6 +59,12 @@ body {
 
 #lyrics-box #message {
     display: none;
+
+    transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
 }
 
 #lyrics-box #lyrics-text {
@@ -99,13 +105,10 @@ body {
     display: none;
 }
 
-#lyrics-box.loading {
-    background: silver url('../images/spinner-large.gif') no-repeat center 200px;
-}
+#lyrics-box.loading { background: silver url('../images/spinner-large.gif') no-repeat center 200px; }
+#lyrics-box.loading #lyrics { opacity: 0.25; }
 
-#lyrics-box.loading #lyrics {
-    opacity: 0.5;
-}
+#lyrics-box.nothing.loading #message { opacity: 0; }
 
 #footer-box {
     position: relative;
