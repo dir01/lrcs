@@ -21,6 +21,7 @@
 
         defaults: {
             url: '',
+            delay: 100,
             maxResults: 10,
             minLength: 2,
             className: 'suggestions',
@@ -74,18 +75,29 @@
             if (key === KEYS.DOWN || key === KEYS.UP || key === KEYS.ENTER)
                 return;
 
-            var query = this.$el.val();
+            var query = this.getQuery();
             if (query.length < this.options.minLength)
                 this.hide();
             else
-                this.ask(query);
+                this.waitToAsk(query);
+        },
+
+        waitToAsk: function(query) {
+            if (this.timer)
+                window.clearTimeout(this.timer);
+            window.setTimeout(this.ask.bind(this, query), this.options.delay);
         },
 
         ask: function(query) {
-            this.fetch(query, this.respond.bind(this));
+            delete this.timer;
+            this.fetch(query, this.respond.bind(this, query));
         },
 
-        respond: function(response) {
+        respond: function(query, response) {
+            var currentQuery = this.getQuery();
+            if (currentQuery !== query)
+                return;
+
             var results = this.parse(response);
             if (results.length === 0)
                 return this.hide();
@@ -138,6 +150,10 @@
 
         findSelected: function() {
             return this.$container.find('.' + this.options.selectedClass);
+        },
+
+        getQuery: function() {
+            return this.$el.val();
         },
 
         show: function() {
