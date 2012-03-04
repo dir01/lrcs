@@ -1,3 +1,4 @@
+import os
 import sys
 
 from fabric.api import env
@@ -5,6 +6,30 @@ from fabric.context_managers import cd, prefix
 from fabric.contrib.files import exists
 from fabric.operations import sudo, run
 
+
+# Maintainance
+
+def start_twistd():
+    with virtualenv():
+        run('twistd --pidfile={pidfile} --logfile={logfile}  -y {tacfile}'.format(
+            **_get_twistd_attributes()
+        ))
+
+
+def stop_twistd():
+    run('kill `cat {pidfile}`'.format(
+        **_get_twistd_attributes()
+    ))
+
+
+def _get_twistd_attributes():
+    pidfile = os.path.join(env.project_root, 'var', 'run', 'twistd.pid')
+    logfile = os.path.join(env.project_root, 'var', 'log', 'twistd.log')
+    tacfile = os.path.join(env.project_root, 'webserver', 'lrcs.tac')
+    return locals()
+
+
+# Deployment
 
 def deploy():
     install_virtualenv()
