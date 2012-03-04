@@ -314,6 +314,8 @@ lrcs.views = lrcs.views || {};
         this.options = _.extend(this.defaults, options);
 
         this.options.input.suggester({
+            autoSelectFirst: true,
+            restrictToSuggestions: true,
             fetch: this.fetch.bind(this),
             parse: this.parse.bind(this),
             renderItem: this.renderItem.bind(this),
