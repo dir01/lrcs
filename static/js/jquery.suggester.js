@@ -15,7 +15,7 @@
 
         defaults: {
             minLength: 2,
-            className: 'suggestions'
+            className: 'suggestions',
             url: ''
         },
 
