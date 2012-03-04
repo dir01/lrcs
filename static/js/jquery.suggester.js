@@ -85,7 +85,7 @@
         waitToAsk: function(query) {
             if (this.timer)
                 window.clearTimeout(this.timer);
-            window.setTimeout(this.ask.bind(this, query), this.options.delay);
+            this.timer = window.setTimeout(this.ask.bind(this, query), this.options.delay);
         },
 
         ask: function(query) {
