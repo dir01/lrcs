@@ -186,6 +186,10 @@ lrcs.views = lrcs.views || {};
 
         track: null,
 
+        events: {
+            'submit': 'preventSubmit'
+        },
+
         initialize: function() {
             this.$query = this.$('#id_query');
             this.bindAutocomplete();
@@ -208,6 +212,10 @@ lrcs.views = lrcs.views || {};
             var track = new lrcs.models.Track(data);
             if (!track.isEmpty())
                 this.trigger('track-searched', track);
+        },
+
+        preventSubmit: function(event) {
+            event.preventDefault();
         },
 
         render: function() {
