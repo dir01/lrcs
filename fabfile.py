@@ -11,6 +11,12 @@ from utils.converters import asbool
 
 # Maintainance
 
+def update_code():
+    with cd(env.project_root):
+        run('git reset --hard')
+        run('git pull')
+
+
 def start_twistd():
     with virtualenv():
         run('twistd --pidfile={pidfile} --logfile={logfile}  -y {tacfile}'.format(
