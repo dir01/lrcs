@@ -26,7 +26,8 @@
             minLength: 2,
             className: 'suggestions',
             selectedClass: 'selected',
-            autoSelectFirst: true
+            autoSelectFirst: true,
+            restrictToSuggestions: true
         },
 
         redefinableMethods: ['fetch', 'parse', 'renderContainer', 'renderItem', 'select'],
@@ -112,7 +113,7 @@
             var elements = $.map(results, this.createItemElement.bind(this)),
                 container = this.renderContainer(elements);
 
-            if (this.options.autoSelectFirst)
+            if (this.options.autoSelectFirst || this.options.restrictToSuggestions)
                 $(elements[0]).addClass(this.options.selectedClass);
 
             this.$container
@@ -140,10 +141,16 @@
 
         createItemElement: function(item) {
             var element = $(this.renderItem(item));
+
             element
+                .data('item', item)
                 .mouseenter(this.itemMouseEnter.bind(this))
                 .click(this.itemClick.bind(this));
-            return element.data('item', item);
+
+            if (!this.options.restrictToSuggestions)
+                element.mouseleave(this.itemMouseLeave.bind(this));
+
+            return element;
         },
 
         itemMouseEnter: function(event) {
@@ -151,6 +158,10 @@
                 hovered = $(event.currentTarget);
             selected.removeClass(this.options.selectedClass);
             hovered.addClass(this.options.selectedClass);
+        },
+
+        itemMouseLeave: function(event) {
+            this.findSelected().removeClass(this.options.selectedClass);
         },
 
         itemClick: function(event) {
