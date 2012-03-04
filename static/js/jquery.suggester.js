@@ -26,8 +26,8 @@
             minLength: 2,
             className: 'suggestions',
             selectedClass: 'selected',
-            autoSelectFirst: true,
-            restrictToSuggestions: true
+            autoSelectFirst: false,
+            restrictToSuggestions: false
         },
 
         redefinableMethods: ['fetch', 'parse', 'renderContainer', 'renderItem', 'select'],
