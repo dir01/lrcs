@@ -53,7 +53,7 @@
                 container = this.renderContainer(elements);
 
             var position = this.$el.offset(),
-                height = this.$el.height();
+                height = this.$el.outerHeight();
 
             this.$container
                 .empty()
