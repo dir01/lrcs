@@ -29,8 +29,6 @@
                 if (methodName in options)
                     this[methodName] = options[methodName]; // TODO: check if callable
 
-            this.$el.keyup(this.start.bind(this));
-
             this.$container = $('<div></div')
                 .appendTo(document.body)
                 .addClass(this.options.className)
@@ -39,33 +37,47 @@
                     display: 'none',
                     'z-index': 9999
                 });
+
+            this.$el.keyup(this.keyUp.bind(this));
         },
 
-        start: function() {
+        keyUp: function(event) {
             var query = this.$el.val();
             if (query.length < this.options.minLength)
-                return;
-            this.fetch(query, this.show.bind(this));
+                return this.hide();
+            this.ask(query);
         },
 
-        show: function(response) {
-            var results = this.parse(response),
-                elements = $.map(results, this.renderItem.bind(this)),
-                container = this.renderContainer(elements);
+        ask: function(query) {
+            this.fetch(query, this.process.bind(this));
+        },
 
+        process: function(response) {
+            var results = this.parse(response);
+            if (results.length === 0)
+                return this.hide();
+
+            var elements = $.map(results, this.renderItem.bind(this)),
+                container = this.renderContainer(elements);
+            this.$container.empty().append(container);
+            this.show();
+        },
+
+        show: function() {
             var position = this.$el.offset(),
                 height = this.$el.outerHeight(),
                 width = this.$el.outerWidth();
-
             this.$container
-                .empty()
-                .append(container)
                 .width(width)
                 .css({
                     left: position.left,
                     top: position.top + height
                 })
                 .show();
+        },
+
+        hide: function() {
+            this.$container.hide();
         },
 
         fetch: function(query, done) {
