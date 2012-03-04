@@ -319,7 +319,7 @@ lrcs.views = lrcs.views || {};
             fetch: this.fetch.bind(this),
             parse: this.parse.bind(this),
             renderItem: this.renderItem.bind(this),
-            select: this.processSelection.bind(this)
+            select: this.select.bind(this)
         });
     }
 
@@ -342,11 +342,10 @@ lrcs.views = lrcs.views || {};
             return $(this.options.template(item));
         },
 
-        processSelection: function(event, ui) {
-            var track = ui.item.label.data('track');
+        select: function(item) {
             lrcs.lastFM.getTrackInfo(
-                track.getArtist(),
-                track.getTitle(),
+                item.artist,
+                item.title,
                 this.processSelectedTrackInfo.bind(this)
             );
         },
