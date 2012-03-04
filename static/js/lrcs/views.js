@@ -227,9 +227,7 @@ lrcs.views = lrcs.views || {};
         },
 
         renderEmpty: function() {
-            this.$query
-                .val('')
-                .attr('placeholder', "Go type in track title and artist's name");
+            this.$query.val('');
         },
 
         renderQuery: function() {
