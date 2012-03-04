@@ -58,7 +58,7 @@
             if (results.length === 0)
                 return this.hide();
 
-            var elements = $.map(results, this.renderItem.bind(this)),
+            var elements = $.map(results, this.createItemElement.bind(this)),
                 container = this.renderContainer(elements);
 
             this.$container
@@ -66,6 +66,11 @@
                 .append(container);
 
             this.show();
+        },
+
+        createItemElement: function(item) {
+            var element = this.renderItem(item);
+            return element.data('item', item);
         },
 
         show: function() {
