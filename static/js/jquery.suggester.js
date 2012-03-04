@@ -139,6 +139,8 @@
             return this.$el.val();
         },
 
+        /* Item elements */
+
         createItemElement: function(item) {
             var element = $(this.renderItem(item));
 
