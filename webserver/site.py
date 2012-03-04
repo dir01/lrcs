@@ -1,9 +1,7 @@
 import os
 import simplejson
 from functools import partial
-from twisted.application import service, internet
 
-from twisted.internet import reactor
 from twisted.web.server import Site, NOT_DONE_YET
 from twisted.web.static import File
 from twisted.web.resource import Resource, NoResource
@@ -61,14 +59,3 @@ root.putChild('images', File(os.path.join(settings.STATIC_ROOT, 'images')))
 root.putChild('lyrics', Lyrics())
 
 site = Site(root)
-
-
-def main():
-    print 'Start listening on http://localhost:8080/'
-    reactor.listenTCP(8080, site)
-    reactor.run()
-
-
-if __name__ == '__main__':
-    from utils import autoreload
-    autoreload.main(main, root=settings.PROJECT_ROOT, extensions=['.py', '.jinja2'])
