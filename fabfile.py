@@ -46,6 +46,8 @@ def install_virtualenv():
 
 
 def create_virtualenv():
+    if exists(env.virtualenv_root):
+        return
     run('mkdir -p {virtualenv_root}'.format(**env))
     run('chown {user}:{group} {virtualenv_root}'.format(**env))
     run('virtualenv --no-site-packages --distribute --python=python2.7 {virtualenv_root}'.format(**env))
