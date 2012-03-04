@@ -53,11 +53,13 @@
                 container = this.renderContainer(elements);
 
             var position = this.$el.offset(),
-                height = this.$el.outerHeight();
+                height = this.$el.outerHeight(),
+                width = this.$el.outerWidth();
 
             this.$container
                 .empty()
                 .append(container)
+                .width(width)
                 .css({
                     left: position.left,
                     top: position.top + height

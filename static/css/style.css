@@ -256,6 +256,11 @@ a#lastfm-control:hover {
 
 
 /* suggestions */
+
+.suggestions {
+    background: white;
+}
+
 .ui-autocomplete { z-index: 2!important; }
 .suggestion-item span { display: block; }
 .suggestion-item img {
