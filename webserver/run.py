@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from twisted.internet import reactor
 from settings import settings
 from webserver.site import site
