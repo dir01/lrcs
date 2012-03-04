@@ -56,6 +56,8 @@
         /* React to whatever's happening */
 
         keyDown: function(event) {
+            if (!this.visible)
+                return;
             var key = event.keyCode;
             switch(key) {
                 case KEYS.DOWN:
@@ -67,8 +69,8 @@
                     this.selectPrevious();
                     break;
                 case KEYS.ENTER:
-                    if (this.activate())
-                        event.preventDefault();
+                    this.activate()
+                    event.preventDefault();
                     break;
             }
         },
@@ -127,13 +129,9 @@
         activate: function() {
             var element = this.findSelected(),
                 item = element.data('item');
-
             this.hide();
-            if (element.length !== 0) {
+            if (element.length !== 0)
                 this.select(item);
-                return true;
-            }
-            return false;
         },
 
         getQuery: function() {
@@ -174,11 +172,8 @@
         /* Selection woes */
 
         selectNext: function() {
-            var selected = this.findSelected();
-            if (selected.length)
-                var next = selected.next();
-            else if (this.firstElement)
-                var next = this.firstElement;
+            var selected = this.findSelected(),
+                next = selected.length ? selected.next() : this.firstElement;
             if (next.length) {
                 selected.removeClass(this.options.selectedClass);
                 next.addClass(this.options.selectedClass);
@@ -187,7 +182,7 @@
 
         selectPrevious: function() {
             var selected = this.findSelected(),
-                previous = selected.prev();
+                previous = selected.length ? selected.prev() : this.firstElement;
             if (previous.length) {
                 selected.removeClass(this.options.selectedClass);
                 previous.addClass(this.options.selectedClass);
@@ -205,6 +200,7 @@
                 height = this.$el.outerHeight(),
                 width = this.$el.outerWidth();
 
+            this.visible = true;
             this.$container
                 .width(width)
                 .css({
@@ -215,6 +211,7 @@
         },
 
         hide: function() {
+            this.visible = false;
             this.$container
                 .empty()
                 .hide();
