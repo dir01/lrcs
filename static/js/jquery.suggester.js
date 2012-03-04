@@ -21,6 +21,7 @@
         defaults: {
             minLength: 2,
             className: 'suggestions',
+            selectedClass: 'selected',
             url: ''
         },
 
@@ -77,8 +78,8 @@
             var selected = this.findSelected(),
                 next = selected.next();
             if (next.length) {
-                selected.removeClass('selected');
-                next.addClass('selected');
+                selected.removeClass(this.options.selectedClass);
+                next.addClass(this.options.selectedClass);
             }
         },
 
@@ -86,13 +87,13 @@
             var selected = this.findSelected(),
                 previous = selected.prev();
             if (previous.length) {
-                selected.removeClass('selected');
-                previous.addClass('selected');
+                selected.removeClass(this.options.selectedClass);
+                previous.addClass(this.options.selectedClass);
             }
         },
 
         findSelected: function() {
-            return this.$container.find('.selected');
+            return this.$container.find('.' + this.options.selectedClass);
         },
 
         ask: function(query) {
@@ -107,7 +108,7 @@
             var elements = $.map(results, this.createItemElement.bind(this)),
                 container = this.renderContainer(elements);
 
-            $(elements[0]).addClass('selected');
+            $(elements[0]).addClass(this.options.selectedClass);
 
             this.$container
                 .empty()
