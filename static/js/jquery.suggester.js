@@ -45,6 +45,7 @@
             var query = this.$el.val();
             if (query.length < this.options.minLength)
                 return this.hide();
+
             this.ask(query);
         },
 
@@ -59,7 +60,11 @@
 
             var elements = $.map(results, this.renderItem.bind(this)),
                 container = this.renderContainer(elements);
-            this.$container.empty().append(container);
+
+            this.$container
+                .empty()
+                .append(container);
+
             this.show();
         },
 
@@ -67,6 +72,7 @@
             var position = this.$el.offset(),
                 height = this.$el.outerHeight(),
                 width = this.$el.outerWidth();
+
             this.$container
                 .width(width)
                 .css({
