@@ -9,7 +9,7 @@ from fabric.operations import sudo, run
 from utils.converters import asbool
 
 
-# Maintainance
+# Maintenance
 
 def update_code():
     with cd(env.project_root):
