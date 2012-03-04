@@ -113,8 +113,9 @@
             var elements = $.map(results, this.createItemElement.bind(this)),
                 container = this.renderContainer(elements);
 
+            this.firstElement = $(elements[0]);
             if (this.options.autoSelectFirst || this.options.restrictToSuggestions)
-                $(elements[0]).addClass(this.options.selectedClass);
+                this.firstElement.addClass(this.options.selectedClass);
 
             this.$container
                 .empty()
@@ -173,8 +174,11 @@
         /* Selection woes */
 
         selectNext: function() {
-            var selected = this.findSelected(),
-                next = selected.next();
+            var selected = this.findSelected();
+            if (selected.length)
+                var next = selected.next();
+            else if (this.firstElement)
+                var next = this.firstElement;
             if (next.length) {
                 selected.removeClass(this.options.selectedClass);
                 next.addClass(this.options.selectedClass);
@@ -211,7 +215,10 @@
         },
 
         hide: function() {
-            this.$container.empty().hide();
+            this.$container
+                .empty()
+                .hide();
+            delete this.firstElement;
         },
 
         /* User-redefinable methods with some sane default implementations */
