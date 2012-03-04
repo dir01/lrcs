@@ -64,8 +64,8 @@
                     this.selectPrevious();
                     break;
                 case KEYS.ENTER:
-                    event.preventDefault();
-                    this.activate();
+                    if (this.activate())
+                        event.preventDefault();
                     break;
             }
         },
@@ -121,8 +121,13 @@
         activate: function() {
             var element = this.findSelected(),
                 item = element.data('item');
+
             this.hide();
-            this.select(item);
+            if (element.length !== 0) {
+                this.select(item);
+                return true;
+            }
+            return false;
         },
 
         createItemElement: function(item) {
@@ -171,7 +176,7 @@
         },
 
         hide: function() {
-            this.$container.hide();
+            this.$container.empty().hide();
         },
 
         fetch: function(query, done) {
