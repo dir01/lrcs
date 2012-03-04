@@ -6,6 +6,8 @@ from fabric.context_managers import cd, prefix
 from fabric.contrib.files import exists
 from fabric.operations import sudo, run
 
+from utils.converters import asbool
+
 
 # Maintainance
 
@@ -31,8 +33,9 @@ def _get_twistd_attributes():
 
 # Deployment
 
-def deploy():
-    install_virtualenv()
+def deploy(have_sudo=True):
+    if asbool(have_sudo):
+        install_virtualenv()
     create_virtualenv()
     clone_repo()
     install_python_dependencies()
@@ -43,15 +46,15 @@ def install_virtualenv():
 
 
 def create_virtualenv():
-    sudo('mkdir -p {virtualenv_root}'.format(**env))
-    sudo('chown {user}:{group} {virtualenv_root}'.format(**env))
+    run('mkdir -p {virtualenv_root}'.format(**env))
+    run('chown {user}:{group} {virtualenv_root}'.format(**env))
     run('virtualenv --no-site-packages --distribute --python=python2.7 {virtualenv_root}'.format(**env))
 
 
 def clone_repo():
     if not exists(env.project_root):
-        sudo('mkdir -p {project_root}'.format(**env))
-        sudo('chown {user}:{group} {project_root}'.format(**env))
+        run('mkdir -p {project_root}'.format(**env))
+        run('chown {user}:{group} {project_root}'.format(**env))
         with cd(env.project_root):
             run('git clone {project_git_url}'.format(**env))
 
