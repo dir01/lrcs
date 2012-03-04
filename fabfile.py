@@ -29,6 +29,10 @@ def stop_twistd():
         **_get_twistd_attributes()
     ))
 
+def restart_twistd():
+    stop_twistd()
+    start_twistd()
+
 
 def _get_twistd_attributes():
     pidfile = os.path.join(env.project_root, 'var', 'run', 'twistd.pid')
