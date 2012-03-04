@@ -315,10 +315,10 @@ lrcs.views = lrcs.views || {};
     lrcs.views.FormSearchAutocomplete = function(options) {
         this.options = _.extend(this.defaults, options);
 
-        this.options.input.autocomplete({
-            html: true,
-            minLength: 2,
-            source: this.processRequest.bind(this),
+        this.options.input.suggester({
+            fetch: this.fetch.bind(this),
+            parse: this.parse.bind(this),
+            renderItem: this.renderItem.bind(this),
             select: this.processSelection.bind(this)
         });
     }
@@ -330,29 +330,16 @@ lrcs.views = lrcs.views || {};
             callback: function(){}
         },
 
-        processRequest: function(request, response) {
-            lrcs.lastFM.queryTracks(
-                request.term,
-                this.processResponse.bind(this, response)
-            );
+        fetch: function(query, done) {
+            lrcs.lastFM.queryTracks(query, done);
         },
 
-        processResponse: function(response, tracks) {
-            response(this.processTracks(tracks));
+        parse: function(response) {
+            return _.invoke(response, 'toJSON');
         },
 
-        processTracks: function(tracks) {
-            return _.map(tracks, this.processTrack.bind(this));
-        },
-
-        processTrack: function(track) {
-            var html = this.options.template(track.toJSON());
-                node = $(html);
-            node.data('track', track);
-            return {
-                label: node,
-                value: [track.getArtist(), track.getTitle()].join(' - ')
-            }
+        renderItem: function(item) {
+            return $(this.options.template(item));
         },
 
         processSelection: function(event, ui) {
