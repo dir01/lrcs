@@ -3,7 +3,7 @@ import sys
 
 from fabric.api import env
 from fabric.context_managers import cd, prefix
-from fabric.contrib.files import exists
+from fabric.contrib.files import exists, upload_template
 from fabric.operations import sudo, run
 
 from utils.converters import asbool
@@ -45,6 +45,7 @@ def deploy(have_sudo=True):
     create_virtualenv()
     clone_repo()
     install_python_dependencies()
+    install_local_settings()
 
 
 def install_virtualenv():
@@ -69,6 +70,14 @@ def install_python_dependencies():
         run('pip install -r deploy/requirements.txt')
 
 
+def install_local_settings():
+    upload_template(
+        os.path.join('deploy', 'environments', env.name, 'settings.local.py'),
+        os.path.join(env.project_root, 'settings', 'local.py'),
+        backup=False
+    )
+
+
 # Environment
 
 def activate(environment_name):
@@ -76,6 +85,7 @@ def activate(environment_name):
     try:
         environment = __import__(module_name, globals(), locals(), ['apply_to'], -1)
         environment.apply_to(env)
+        env.name = environment_name
     except ImportError:
         print 'Module {0} have no apply_to function or does not exists'.format(module_name)
         sys.exit()
