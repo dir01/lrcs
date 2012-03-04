@@ -32,7 +32,6 @@
         redefinableMethods: ['fetch', 'parse', 'renderContainer', 'renderItem', 'select'],
 
         initialize: function(el, options) {
-            this.$el = $(el);
             this.options = $.extend(this.defaults, options);
 
             for (var i = 0, methodName; methodName = this.redefinableMethods[i++];)
@@ -48,6 +47,7 @@
                     'z-index': 9999
                 });
 
+            this.$el = $(el);
             this.$el.keydown(this.keyDown.bind(this));
             this.$el.keyup(this.keyUp.bind(this));
         },
