@@ -1,6 +1,11 @@
 
 (function($) {
 
+    KEYS = {
+        UP: 38,
+        DOWN: 40
+    }
+
     $.fn.suggester = function(options) {
         return this.each(function() {
             new Suggester(this, options);
@@ -38,15 +43,56 @@
                     'z-index': 9999
                 });
 
+            this.$el.keydown(this.keyDown.bind(this));
             this.$el.keyup(this.keyUp.bind(this));
         },
 
+        keyDown: function(event) {
+            var key = event.keyCode;
+            switch(key) {
+                case KEYS.DOWN:
+                    event.preventDefault();
+                    this.selectNext();
+                    break;
+                case KEYS.UP:
+                    event.preventDefault();
+                    this.selectPrevious();
+                    break;
+            }
+        },
+
         keyUp: function(event) {
+            var key = event.keyCode;
+            if (key === KEYS.DOWN || key === KEYS.UP)
+                return
+
             var query = this.$el.val();
             if (query.length < this.options.minLength)
-                return this.hide();
+                this.hide();
+            else
+                this.ask(query);
+        },
 
-            this.ask(query);
+        selectNext: function() {
+            var selected = this.findSelected(),
+                next = selected.next();
+            if (next.length) {
+                selected.removeClass('selected');
+                next.addClass('selected');
+            }
+        },
+
+        selectPrevious: function() {
+            var selected = this.findSelected(),
+                previous = selected.prev();
+            if (previous.length) {
+                selected.removeClass('selected');
+                previous.addClass('selected');
+            }
+        },
+
+        findSelected: function() {
+            return this.$container.find('.selected');
         },
 
         ask: function(query) {
@@ -60,6 +106,8 @@
 
             var elements = $.map(results, this.createItemElement.bind(this)),
                 container = this.renderContainer(elements);
+
+            $(elements[0]).addClass('selected');
 
             this.$container
                 .empty()
