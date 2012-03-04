@@ -21,7 +21,7 @@
 
         defaults: {
             url: '',
-            delay: 100,
+            delay: 200,
             maxResults: 10,
             minLength: 2,
             className: 'suggestions',
