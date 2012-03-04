@@ -15,6 +15,7 @@
 
         defaults: {
             minLength: 2,
+            className: 'suggestions'
             url: ''
         },
 
@@ -32,6 +33,7 @@
 
             this.$container = $('<div></div')
                 .appendTo(document.body)
+                .addClass(this.options.className)
                 .css({
                     position: 'absolute',
                     display: 'none'
