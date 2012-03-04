@@ -52,6 +52,8 @@
             this.$el.keyup(this.keyUp.bind(this));
         },
 
+        /* React to whatever's happening */
+
         keyDown: function(event) {
             var key = event.keyCode;
             switch(key) {
@@ -81,6 +83,8 @@
             else
                 this.waitToAsk(query);
         },
+
+        /* Main process of suggestions fetching, showing and activating */
 
         waitToAsk: function(query) {
             if (this.timer)
@@ -130,10 +134,16 @@
             return false;
         },
 
+        getQuery: function() {
+            return this.$el.val();
+        },
+
         createItemElement: function(item) {
             var element = this.renderItem(item);
             return element.data('item', item);
         },
+
+        /* Selection woes */
 
         selectNext: function() {
             var selected = this.findSelected(),
@@ -157,9 +167,7 @@
             return this.$container.find('.' + this.options.selectedClass);
         },
 
-        getQuery: function() {
-            return this.$el.val();
-        },
+        /* Visibility controls */
 
         show: function() {
             var position = this.$el.offset(),
@@ -178,6 +186,8 @@
         hide: function() {
             this.$container.empty().hide();
         },
+
+        /* User-redefinable methods with some sane default implementations */
 
         fetch: function(query, done) {
             $.ajax({
