@@ -22,6 +22,7 @@
             minLength: 2,
             className: 'suggestions',
             selectedClass: 'selected',
+            autoSelectFirst: true,
             url: ''
         },
 
@@ -108,7 +109,8 @@
             var elements = $.map(results, this.createItemElement.bind(this)),
                 container = this.renderContainer(elements);
 
-            $(elements[0]).addClass(this.options.selectedClass);
+            if (this.options.autoSelectFirst)
+                $(elements[0]).addClass(this.options.selectedClass);
 
             this.$container
                 .empty()
