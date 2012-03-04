@@ -36,7 +36,8 @@
                 .addClass(this.options.className)
                 .css({
                     position: 'absolute',
-                    display: 'none'
+                    display: 'none',
+                    'z-index': 9999
                 });
         },
 
