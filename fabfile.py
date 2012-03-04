@@ -54,11 +54,8 @@ def create_virtualenv():
 
 
 def clone_repo():
-    if not exists(env.project_root):
-        run('mkdir -p {project_root}'.format(**env))
-        run('chown {user}:{group} {project_root}'.format(**env))
-        with cd(env.project_root):
-            run('git clone {project_git_url}'.format(**env))
+    if not exists(os.path.join(env.project_root, '.git')):
+        run('git clone {project_git_url} {project_root}'.format(**env))
 
 
 def install_python_dependencies():
