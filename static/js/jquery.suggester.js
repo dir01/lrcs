@@ -69,8 +69,8 @@
                     this.selectPrevious();
                     break;
                 case KEYS.ENTER:
-                    this.activate()
                     event.preventDefault();
+                    this.activate()
                     break;
             }
         },
