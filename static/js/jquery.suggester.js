@@ -49,10 +49,10 @@
         },
 
         ask: function(query) {
-            this.fetch(query, this.process.bind(this));
+            this.fetch(query, this.respond.bind(this));
         },
 
-        process: function(response) {
+        respond: function(response) {
             var results = this.parse(response);
             if (results.length === 0)
                 return this.hide();
