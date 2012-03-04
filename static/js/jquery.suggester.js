@@ -3,7 +3,8 @@
 
     KEYS = {
         UP: 38,
-        DOWN: 40
+        DOWN: 40,
+        ENTER: 13
     }
 
     $.fn.suggester = function(options) {
@@ -61,41 +62,23 @@
                     event.preventDefault();
                     this.selectPrevious();
                     break;
+                case KEYS.ENTER:
+                    event.preventDefault();
+                    this.activate();
+                    break;
             }
         },
 
         keyUp: function(event) {
             var key = event.keyCode;
-            if (key === KEYS.DOWN || key === KEYS.UP)
-                return
+            if (key === KEYS.DOWN || key === KEYS.UP || key === KEYS.ENTER)
+                return;
 
             var query = this.$el.val();
             if (query.length < this.options.minLength)
                 this.hide();
             else
                 this.ask(query);
-        },
-
-        selectNext: function() {
-            var selected = this.findSelected(),
-                next = selected.next();
-            if (next.length) {
-                selected.removeClass(this.options.selectedClass);
-                next.addClass(this.options.selectedClass);
-            }
-        },
-
-        selectPrevious: function() {
-            var selected = this.findSelected(),
-                previous = selected.prev();
-            if (previous.length) {
-                selected.removeClass(this.options.selectedClass);
-                previous.addClass(this.options.selectedClass);
-            }
-        },
-
-        findSelected: function() {
-            return this.$container.find('.' + this.options.selectedClass);
         },
 
         ask: function(query) {
@@ -123,9 +106,38 @@
             this.show();
         },
 
+        activate: function() {
+            var element = this.findSelected(),
+                item = element.data('item');
+            this.hide();
+            this.select(item);
+        },
+
         createItemElement: function(item) {
             var element = this.renderItem(item);
             return element.data('item', item);
+        },
+
+        selectNext: function() {
+            var selected = this.findSelected(),
+                next = selected.next();
+            if (next.length) {
+                selected.removeClass(this.options.selectedClass);
+                next.addClass(this.options.selectedClass);
+            }
+        },
+
+        selectPrevious: function() {
+            var selected = this.findSelected(),
+                previous = selected.prev();
+            if (previous.length) {
+                selected.removeClass(this.options.selectedClass);
+                previous.addClass(this.options.selectedClass);
+            }
+        },
+
+        findSelected: function() {
+            return this.$container.find('.' + this.options.selectedClass);
         },
 
         show: function() {
@@ -170,6 +182,10 @@
         renderItem: function(item) {
             var element = $('<li></li>');
             return element.text(item);
+        },
+
+        select: function(item) {
+            this.$el.val(item);
         }
 
     }
