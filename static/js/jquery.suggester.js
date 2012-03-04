@@ -139,8 +139,22 @@
         },
 
         createItemElement: function(item) {
-            var element = this.renderItem(item);
+            var element = $(this.renderItem(item));
+            element
+                .mouseenter(this.itemMouseEnter.bind(this))
+                .click(this.itemClick.bind(this));
             return element.data('item', item);
+        },
+
+        itemMouseEnter: function(event) {
+            var selected = this.findSelected(),
+                hovered = $(event.currentTarget);
+            selected.removeClass(this.options.selectedClass);
+            hovered.addClass(this.options.selectedClass);
+        },
+
+        itemClick: function(event) {
+            this.activate();
         },
 
         /* Selection woes */
