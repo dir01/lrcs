@@ -343,6 +343,7 @@ lrcs.views = lrcs.views || {};
         },
 
         select: function(item) {
+            this.options.input.val(item.artist + ' - ' + item.title);
             lrcs.lastFM.getTrackInfo(
                 item.artist,
                 item.title,
