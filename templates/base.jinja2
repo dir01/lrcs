@@ -33,6 +33,9 @@
         <script type="text/javascript" src="/js/lrcs/views.js"></script>
         <script type="text/javascript" src="/js/lrcs/app.js"></script>
         {% block scripts %}{% endblock %}
+        {% if GOOGLE_ANALYTICS_TRACKING_ID %}
+            {% include 'includes/google_analitycs.jinja2' %}
+        {% endif %}
     </head>
     <body>
         <div id="side-box">

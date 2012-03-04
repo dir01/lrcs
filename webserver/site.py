@@ -47,8 +47,10 @@ class IndexPage(Resource):
         return jinja2_env.get_template(self.TEMPLATE_NAME)
 
     def get_template_context(self):
+        ga_id = settings.get('GOOGLE_ANALYTICS_TRACKING_ID', None)
         return {
-            'LASTFM_API_KEY': settings.LASTFM_API_KEY
+            'LASTFM_API_KEY': settings.LASTFM_API_KEY,
+            'GOOGLE_ANALYTICS_TRACKING_ID': ga_id
         }
 
 root = Resource()
