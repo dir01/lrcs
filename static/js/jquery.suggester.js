@@ -19,11 +19,12 @@
     Suggester.prototype = {
 
         defaults: {
+            url: '',
+            maxResults: 10,
             minLength: 2,
             className: 'suggestions',
             selectedClass: 'selected',
-            autoSelectFirst: true,
-            url: ''
+            autoSelectFirst: true
         },
 
         redefinableMethods: ['fetch', 'parse', 'renderContainer', 'renderItem', 'select'],
@@ -105,6 +106,9 @@
             var results = this.parse(response);
             if (results.length === 0)
                 return this.hide();
+
+            if (this.options.maxResults !== Infinity)
+                results = results.slice(0, this.options.maxResults);
 
             var elements = $.map(results, this.createItemElement.bind(this)),
                 container = this.renderContainer(elements);
