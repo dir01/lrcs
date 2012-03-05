@@ -69,12 +69,11 @@ lrcs.models = lrcs.models || {};
             );
         },
 
-        setInfo: function(album) {
-            var data = album.toJSON();
+        setInfo: function(data) {
             this.set({
                 artist: data.artist,
                 title: data.title,
-                image: data.largestImage,
+                image: data.image,
                 trackList: _.map(data.tracks, this.createTrackFromData.bind(this))
             });
         },
@@ -190,31 +189,23 @@ lrcs.models = lrcs.models || {};
         },
 
         poll: function() {
-            lrcs.lastFM.getLastPlayedTrack(
+            lrcs.music.getLastPlayedTrack(
                 this.get('username'),
                 this.setTrackIfTrackIsNowPlaying.bind(this)
             );
         },
 
-        setTrackIfTrackIsNowPlaying: function(lastFmTrack) {
-            if (lastFmTrack.isNowPlaying())
-                lrcs.lastFM.getTrackInfo(
-                    lastFmTrack.getArtist(),
-                    lastFmTrack.getTitle(),
+        setTrackIfTrackIsNowPlaying: function(track) {
+            if (track.get('isNowPlaying'))
+                lrcs.music.getTrack(
+                    track.get('artist'),
+                    track.get('title'),
                     this.setNowPlayingTrack.bind(this)
                 );
         },
 
-        setNowPlayingTrack: function(lastFmTrack) {
-            this.set({'track': this.constructTrackByLastFmTrack(lastFmTrack)});
-        },
-
-        constructTrackByLastFmTrack: function(lastFmTrack) {
-            return new lrcs.models.Track({
-                artist: lastFmTrack.getArtist(),
-                title: lastFmTrack.getTitle(),
-                album: lastFmTrack.getAlbum()
-            });
+        setNowPlayingTrack: function(track) {
+            this.set({ 'track': track });
         }
 
     });

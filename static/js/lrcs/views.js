@@ -209,8 +209,7 @@ lrcs.views = lrcs.views || {};
             });
         },
 
-        selectTrack: function(data) {
-            var track = new lrcs.models.Track(data);
+        selectTrack: function(track) {
             if (!track.isEmpty())
                 this.trigger('track-searched', track);
         },
@@ -332,7 +331,7 @@ lrcs.views = lrcs.views || {};
         },
 
         fetch: function(query, done) {
-            lrcs.lastFM.queryTracks(query, done);
+            lrcs.music.searchTracks(query, done);
         },
 
         parse: function(response) {
@@ -345,15 +344,11 @@ lrcs.views = lrcs.views || {};
 
         select: function(item) {
             this.options.input.val(item.artist + ' - ' + item.title);
-            lrcs.lastFM.getTrackInfo(
+            lrcs.music.getTrack(
                 item.artist,
                 item.title,
-                this.processSelectedTrackInfo.bind(this)
+                this.options.callback
             );
-        },
-
-        processSelectedTrackInfo: function(track) {
-            this.options.callback(track.toJSON());
         }
 
     }

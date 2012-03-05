@@ -131,6 +131,8 @@ var lrcs = lrcs || {};
         apiKey: $('meta[name=last-fm-api-key]').attr('content')
     });
 
+    lrcs.music = new lrcs.Music(lrcs.lastFM);
+
 })(lrcs);
 
 
