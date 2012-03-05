@@ -30,13 +30,14 @@ var lrcs = lrcs || {};
 
         whenNowPlayingTrackChanged: function(connector) {
             var track = connector.get('track');
-            if (!track.equals(this.track)){
-                this.setTrack(track);
-            }
+            this.setTrack(track);
         },
 
         setTrack: function(track) {
             var oldTrack = this.track;
+            if (track.equals(oldTrack))
+                return;
+
             this.track = track;
 
             this.searchFormView.setTrack(track).render();
