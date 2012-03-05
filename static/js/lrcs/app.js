@@ -131,11 +131,11 @@ var lrcs = lrcs || {};
         return app;
     };
 
-    lrcs.lastFM = new lrcs.LastFmAPIAdapter({
+    var lastfm = new lrcs.LastFmAPIAdapter({
         apiKey: $('meta[name=last-fm-api-key]').attr('content')
     });
 
-    lrcs.music = new lrcs.Music(lrcs.lastFM);
+    lrcs.music = new lrcs.Music(lastfm);
 
 })(lrcs);
 
