@@ -39,17 +39,13 @@ body {
     vertical-align: top;
     height: 100%;
     width: 100%;
+    top: -5.4em;
 }
 
 #side-box {
     display: table-cell;
     vertical-align: top;
     height: 100%;
-}
-
-#logo {
-    position: relative;
-    top: -3.5em;
 }
 
 #content-box {
@@ -60,7 +56,6 @@ body {
 }
 
 #footer-box {
-    position: relative;
     padding: 1em 0;
 }
 
@@ -68,8 +63,7 @@ body {
 /* Content layout */
 
 #search-box {
-    margin-top: -6.4em;
-    padding: 1em 0;
+    padding: 0 0 1em 0;
 }
 
 #main-box {
@@ -86,6 +80,7 @@ body {
     display: table-cell;
     vertical-align: top;
     height: 100%;
+    overflow: hidden;
 }
 
 #lyrics-inside-box {
@@ -94,7 +89,6 @@ body {
     height: 100%;
     width: 100%;
     vertical-align: top;
-    overflow: hidden;
 }
 
 #sidebar-box {
