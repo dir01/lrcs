@@ -257,8 +257,9 @@ a#lastfm-control:hover {
 
 /* Suggestions */
 
-.suggestions {
+.suggestions ul {
     background: white;
+    border-bottom: 5px solid gray;
 }
 
 .suggestions li {
