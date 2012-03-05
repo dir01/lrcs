@@ -42,10 +42,12 @@
     </script>
 
     <script type="text/template" id="autocomplete-item-template">
-        <li class="suggestion-item">
+        <li>
             <img alt="<%= artist %> - <% title %>" src="<% if (image) { %><%= image %><% } else { %>http://cdn.last.fm/flatness/catalogue/noimage/2/default_artist_small.png<% } %>"/>
-            <span class="track"><%= title %></span>
-            <span class="artist"><%= artist %></span>
+            <div class="label">
+                <div class="title"><%= title %></div>
+                <div class="artist"><%= artist %></div>
+            </div>
         </li>
     </script>
 

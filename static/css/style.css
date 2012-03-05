@@ -255,24 +255,41 @@ a#lastfm-control:hover {
 #lyrics p:first-child { margin-top: 0; }
 
 
-/* suggestions */
+/* Suggestions */
 
 .suggestions {
     background: white;
 }
 
-.ui-autocomplete { z-index: 2!important; }
-.suggestion-item span { display: block; }
-.suggestion-item img {
-    display: block;
-    width: 35px; height: 35px;
-    float: left;
-    margin-right: 5px;
-    -webkit-box-shadow: 1px 1px #ccc;
-    border-radius: 2px;
+.suggestions li {
+    padding: 3px 6px;
+    cursor: pointer;
 }
-.suggestion-item .track {}
-.suggestion-item .artist { color: #777; }
+
+.suggestions li:first-child { padding-top: 6px; }
+.suggestions li:last-child { padding-bottom: 6px; }
+
+.suggestions li.selected {
+    background: #FFC125;
+}
+
+.suggestions img {
+    width: 42px;
+    height: 42px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.suggestions .label {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.suggestions .artist {
+    margin-top: 2px;
+    color: #777;
+    font-size: 70%;
+}
 
 
 /* Copyright */
