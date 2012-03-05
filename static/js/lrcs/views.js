@@ -95,7 +95,7 @@ lrcs.views = lrcs.views || {};
         track: null,
 
         events: {
-            'click #tracklist li': 'triggerTrackClicked'
+            'click #tracklist li a': 'triggerTrackClicked'
         },
 
         setAlbum: function(album) {
@@ -152,9 +152,10 @@ lrcs.views = lrcs.views || {};
         },
 
         triggerTrackClicked: function(event) {
+            event.preventDefault();
             this.trigger(
                 'track-clicked',
-                this.getTrackByHtmlElement(event.target)
+                this.getTrackByHtmlElement(event.currentTarget)
             );
         },
 

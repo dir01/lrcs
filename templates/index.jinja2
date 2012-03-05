@@ -34,8 +34,8 @@
         </div>
         <ol id="tracklist">
             <% _.each(tracks, function(track){ %>
-            <li data-cid="<%= track.cid %>"<% if (track.current) print('class="active"'); %>>
-            <%= track.attributes.title %>
+            <li<% if (track.current) print(' class="active"'); %>>
+                <a href="#" data-cid="<%= track.cid %>"><span class="title"><%= track.attributes.title %></span></a>
             </li>
             <% }); %>
         </ol>
