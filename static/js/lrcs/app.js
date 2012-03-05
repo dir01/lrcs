@@ -40,8 +40,8 @@ var lrcs = lrcs || {};
 
             this.track = track;
 
-            this.searchFormView.setTrack(track).render();
-            this.sidebarView.setTrack(track).render();
+            this.searchFormView.setTrack(track);
+            this.sidebarView.setTrack(track);
 
             this.loadNewLyrics();
             if (track.hasDifferentAlbumFrom(oldTrack))
@@ -67,10 +67,7 @@ var lrcs = lrcs || {};
         },
 
         whenLyricsLoaded: function(lyrics) {
-            this.lyricsView
-                .setLyrics(lyrics)
-                .render()
-                .hideLoadingIndicator();
+            this.lyricsView.setLyrics(lyrics);
         },
 
         whenLyricsHaventLoaded: function(lyrics, response) {
@@ -87,13 +84,8 @@ var lrcs = lrcs || {};
         },
 
         whenAlbumLoaded: function(album) {
-            this.lyricsView
-                .setAlbum(album)
-                .renderImage();
-            this.sidebarView
-                .setAlbum(album)
-                .render()
-                .hideLoadingIndicator();
+            this.lyricsView.setAlbum(album);
+            this.sidebarView.setAlbum(album);
         }
 
     });

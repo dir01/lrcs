@@ -17,12 +17,13 @@ lrcs.views = lrcs.views || {};
 
         setLyrics: function(lyrics) {
             this.lyrics = lyrics;
-            return this;
+            this.render()
+            this.hideLoadingIndicator();
         },
 
         setAlbum: function(album) {
             this.album = album;
-            return this;
+            this.renderImage();
         },
 
         render: function() {
@@ -100,12 +101,13 @@ lrcs.views = lrcs.views || {};
 
         setAlbum: function(album) {
             this.album = album;
-            return this;
+            this.render();
+            this.hideLoadingIndicator();
         },
 
         setTrack: function(track) {
             this.track = track;
-            return this;
+            this.render();
         },
 
         render: function() {
@@ -193,7 +195,7 @@ lrcs.views = lrcs.views || {};
 
         setTrack: function(track) {
             this.track = track;
-            return this;
+            this.render();
         },
 
         bindAutocomplete: function() {
