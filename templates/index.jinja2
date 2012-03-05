@@ -34,18 +34,20 @@
         </div>
         <ol id="tracklist">
             <% _.each(tracks, function(track){ %>
-            <li data-cid="<%= track.cid %>"<% if (track.current) print('class="active"'); %>>
-            <%= track.attributes.title %>
+            <li<% if (track.current) print(' class="active"'); %>>
+                <a href="#" data-cid="<%= track.cid %>"><span class="title"><%= track.attributes.title %></span></a>
             </li>
             <% }); %>
         </ol>
     </script>
 
     <script type="text/template" id="autocomplete-item-template">
-        <li class="suggestion-item">
+        <li>
             <img alt="<%= artist %> - <% title %>" src="<% if (image) { %><%= image %><% } else { %>http://cdn.last.fm/flatness/catalogue/noimage/2/default_artist_small.png<% } %>"/>
-            <span class="track"><%= title %></span>
-            <span class="artist"><%= artist %></span>
+            <div class="label">
+                <div class="title"><%= title %></div>
+                <div class="artist"><%= artist %></div>
+            </div>
         </li>
     </script>
 
@@ -56,7 +58,7 @@
 
 <form method="get" action="/api/search/" id="search-box">
     <div>
-        <input id="id_query">
+        <input id="id_query" placeholder="Type in the name of a song or an artist"/>
     </div>
     <div id="lastfm-control-box"></div>
 </form>

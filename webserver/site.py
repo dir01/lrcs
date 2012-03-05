@@ -2,13 +2,12 @@ import os
 import simplejson
 from functools import partial
 
-from twisted.internet import reactor
 from twisted.web.server import Site, NOT_DONE_YET
 from twisted.web.static import File
 from twisted.web.resource import Resource, NoResource
 
-from jinja2_environment import jinja2_env
-from lyrics import LyricsGainer
+from webserver.jinja2_environment import jinja2_env
+from webserver.lyrics_gainers import LyricsGainer
 from settings import settings
 from utils.memoized import memoized
 
@@ -48,8 +47,10 @@ class IndexPage(Resource):
         return jinja2_env.get_template(self.TEMPLATE_NAME)
 
     def get_template_context(self):
+        ga_id = settings.get('GOOGLE_ANALYTICS_TRACKING_ID', None)
         return {
-            'LASTFM_API_KEY': settings.LASTFM_API_KEY
+            'LASTFM_API_KEY': settings.LASTFM_API_KEY,
+            'GOOGLE_ANALYTICS_TRACKING_ID': ga_id
         }
 
 root = Resource()
@@ -59,15 +60,4 @@ root.putChild('css', File(os.path.join(settings.STATIC_ROOT, 'css')))
 root.putChild('images', File(os.path.join(settings.STATIC_ROOT, 'images')))
 root.putChild('lyrics', Lyrics())
 
-factory = Site(root)
-
-
-def main():
-    print 'Start listening on http://localhost:8080/'
-    reactor.listenTCP(8080, factory)
-    reactor.run()
-
-
-if __name__ == '__main__':
-    from utils import autoreload
-    autoreload.main(main, root=settings.PROJECT_ROOT, extensions=['.py', '.jinja2'])
+site = Site(root)

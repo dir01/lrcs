@@ -10,10 +10,10 @@
     text-transform: uppercase;
     font-weight: bolder;
     padding: 0;
-    font-size: 1.6em;
+    font-size: 1.7em;
     color: white;
     text-shadow: 1px 1px 0 black;
-    letter-spacing: -0.13em;
+    letter-spacing: -0.07em;
 
     user-select: none;
     -moz-user-select: none;
@@ -277,19 +277,25 @@ a#lastfm-control:hover {
 
 #tracklist {
     position: relative;
-    color: white;
-    list-style-type: decimal;
-    list-style-position: inside;
+    list-style-type: none;
+    counter-reset: position;
 }
 
 #tracklist li {
     clear: left;
     float: left;
-    padding: 0.5em 1.5em 0.5em 0.5em;
     margin-bottom: 0.15em;
+    counter-increment: position;
+}
+
+#tracklist li a {
+    display: block;
+    display: block;
+    color: white;
+    padding: 0.5em 1.5em 0.5em 0.5em;
     background: #444 no-repeat right center;
-    text-decoration: underline;
     cursor: pointer;
+    text-decoration: none;
 
     transition: 0.1s;
     -o-transition: 0.1s;
@@ -298,40 +304,69 @@ a#lastfm-control:hover {
     -webkit-transition: 0.1s;
 }
 
-#tracklist li.loading {
-    padding-right: 2em;
-    background-image: url('../images/spinner-dark.gif');
+#tracklist li a .title {
+    text-decoration: underline;
 }
 
-#tracklist li:hover {
+#tracklist li a:before {
+    content: counter(position) '. ';
+}
+
+#tracklist li a:hover {
     padding-right: 3em;
     margin-right: -1.5em;
 }
 
-#tracklist li.active {
+#tracklist li.active a {
     background: white;
     color: black;
     border-right: 2px solid #444;
     cursor: default;
+}
+
+#tracklist li.active a .title {
     text-decoration: none;
 }
 
-#tracklist li.active:hover { padding-right: 1.5em; margin-right: 0; }
+#tracklist li.active a:hover { padding-right: 1.5em; margin-right: 0; }
 
 
-/* suggestions */
-.ui-autocomplete { z-index: 100!important; }
-.suggestion-item span { display: block; }
-.suggestion-item img {
-    display: block;
-    width: 35px; height: 35px;
-    float: left;
-    margin-right: 5px;
-    -webkit-box-shadow: 1px 1px #ccc;
-    border-radius: 2px;
+/* Suggestions */
+
+.suggestions ul {
+    background: white;
+    border-bottom: 5px solid gray;
 }
-.suggestion-item .track {}
-.suggestion-item .artist { color: #777; }
+
+.suggestions li {
+    padding: 3px 6px;
+    cursor: pointer;
+}
+
+.suggestions li:first-child { padding-top: 6px; }
+.suggestions li:last-child { padding-bottom: 6px; }
+
+.suggestions li.selected {
+    background: #FFC125;
+}
+
+.suggestions img {
+    width: 42px;
+    height: 42px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.suggestions .label {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.suggestions .artist {
+    margin-top: 2px;
+    color: #777;
+    font-size: 70%;
+}
 
 
 /* Copyright */
