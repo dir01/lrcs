@@ -59,7 +59,6 @@ var lrcs = lrcs || {};
         },
 
         processTrackInfoResult: function(callback, data) {
-            console.log('processTrackInfoResult');
             callback(Sanitize.trackData(data.track));
         },
 
@@ -113,8 +112,8 @@ var lrcs = lrcs || {};
 
         getJSON: function() {
             return {
-                title: this.getTitle(),
                 artist: this.getArtist(),
+                title: this.getTitle(),
                 image: this.getLargestImage(),
                 tracks: this.getTracks()
             }

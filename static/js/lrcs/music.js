@@ -52,14 +52,13 @@ var lrcs = lrcs || {};
         },
 
         raiseTrack: function(callback, data) {
-            console.log('raiseTrack', callback, data, this.createTrackFromData(data))
             callback(this.createTrackFromData(data));
         },
 
         // create
 
         createAlbumFromData: function(data) {
-            _.map(data.tracks, this.createTrackFromData);
+            data.tracks = _.map(data.tracks, this.createTrackFromData);
             return new lrcs.models.Album(data);
         },
 

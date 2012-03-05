@@ -48,11 +48,18 @@ var lrcs = lrcs || {};
                 error: this.whenLyricsHaventLoaded.bind(this)
             });
 
-            if (track.hasDifferentAlbumFrom(oldTrack)) {
-                this.album.setTrack(track).fetch();
-                this.sidebarView.displayLoadingIndicator();
-                this.lyricsView.hideImage();
-            }
+            if (track.hasDifferentAlbumFrom(oldTrack))
+                this.loadNewAlbum();
+        },
+
+        loadNewAlbum: function() {
+            this.sidebarView.displayLoadingIndicator();
+            this.lyricsView.hideImage();
+            lrcs.music.getAlbum(
+                this.track.get('artist'),
+                this.track.get('album'),
+                this.whenAlbumLoaded.bind(this)
+            );
         },
 
         whenLyricsLoaded: function(lyrics) {
@@ -92,7 +99,6 @@ var lrcs = lrcs || {};
 
         app.track = new lrcs.models.Track();
         app.lyrics = new lrcs.models.Lyrics();
-        app.album = new lrcs.models.Album();
         app.lastFmConnector = new lrcs.models.LastFmConnector({
             username: $.cookie('username')
         });
@@ -117,8 +123,6 @@ var lrcs = lrcs || {};
             idleTemplate: lrcs.tools.template('lastfm-idle-template'),
             disconnectedTemplate: lrcs.tools.template('lastfm-disconnected-template'),
         });
-
-        app.album.bind('change', app.whenAlbumLoaded, app);
 
         app.searchFormView.bind('track-searched', app.whenSearchedForTrack, app);
         app.sidebarView.bind('track-clicked', app.whenClickedOnTrack, app);

@@ -29,8 +29,8 @@
         <div id="artist"<% if (!artist) { print('class="hidden"'); } %>>
         <%= artist %>
         </div>
-        <div id="album"<% if (!album) { print('class="hidden"'); } %>>
-        <%= album %>
+        <div id="album"<% if (!title) { print('class="hidden"'); } %>>
+        <%= title %>
         </div>
         <ol id="tracklist">
             <% _.each(tracks, function(track){ %>

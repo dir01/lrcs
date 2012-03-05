@@ -47,47 +47,15 @@ lrcs.models = lrcs.models || {};
 
     lrcs.models.Album = Backbone.Model.extend({
 
-        track: null,
-
         defaults: {
             artist: '',
             title: '',
             image: '',
-            trackList: []
-        },
-
-        setTrack: function(track) {
-            this.track = track;
-            return this;
-        },
-
-        fetch: function() {
-            lrcs.lastFM.getAlbumInfo(
-                this.track.get('artist'),
-                this.track.get('album'),
-                this.setInfo.bind(this)
-            );
-        },
-
-        setInfo: function(data) {
-            this.set({
-                artist: data.artist,
-                title: data.title,
-                image: data.image,
-                trackList: _.map(data.tracks, this.createTrackFromData.bind(this))
-            });
-        },
-
-        createTrackFromData: function(data) {
-            return new lrcs.models.Track({
-                artist: data.artist,
-                album: data.album,
-                title: data.title
-            });
+            tracks: []
         },
 
         isEmpty: function() {
-            return this.get('trackList').length === 0;
+            return this.get('tracks').length === 0;
         }
 
     });

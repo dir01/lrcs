@@ -137,18 +137,13 @@ lrcs.views = lrcs.views || {};
 
         getTemplateContext: function() {
             var currentTrack = this.track,
-                trackList = this.album.get('trackList');
+                tracks = this.album.get('tracks');
 
-            _.each(trackList, function(track) {
+            _.each(tracks, function(track) {
                 track.current = track.equals(currentTrack);
             });
 
-            return {
-                artist: this.album.get('artist'),
-                album: this.album.get('title'),
-                cover: this.album.get('cover'),
-                tracks: this.album.get('trackList')
-            };
+            return this.album.toJSON();
         },
 
         triggerTrackClicked: function(event) {
@@ -161,7 +156,7 @@ lrcs.views = lrcs.views || {};
 
         getTrackByHtmlElement: function(element) {
             var cid = $(element).attr('data-cid');
-            return this.getElementByCid(this.album.get('trackList'), cid);
+            return this.getElementByCid(this.album.get('tracks'), cid);
         },
 
         getElementByCid: function(elements, cid) {
