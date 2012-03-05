@@ -44,6 +44,7 @@ var lrcs = lrcs || {};
             this.sidebarView.setTrack(track);
 
             this.loadNewLyrics();
+
             if (track.hasDifferentAlbumFrom(oldTrack))
                 this.loadNewAlbum();
         },
@@ -51,7 +52,7 @@ var lrcs = lrcs || {};
         loadNewLyrics: function() {
             this.lyricsView.displayLoadingIndicator();
             this.lyrics.setTrack(this.track).fetch({
-                success: this.whenLyricsLoaded.bind(this),
+                success: this.setLyrics.bind(this),
                 error: this.whenLyricsHaventLoaded.bind(this)
             });
         },
@@ -62,28 +63,23 @@ var lrcs = lrcs || {};
             lrcs.music.getAlbum(
                 this.track.get('artist'),
                 this.track.get('album'),
-                this.whenAlbumLoaded.bind(this)
+                this.setAlbum.bind(this)
             );
-        },
-
-        whenLyricsLoaded: function(lyrics) {
-            this.lyricsView.setLyrics(lyrics);
         },
 
         whenLyricsHaventLoaded: function(lyrics, response) {
             this.lyricsView.hideLoadingIndicator();
-            if (response.status === 404)
-                this.whenNoLyricsFound();
+            if (response.status === 404) {
+                lyrics.set('lyrics', '');
+                this.setLyrics(lyrics);
+            }
         },
 
-        whenNoLyricsFound: function(lyrics, response) {
-            this.lyricsView
-                .renderMessage("No lyrics found for “" +
-                    this.track.get('title') + "” by " +
-                    this.track.get('artist') + ".")
+        setLyrics: function(lyrics) {
+            this.lyricsView.setLyrics(lyrics);
         },
 
-        whenAlbumLoaded: function(album) {
+        setAlbum: function(album) {
             this.lyricsView.setAlbum(album);
             this.sidebarView.setAlbum(album);
         }

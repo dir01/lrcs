@@ -27,11 +27,19 @@ lrcs.views = lrcs.views || {};
         },
 
         render: function() {
-            if (!this.lyrics || this.lyrics.isEmpty())
+            if (!this.lyrics)
                 this.renderEmpty();
+            else if (this.lyrics.isEmpty())
+                this.renderNotFound();
             else
                 this.renderLyrics();
             return this;
+        },
+
+        renderNotFound: function() {
+            this.renderMessage("No lyrics found for “" +
+                    this.track.get('title') + "” by " +
+                    this.track.get('artist') + ".")
         },
 
         renderMessage: function(message) {
