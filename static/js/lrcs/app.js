@@ -42,14 +42,17 @@ var lrcs = lrcs || {};
             this.searchFormView.setTrack(track).render();
             this.sidebarView.setTrack(track).render();
 
+            this.loadNewLyrics();
+            if (track.hasDifferentAlbumFrom(oldTrack))
+                this.loadNewAlbum();
+        },
+
+        loadNewLyrics: function() {
             this.lyricsView.displayLoadingIndicator();
-            this.lyrics.setTrack(track).fetch({
+            this.lyrics.setTrack(this.track).fetch({
                 success: this.whenLyricsLoaded.bind(this),
                 error: this.whenLyricsHaventLoaded.bind(this)
             });
-
-            if (track.hasDifferentAlbumFrom(oldTrack))
-                this.loadNewAlbum();
         },
 
         loadNewAlbum: function() {
