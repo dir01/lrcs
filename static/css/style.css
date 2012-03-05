@@ -30,6 +30,7 @@
 #id_query {
     margin: 0;
     font-size: 2em;
+    height: 1.5em;
     padding: 0.1em;
     border: 0.1em inset #EEE;
     width: 100%;
