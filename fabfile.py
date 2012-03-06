@@ -23,6 +23,10 @@ def run_tests():
         run('rm -rf _trial_temp*')
 
 
+def drop_cache():
+    run('redis-cli flushdb')
+
+
 def start_twistd():
     with virtualenv():
         run('twistd --pidfile={pidfile} --logfile={logfile}  -y {tacfile}'.format(
