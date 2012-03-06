@@ -131,8 +131,8 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
         query = urlencode(dict(
             func = 'getSong',
             fmt = 'xml',
-            artist = self.artist.encode('utf-8'),
-            song = self.track.encode('utf-8')
+            artist = self.artist,
+            song = self.track
         ))
         return '%s/api.php?%s' % (self.base_url, query)
 
