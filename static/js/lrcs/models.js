@@ -2,7 +2,7 @@
 var lrcs = lrcs || {};
 lrcs.models = lrcs.models || {};
 
-(function() {
+(function(lrcs) {
 
     lrcs.models.Track = Backbone.Model.extend({
 

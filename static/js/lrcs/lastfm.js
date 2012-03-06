@@ -1,7 +1,7 @@
 
 var lrcs = lrcs || {};
 
-(function() {
+(function(lrcs) {
 
     lrcs.LastFmAPIAdapter = function(options) {
         this.options = _.extend(this.options, options);
