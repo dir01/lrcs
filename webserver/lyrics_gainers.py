@@ -156,7 +156,10 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
         return lyrics
 
     def _isSoupContainsCopyrightError(self, soup):
-        return soup.find('i')
+        i = soup.find('i')
+        if not i:
+            return False
+        return i.text.startswith('Unfortunately, ')
 
 
 class AZLyricsLyricsGainer(BaseSiteLyricsGainer):
