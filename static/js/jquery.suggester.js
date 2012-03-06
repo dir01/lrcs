@@ -1,17 +1,17 @@
 
 (function($) {
 
-    KEYS = {
+    var KEYS = {
         UP: 38,
         DOWN: 40,
         ENTER: 13
-    }
+    };
 
     $.fn.suggester = function(options) {
         return this.each(function() {
             new Suggester(this, options);
         });
-    }
+    };
 
     function Suggester(el, options) {
         this.initialize(el, options);
@@ -39,7 +39,7 @@
                 if (methodName in options)
                     this[methodName] = options[methodName]; // TODO: check if callable
 
-            this.$container = $('<div></div')
+            this.$container = $('<div></div>')
                 .appendTo(document.body)
                 .addClass(this.options.className)
                 .css({
@@ -70,7 +70,7 @@
                     break;
                 case KEYS.ENTER:
                     event.preventDefault();
-                    this.activate()
+                    this.activate();
                     break;
             }
         },
