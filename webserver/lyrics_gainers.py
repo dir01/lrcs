@@ -145,6 +145,8 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
 
     def _parseLyricsPage(self, page):
         soup = self._getSoup(page, 'div', {'class':'lyricbox'})
+        if self._isSoupContainsCopyrightError(soup):
+            raise LyricsNotFound('Copyright error')
         self._excludeFromSoup(soup,
             {'name':'p'},
             {'name':'div', 'attrs': {'class':'rtMatcher'}},
@@ -152,6 +154,9 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
         )
         lyrics = ''.join(map(lambda s: s if isinstance(s, unicode) else '\n', soup))
         return lyrics
+
+    def _isSoupContainsCopyrightError(self, soup):
+        return soup.find('i')
 
 
 class AZLyricsLyricsGainer(BaseSiteLyricsGainer):
