@@ -17,6 +17,12 @@ def update_code():
         run('git pull')
 
 
+def run_tests():
+    with virtualenv():
+        run('trial webserver.functional_tests')
+        run('rm -rf _trial_temp*')
+
+
 def start_twistd():
     with virtualenv():
         run('twistd --pidfile={pidfile} --logfile={logfile}  -y {tacfile}'.format(
