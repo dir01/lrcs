@@ -4,7 +4,8 @@
     var KEYS = {
         UP: 38,
         DOWN: 40,
-        ENTER: 13
+        ENTER: 13,
+        ESC: 27
     };
 
     $.fn.suggester = function(options) {
@@ -77,6 +78,13 @@
 
         keyUp: function(event) {
             var key = event.keyCode;
+            switch(key) {
+                case KEYS.ESC:
+                    event.preventDefault();
+                    this.hide();
+                    return;
+            }
+
             if (key === KEYS.DOWN || key === KEYS.UP || key === KEYS.ENTER)
                 return;
 
