@@ -2,7 +2,7 @@
 var lrcs = lrcs || {};
 lrcs.views = lrcs.views || {};
 
-(function() {
+(function(lrcs) {
 
     lrcs.views.LyricsView = Backbone.View.extend({
 

@@ -1,17 +1,18 @@
 
 (function($) {
 
-    KEYS = {
+    var KEYS = {
         UP: 38,
         DOWN: 40,
-        ENTER: 13
-    }
+        ENTER: 13,
+        ESC: 27
+    };
 
     $.fn.suggester = function(options) {
         return this.each(function() {
             new Suggester(this, options);
         });
-    }
+    };
 
     function Suggester(el, options) {
         this.initialize(el, options);
@@ -39,7 +40,7 @@
                 if (methodName in options)
                     this[methodName] = options[methodName]; // TODO: check if callable
 
-            this.$container = $('<div></div')
+            this.$container = $('<div></div>')
                 .appendTo(document.body)
                 .addClass(this.options.className)
                 .css({
@@ -47,10 +48,14 @@
                     display: 'none',
                     'z-index': 9999
                 });
+            this.container = this.$container[0];
 
+            this.el = el;
             this.$el = $(el);
             this.$el.keydown(this.keyDown.bind(this));
             this.$el.keyup(this.keyUp.bind(this));
+
+            $(document).click(this.documentClick.bind(this));
         },
 
         /* React to whatever's happening */
@@ -70,21 +75,33 @@
                     break;
                 case KEYS.ENTER:
                     event.preventDefault();
-                    this.activate()
+                    this.activate();
+                    break;
+                case KEYS.ESC:
+                    event.preventDefault();
+                    this.hide();
                     break;
             }
         },
 
         keyUp: function(event) {
             var key = event.keyCode;
-            if (key === KEYS.DOWN || key === KEYS.UP || key === KEYS.ENTER)
-                return;
+            for (var keyName in KEYS) // don't trigger a query on handled keys
+                if (key === KEYS[keyName])
+                    return;
 
             var query = this.getQuery();
             if (query.length < this.options.minLength)
                 this.hide();
             else
                 this.waitToAsk(query);
+        },
+
+        documentClick: function(event) {
+            if (event.target !== this.container &&
+                event.target !== this.el &&
+                !$.contains(this.container, event.target))
+                    this.hide();
         },
 
         /* Main process of suggestions fetching, showing and activating */
