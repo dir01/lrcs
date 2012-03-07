@@ -82,8 +82,8 @@
 
         keyUp: function(event) {
             var key = event.keyCode;
-            for (keyName in KEYS) // don't trigger a query on handled keys
-                if (key == KEYS[keyName])
+            for (var keyName in KEYS) // don't trigger a query on handled keys
+                if (key === KEYS[keyName])
                     return;
 
             var query = this.getQuery();
