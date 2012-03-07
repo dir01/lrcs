@@ -85,23 +85,15 @@ a#lastfm-control:hover {
 }
 
 
-/* Message */
+/* Overlay */
 
-#message-box {
+#overlays-box {
     display: block;
     position: absolute;
     height: 100%;
     width: 100%;
     z-index: 50;
-}
-
-#message-container {
-    display: table;
-    width: 100%;
-    height: 100%;
-    background-color: silver;
-    background-repeat: no-repeat;
-    background-position: center 200px;
+    background: rgba(0, 0, 0, 0.25);
 
     transition: 0.2s;
     -o-transition: 0.2s;
@@ -110,23 +102,56 @@ a#lastfm-control:hover {
     -webkit-transition: 0.2s;
 }
 
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
+}
+
+
+/* Spinner */
+
+#spinner {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 100px;
+    left: 50%;
+    margin-left: -100px;
+    background: url('../images/spinner.png') no-repeat left top;
+
+    animation: rotate360 linear 1s infinite;
+    -webkit-animation: rotate360 linear 1s infinite;
+    -moz-animation: rotate360 linear 1s infinite;
+    -ms-animation: rotate360 linear 1s infinite;
+    -o-animation: rotate360 linear 1s infinite;
+}
+
+
+/* Message */
+
+#message-box {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
 #message {
     display: table-cell;
     height: 100%;
     vertical-align: middle;
-
+    text-align: center;
     font-size: 2em;
     font-family: Droid Serif, Georgia, Times New Roman, serif;
     color: black;
     text-shadow: 1px 1px 0 white;
-    text-align: center;
     padding: 40px;
-
-    transition: 0.1s;
-    -o-transition: 0.1s;
-    -ms-transition: 0.1s;
-    -moz-transition: 0.1s;
-    -webkit-transition: 0.1s;
 }
 
 #message sub {
@@ -136,25 +161,25 @@ a#lastfm-control:hover {
 }
 
 
-
 /* Lyrics */
 
 #lyrics-box {
     background: white;
 }
 
-#lyrics-box #message-box { display: none; }
-#lyrics-box #message-container { opacity: 0; }
 
-#lyrics-box.loading #message-box { display: block; }
-#lyrics-box.loading #message { opacity: 0; }
-#lyrics-box.loading #message-container {
-    opacity: 0.8;
-    background-image: url('../images/spinner-large.gif');
-}
+#lyrics-box #overlays-box { opacity: 0; }
+#lyrics-box #message-overlay { opacity: 0; }
+#lyrics-box #spinner-overlay { opacity: 0; }
 
-#lyrics-box.nothing #message-box { display: block; }
-#lyrics-box.nothing #message-container { opacity: 1; }
+#lyrics-box.nothing #overlays-box { opacity: 1; }
+#lyrics-box.nothing #message-overlay { opacity: 1; }
+#lyrics-box.nothing #spinner-overlay { opacity: 0; }
+
+#lyrics-box.loading #overlays-box { opacity: 1; }
+#lyrics-box.loading #message-overlay { opacity: 0; }
+#lyrics-box.loading #spinner-overlay { opacity: 1; }
+
 
 #lyrics {
     position: relative;
@@ -227,7 +252,6 @@ a#lastfm-control:hover {
 
 #sidebar-box.hidden {
     width: 0;
-    opacity: 0;
 }
 
 #sidebar-box.loading {

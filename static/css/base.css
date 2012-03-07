@@ -88,7 +88,7 @@ body {
     overflow: hidden;
 }
 
-#lyrics-inside-box {
+#lyrics-inner-box {
     position: relative;
     display: table;
     height: 100%;
