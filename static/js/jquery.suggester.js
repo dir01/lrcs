@@ -82,8 +82,9 @@
 
         keyUp: function(event) {
             var key = event.keyCode;
-            if (key in KEYS) // keys that shouldn't trigger a query
-                return;
+            for (keyName in KEYS) // don't trigger a query on handled keys
+                if (key == KEYS[keyName])
+                    return;
 
             var query = this.getQuery();
             if (query.length < this.options.minLength)
