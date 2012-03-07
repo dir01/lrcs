@@ -73,19 +73,16 @@
                     event.preventDefault();
                     this.activate();
                     break;
+                case KEYS.ESC:
+                    event.preventDefault();
+                    this.hide();
+                    break;
             }
         },
 
         keyUp: function(event) {
             var key = event.keyCode;
-            switch(key) {
-                case KEYS.ESC:
-                    event.preventDefault();
-                    this.hide();
-                    return;
-            }
-
-            if (key === KEYS.DOWN || key === KEYS.UP || key === KEYS.ENTER)
+            if (key in KEYS) // keys that shouldn't trigger a query
                 return;
 
             var query = this.getQuery();
