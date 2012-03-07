@@ -48,10 +48,14 @@
                     display: 'none',
                     'z-index': 9999
                 });
+            this.container = this.$container[0];
 
+            this.el = el;
             this.$el = $(el);
             this.$el.keydown(this.keyDown.bind(this));
             this.$el.keyup(this.keyUp.bind(this));
+
+            $(document).click(this.documentClick.bind(this));
         },
 
         /* React to whatever's happening */
@@ -91,6 +95,13 @@
                 this.hide();
             else
                 this.waitToAsk(query);
+        },
+
+        documentClick: function(event) {
+            if (event.target !== this.container &&
+                event.target !== this.el &&
+                !$.contains(this.container, event.target))
+                    this.hide();
         },
 
         /* Main process of suggestions fetching, showing and activating */
