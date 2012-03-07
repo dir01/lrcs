@@ -51,12 +51,12 @@ var lrcs = lrcs || {};
 
         proccessTracksQueryResults: function(callback, data) {
             if (typeof data.results.trackmatches.track === 'undefined')
-                return;
-
-            var tracks = _.map(
-                data.results.trackmatches.track,
-                LastFmTrack.fromTrackData
-            );
+                var tracks = [];
+            else
+                var tracks = _.map(
+                    data.results.trackmatches.track,
+                    LastFmTrack.fromTrackData
+                );
 
             callback(tracks);
         },
