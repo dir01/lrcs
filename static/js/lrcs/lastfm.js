@@ -185,6 +185,8 @@ var lrcs = lrcs || {};
             if (typeof album === 'object') {
                 if (typeof album.title === 'string')
                     return album.title;
+                if ('#text' in album)
+                    return album['#text'];
             }
             return album;
         },
