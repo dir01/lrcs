@@ -31,7 +31,7 @@ lrcs.views = lrcs.views || {};
 
         render: function() {
             if (!this.lyrics)
-                this.renderEmpty();
+                return this;
             else if (this.lyrics.isEmpty())
                 this.renderNotFound();
             else
@@ -40,20 +40,15 @@ lrcs.views = lrcs.views || {};
         },
 
         renderNotFound: function() {
-            this.renderMessage("No lyrics found for “" +
-                    this.track.get('title') + "” by " +
-                    this.track.get('artist') + ".")
+            return this.renderMessage("No lyrics found for “" +
+                    this.lyrics.track.get('title') + "” by " +
+                    this.lyrics.track.get('artist') + ".")
         },
 
         renderMessage: function(message) {
-            this.renderEmpty();
-            this.$message.html(message);
-            return this;
-        },
-
-        renderEmpty: function() {
             this.showOverlay('message');
             this.$text.html('');
+            this.$message.html(message);
             return this;
         },
 
