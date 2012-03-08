@@ -27,13 +27,6 @@ var lrcs = lrcs || {};
             )
         },
 
-        getLastPlayedTrack: function(username, callback) {
-            this.lastfm.getLastPlayedTrackInfo(
-                username,
-                this.raiseTrack.bind(this, callback)
-            );
-        },
-
         getTrack: function(artist, title, callback) {
             this.lastfm.getTrackInfo(
                 artist, title,

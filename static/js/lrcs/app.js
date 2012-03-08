@@ -123,11 +123,11 @@ var lrcs = lrcs || {};
         return app;
     };
 
-    var lastfm = new lrcs.LastFmAPIAdapter({
+    lrcs.lastFm = new lrcs.LastFmAPIAdapter({
         apiKey: $('meta[name=last-fm-api-key]').attr('content')
     });
 
-    lrcs.music = new lrcs.Music(lastfm);
+    lrcs.music = new lrcs.Music(lrcs.lastFm);
 
 })(lrcs);
 

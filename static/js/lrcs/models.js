@@ -157,17 +157,17 @@ lrcs.models = lrcs.models || {};
         },
 
         poll: function() {
-            lrcs.music.getLastPlayedTrack(
+            lrcs.lastFm.getLastPlayedTrackInfo(
                 this.get('username'),
                 this.setTrackIfTrackIsNowPlaying.bind(this)
             );
         },
 
-        setTrackIfTrackIsNowPlaying: function(track) {
-            if (track.get('isNowPlaying'))
+        setTrackIfTrackIsNowPlaying: function(trackInfo) {
+            if (trackInfo.isNowPlaying)
                 lrcs.music.getTrack(
-                    track.get('artist'),
-                    track.get('title'),
+                    trackInfo.artist,
+                    trackInfo.title,
                     this.setNowPlayingTrack.bind(this)
                 );
         },
