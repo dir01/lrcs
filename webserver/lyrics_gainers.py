@@ -1,8 +1,10 @@
 import re
 from urllib import urlencode
+from twisted.internet import reactor, protocol
 from twisted.internet.defer import inlineCallbacks, returnValue
 from twisted.web.client import getPage
 from BeautifulSoup import BeautifulSoup, SoupStrainer, Comment
+from txredis.protocol import Redis
 
 
 class LyricsNotFound(Exception):
@@ -13,27 +15,78 @@ class LyricsGainer(object):
     def __init__(self, artist, track):
         self.artist = artist
         self.track = track
-        self.nextSourceIndex = 0
 
     @inlineCallbacks
     def get(self):
-        while True:
+        lyrics = yield self.getLyricsFromCache()
+        if lyrics:
+            returnValue(lyrics)
+        for source in self.SOURCES:
             try:
-                lyrics = yield self.getLyricsFromNextSourceOrFail()
+                lyrics = yield self.getLyricsFromSource(source)
+                yield self.saveLyricsToCache(lyrics)
                 returnValue(lyrics)
-            except IndexError:
-                raise LyricsNotFound('All sources gave no lyrics')
             except Exception:
                 pass
+        raise LyricsNotFound('All sources gave no lyrics')
 
-    def getLyricsFromNextSourceOrFail(self):
-        SOURCES = [
+    @property
+    def SOURCES(self):
+        return [
             LyricsWikiaComLyricsGainer,
             AZLyricsLyricsGainer,
         ]
-        source = SOURCES[self.nextSourceIndex]
-        self.nextSourceIndex += 1
-        return source(self.artist, self.track).get()
+
+    @inlineCallbacks
+    def getLyricsFromCache(self):
+        try:
+            lyrics = yield self.getLyricsCacheManager().get()
+            returnValue(lyrics)
+        except Exception:
+            returnValue(None)
+
+    @inlineCallbacks
+    def saveLyricsToCache(self, lyrics):
+        try:
+            yield self.getLyricsCacheManager().set(lyrics)
+        except Exception:
+            pass
+
+    def getLyricsCacheManager(self):
+        return LyricsCacheManager(self.artist, self.track)
+
+    @inlineCallbacks
+    def getLyricsFromSource(self, source):
+        lyrics = yield source(self.artist, self.track).get()
+        returnValue(lyrics)
+
+
+class LyricsCacheManager(object):
+    def __init__(self, artist, track, host='localhost', port=6379):
+        self.artist = artist
+        self.track = track
+        self.host = host
+        self.port = port
+
+    @inlineCallbacks
+    def get(self):
+        connection = yield self._getConnection()
+        lyrics = yield connection.get(self._constructCacheKey())
+        returnValue(lyrics)
+
+    @inlineCallbacks
+    def set(self, value):
+        connection = yield self._getConnection()
+        yield connection.set(self._constructCacheKey(), value)
+
+    @inlineCallbacks
+    def _getConnection(self):
+        clientCreator = protocol.ClientCreator(reactor, Redis)
+        redis = yield clientCreator.connectTCP(self.host, self.port)
+        returnValue(redis)
+
+    def _constructCacheKey(self):
+        return '{artist}:{track}'.format(**self.__dict__)
 
 
 class BaseSiteLyricsGainer(LyricsGainer):
@@ -78,8 +131,8 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
         query = urlencode(dict(
             func = 'getSong',
             fmt = 'xml',
-            artist = self.artist.encode('utf-8'),
-            song = self.track.encode('utf-8')
+            artist = self.artist,
+            song = self.track
         ))
         return '%s/api.php?%s' % (self.base_url, query)
 
@@ -92,6 +145,8 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
 
     def _parseLyricsPage(self, page):
         soup = self._getSoup(page, 'div', {'class':'lyricbox'})
+        if self._isSoupContainsCopyrightError(soup):
+            raise LyricsNotFound('Copyright error')
         self._excludeFromSoup(soup,
             {'name':'p'},
             {'name':'div', 'attrs': {'class':'rtMatcher'}},
@@ -99,6 +154,12 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
         )
         lyrics = ''.join(map(lambda s: s if isinstance(s, unicode) else '\n', soup))
         return lyrics
+
+    def _isSoupContainsCopyrightError(self, soup):
+        i = soup.find('i')
+        if not i:
+            return False
+        return i.text.startswith('Unfortunately, ')
 
 
 class AZLyricsLyricsGainer(BaseSiteLyricsGainer):

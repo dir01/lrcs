@@ -11,6 +11,7 @@
 
         <link rel="stylesheet" type="text/css" media="all" href="/css/reset.css"/>
         <link rel="stylesheet" type="text/css" media="all" href="/css/base.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/animations.css"/>
         <link rel="stylesheet" type="text/css" media="all" href="/css/style.css"/>
         {% block styles %}{% endblock %}
 
@@ -37,10 +38,14 @@
         {% endif %}
     </head>
     <body>
-        <div id="side-box">
-            <a href="/" id="logo">lyri.sk</a>
+        <div id="big-bad-box">
+            <div id="side-box">
+                <a href="/" id="logo">lyri.sk</a>
+            </div>
+            <div id="content-box">
+            {% block content %}{% endblock %}
+            </div>
         </div>
-        {% block content %}{% endblock %}
         <div id="footer-box">
             <div class="side-box" id="copyright">
                 &copy;. all our lyrics are belong to their respective authors.

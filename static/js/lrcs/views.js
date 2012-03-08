@@ -2,15 +2,18 @@
 var lrcs = lrcs || {};
 lrcs.views = lrcs.views || {};
 
-(function() {
+(function(lrcs) {
 
     lrcs.views.LyricsView = Backbone.View.extend({
 
         lyrics: null,
         album: null,
 
+        animationLength: 300, // ms
+
         initialize: function() {
-            this.$text = this.$('#lyrics-text');
+            this.$text = this.$('#lyrics');
+            this.$overlays = this.$('#overlays-box');
             this.$message = this.$('#message');
             this.$image = this.$('#lyrics-background-art');
         },
@@ -49,13 +52,13 @@ lrcs.views = lrcs.views || {};
         },
 
         renderEmpty: function() {
-            this.$el.addClass('nothing');
+            this.showOverlay('message');
             this.$text.html('');
             return this;
         },
 
         renderLyrics: function(lyrics) {
-            this.$el.removeClass('nothing');
+            this.hideOverlay('message');
             this.$text.html(this.getPrettyLyrics());
             return this;
         },
@@ -86,13 +89,71 @@ lrcs.views = lrcs.views || {};
         },
 
         displayLoadingIndicator: function() {
-            this.$el.addClass('loading');
+            this.hideOverlay('message');
+            this.showOverlay('loading');
             return this;
         },
 
         hideLoadingIndicator: function() {
-            this.$el.removeClass('loading');
+            this.hideOverlay('loading');
             return this;
+        },
+
+        /* Show overlays */
+
+        showOverlay: function(overlay) {
+            this.$overlays.show();
+            this.showOverlayElement(overlay);
+            this.markOverlayVisibleDelayed(overlay);
+        },
+
+        showOverlayElement: function(overlay) {
+            this.getOverlayElement(overlay).show();
+        },
+
+        markOverlayVisibleDelayed: function(overlay) {
+            window.setTimeout(this.markOverlayVisible.bind(this, overlay), 0);
+        },
+
+        markOverlayVisible: function(overlay) {
+            this.$overlays.addClass('visible');
+            this.getOverlayElement(overlay).addClass('visible');
+        },
+
+        /* Hide overlays */
+
+        hideOverlay: function(overlay) {
+            this.markOverlayHidden(overlay);
+            this.hideOverlayElementDelayed(overlay);
+        },
+
+        markOverlayHidden: function(overlay) {
+            this.getOverlayElement(overlay).removeClass('visible');
+            if (this.hasNoVisibleOverlays())
+                this.$overlays.removeClass('visible');
+        },
+
+        hideOverlayElementDelayed: function(overlay) {
+            this.hideOverlayElementAfter(overlay, this.animationLength);
+        },
+
+        hideOverlayElementAfter: function(overlay, delay) {
+            window.setTimeout(this.hideOverlayElement.bind(this, overlay), delay);
+        },
+
+        hideOverlayElement: function(overlay) {
+            this.getOverlayElement(overlay).hide();
+            if (this.hasNoVisibleOverlays())
+                this.$overlays.hide();
+        },
+
+        hasNoVisibleOverlays: function() {
+            var overlays = this.$overlays.children()
+            return !overlays.hasClass('visible');
+        },
+
+        getOverlayElement: function(overlay) {
+            return this.$('#' + overlay + '-overlay');
         }
 
     });

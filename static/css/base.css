@@ -7,7 +7,10 @@ body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 14pt;
     background: #DDDDDD;
-    padding: 5.6em 2em 4.8em 0;
+    padding-top: 6.4em; /* height of the search thingie */
+    padding-bottom: 3.8em; /* height of the footer */
+    padding-right: 2em; /* for kicks */
+    padding-left: 0;
     box-sizing: border-box;
     -o-box-sizing: border-box;
     -ms-box-sizing: border-box;
@@ -27,91 +30,76 @@ body {
 
 .hidden { display: none; }
 
-#side-box {
-    float: left;
+
+/* Main layout */
+
+#big-bad-box {
     position: relative;
-    top: -4.6em;
-    margin-right: 1.5em;
-    min-height: 100%;
+    display: table;
+    vertical-align: top;
+    height: 100%;
+    width: 100%;
 }
 
-#search-box {
-    overflow: hidden;
+#side-box {
+    display: table-cell;
+    vertical-align: top;
+    height: 100%;
+}
+
+#logo {
     position: relative;
-    top: -4.6em;
-    margin-bottom: -3.6em;
+    top: -3.2em;
+}
+
+#content-box {
+    display: table-cell;
+    vertical-align: top;
+    width: 100%;
+    height: 100%;
+}
+
+#footer-box {
+    padding: 1em 0;
+}
+
+
+/* Content layout */
+
+#search-box {
+    padding: 0 0 1em 0;
+    margin-top: -5.4em;
+}
+
+#main-box {
+    position: relative;
+    display: table;
+    table-layout: fixed;
+    vertical-align: top;
+    width: 100%;
+    height: 100%;
 }
 
 #lyrics-box {
-    background: white;
-    background-position: center center;
     position: relative;
+    display: table-cell;
+    vertical-align: top;
+    height: 100%;
     overflow: hidden;
-    z-index: 2;
-    min-height: 100%;
-
-    transition: background 0.2s;
-    -o-transition: background 0.2s;
-    -ms-transition: background 0.2s;
-    -moz-transition: background 0.2s;
-    -webkit-transition: background 0.2s;
 }
 
-#lyrics-box #message-box {
-    display: none;
-    height: 100%;
-    vertical-align: middle;
-    padding: 0 40px;
-
-    transition: 0.2s;
-    -o-transition: 0.2s;
-    -ms-transition: 0.2s;
-    -moz-transition: 0.2s;
-    -webkit-transition: 0.2s;
-}
-
-#lyrics-box #lyrics-text {
-    display: block;
-}
-
-#lyrics-box.nothing {
-    background: silver no-repeat center center;
-    color: black;
-    text-shadow: 1px 1px 0 white;
-    height: 100%;
-}
-
-#lyrics-box.nothing sub {
-    vertical-align: sub;
-    font-size: small;
-    margin-left: -0.7em;
-}
-
-#lyrics-box.nothing #lyrics {
+#lyrics-inner-box {
+    position: relative;
     display: table;
     height: 100%;
     width: 100%;
-    padding: 0;
-    font-size: 2em;
-    text-align: center;
-    opacity: 1;
+    vertical-align: top;
 }
 
-#lyrics-box.nothing #message-box {
+#sidebar-box {
     display: table-cell;
-}
-
-#lyrics-box.nothing #lyrics-text {
-    display: none;
-}
-
-#lyrics-box.loading { background: silver url('../images/spinner-large.gif') no-repeat center 200px; }
-#lyrics-box.loading #lyrics { opacity: 0.25; }
-
-#lyrics-box.nothing.loading #message-box { opacity: 0; }
-
-#footer-box {
-    position: relative;
-    padding: 1em 0;
+    vertical-align: top;
+    width: 27.5%;
+    height: 100%;
 }
 

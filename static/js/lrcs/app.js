@@ -104,7 +104,7 @@ var lrcs = lrcs || {};
         });
 
         app.sidebarView = new lrcs.views.SidebarView({
-            el: $('#sidebar'),
+            el: $('#sidebar-box'),
             template: lrcs.tools.template('sidebar-template')
         });
 

@@ -63,18 +63,30 @@
     <div id="lastfm-control-box"></div>
 </form>
 
-<div id="sidebar"></div>
+<div id="main-box">
 
-<div id="lyrics-box" class="nothing">
-    <div id="lyrics">
-        <div id="message-box">
-            <div id="message">
-                Nothing to see here <sub>yet.</sub>
+    <div id="lyrics-box">
+        <div id="lyrics-inner-box">
+            <div id="overlays-box" class="visible">
+                <div id="message-overlay" class="overlay visible">
+                    <div id="message-box">
+                        <div id="message">
+                            Nothing to see here <sub>yet.</sub>
+                        </div>
+                    </div>
+                </div>
+                <div id="loading-overlay" class="overlay">
+                    <div id="spinner"></div>
+                </div>
             </div>
+            <div id="lyrics"></div>
+            <div id="lyrics-background"><img src="" alt="" id="lyrics-background-art"/></div>
         </div>
-        <div id="lyrics-text"></div>
     </div>
-    <div id="lyrics-background"><img src="" alt="" id="lyrics-background-art"/></div>
+
+    <div id="sidebar-box" class="hidden">
+    </div>
+
 </div>
 {% endblock %}
 
