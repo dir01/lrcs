@@ -163,17 +163,9 @@ lrcs.models = lrcs.models || {};
             );
         },
 
-        setTrackIfTrackIsNowPlaying: function(trackInfo) {
-            if (trackInfo.isNowPlaying)
-                lrcs.music.getTrack(
-                    trackInfo.artist,
-                    trackInfo.title,
-                    this.setNowPlayingTrack.bind(this)
-                );
-        },
-
-        setNowPlayingTrack: function(track) {
-            this.set({ 'track': track });
+        setTrackIfTrackIsNowPlaying: function(trackData) {
+            if (trackData.isNowPlaying)
+                this.set({ track: lrcs.music.createTrackFromData(trackData) });
         }
 
     });
