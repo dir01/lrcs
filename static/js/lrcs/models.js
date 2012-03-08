@@ -117,8 +117,7 @@ lrcs.models = lrcs.models || {};
         },
 
         initialize: function() {
-            var username = this.get('username');
-            if (username != null)
+            if (this.isConnected())
                 this.startWatching();
         },
 
