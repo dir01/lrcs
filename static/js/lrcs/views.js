@@ -80,6 +80,7 @@ lrcs.views = lrcs.views || {};
         },
 
         displayLoadingIndicator: function() {
+            this.hideOverlay('message');
             this.showOverlay('loading');
             return this;
         },
@@ -89,31 +90,38 @@ lrcs.views = lrcs.views || {};
             return this;
         },
 
-        /* showing overlays */
+        /* Show overlays */
 
         showOverlay: function(overlay) {
             this.$overlays.show();
+            this.showOverlayElement(overlay);
+            this.markOverlayVisibleDelayed(overlay);
+        },
+
+        showOverlayElement: function(overlay) {
             this.getOverlayElement(overlay).show();
-            this.addOverlayClassDelayed(overlay);
         },
 
-        addOverlayClassDelayed: function(overlay) {
-            window.setTimeout(this.addOverlayClass.bind(this, overlay), 0);
+        markOverlayVisibleDelayed: function(overlay) {
+            window.setTimeout(this.markOverlayVisible.bind(this, overlay), 0);
         },
 
-        addOverlayClass: function(overlay) {
-            this.$el.addClass(overlay);
+        markOverlayVisible: function(overlay) {
+            this.$overlays.addClass('visible');
+            this.getOverlayElement(overlay).addClass('visible');
         },
 
-        /* hiding overlays */
+        /* Hide overlays */
 
         hideOverlay: function(overlay) {
-            this.removeOverlayClass(overlay);
+            this.markOverlayHidden(overlay);
             this.hideOverlayElementDelayed(overlay);
         },
 
-        removeOverlayClass: function(overlay) {
-            this.$el.removeClass(overlay);
+        markOverlayHidden: function(overlay) {
+            this.getOverlayElement(overlay).removeClass('visible');
+            if (this.hasNoVisibleOverlays())
+                this.$overlays.removeClass('visible');
         },
 
         hideOverlayElementDelayed: function(overlay) {
@@ -131,13 +139,8 @@ lrcs.views = lrcs.views || {};
         },
 
         hasNoVisibleOverlays: function() {
-            var overlays = this.$overlays.children(),
-                hasNoVisibleOverlays = true;
-            overlays.each(function() {
-                if ($(this).css('display') !== 'none')
-                    hasNoVisibleOverlays = false;
-            });
-            return hasNoVisibleOverlays;
+            var overlays = this.$overlays.children()
+            return !overlays.hasClass('visible');
         },
 
         getOverlayElement: function(overlay) {
