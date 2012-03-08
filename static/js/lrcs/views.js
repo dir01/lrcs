@@ -9,8 +9,11 @@ lrcs.views = lrcs.views || {};
         lyrics: null,
         album: null,
 
+        animationLength: 300, // ms
+
         initialize: function() {
             this.$text = this.$('#lyrics');
+            this.$overlays = this.$('#overlays-box');
             this.$message = this.$('#message');
             this.$image = this.$('#lyrics-background-art');
         },
@@ -40,13 +43,13 @@ lrcs.views = lrcs.views || {};
         },
 
         renderEmpty: function() {
-            this.$el.addClass('nothing');
+            this.showOverlay('message');
             this.$text.html('');
             return this;
         },
 
         renderLyrics: function(lyrics) {
-            this.$el.removeClass('nothing');
+            this.hideOverlay('message');
             this.$text.html(this.getPrettyLyrics());
             return this;
         },
@@ -77,13 +80,68 @@ lrcs.views = lrcs.views || {};
         },
 
         displayLoadingIndicator: function() {
-            this.$el.addClass('loading');
+            this.showOverlay('loading');
             return this;
         },
 
         hideLoadingIndicator: function() {
-            this.$el.removeClass('loading');
+            this.hideOverlay('loading');
             return this;
+        },
+
+        /* showing overlays */
+
+        showOverlay: function(overlay) {
+            this.$overlays.show();
+            this.getOverlayElement(overlay).show();
+            this.addOverlayClassDelayed(overlay);
+        },
+
+        addOverlayClassDelayed: function(overlay) {
+            window.setTimeout(this.addOverlayClass.bind(this, overlay), 0);
+        },
+
+        addOverlayClass: function(overlay) {
+            this.$el.addClass(overlay);
+        },
+
+        /* hiding overlays */
+
+        hideOverlay: function(overlay) {
+            this.removeOverlayClass(overlay);
+            this.hideOverlayElementDelayed(overlay);
+        },
+
+        removeOverlayClass: function(overlay) {
+            this.$el.removeClass(overlay);
+        },
+
+        hideOverlayElementDelayed: function(overlay) {
+            this.hideOverlayElementAfter(overlay, this.animationLength);
+        },
+
+        hideOverlayElementAfter: function(overlay, delay) {
+            window.setTimeout(this.hideOverlayElement.bind(this, overlay), delay);
+        },
+
+        hideOverlayElement: function(overlay) {
+            this.getOverlayElement(overlay).hide();
+            if (this.hasNoVisibleOverlays())
+                this.$overlays.hide();
+        },
+
+        hasNoVisibleOverlays: function() {
+            var overlays = this.$overlays.children(),
+                hasNoVisibleOverlays = true;
+            overlays.each(function() {
+                if ($(this).css('display') !== 'none')
+                    hasNoVisibleOverlays = false;
+            });
+            return hasNoVisibleOverlays;
+        },
+
+        getOverlayElement: function(overlay) {
+            return this.$('#' + overlay + '-overlay');
         }
 
     });
