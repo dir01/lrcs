@@ -4,31 +4,37 @@ from twisted.trial.unittest import TestCase
 from webserver.lyrics_gainers import LyricsWikiaComLyricsGainer, LyricsNotFound
 
 
-class TestLyricsWikiaComLyricsGainer(TestCase):
+class BaseSiteLyricsGainerTestCase(TestCase):
+    TESTED_LYRICS_GAINER_CLASS = NotImplemented
+
+    def getLyrics(self, artist, track):
+        return self.TESTED_LYRICS_GAINER_CLASS(artist, track).get()
+
+
+class TestLyricsWikiaComLyricsGainer(BaseSiteLyricsGainerTestCase):
+    TESTED_LYRICS_GAINER_CLASS = LyricsWikiaComLyricsGainer
+
     @inlineCallbacks
     def test_gorillaz_intro_exists(self):
-        expected_lyrics = u'Who put me on the bottom of the food chain! x10\
-\n\nYou are now entering the harmonic world!!!\n\n'
-        lyrics = yield self.get_lyrics(u'Gorillaz', u'Intro')
-        self.assertEqual(expected_lyrics, lyrics)
+        lyrics = yield self.getLyrics(u'Gorillaz', u'Intro')
+        self.assertIn(u'Who put me on the bottom of the food chain', lyrics)
 
     @inlineCallbacks
     def test_lcd_soundsystem_someone_great_raises_copyright_error(self):
         exception_raised = False
         try:
-            lyrics = yield self.get_lyrics('LCD Soundsystem', 'Someone Great')
+            lyrics = yield self.getLyrics('LCD Soundsystem', 'Someone Great')
         except LyricsNotFound:
             exception_raised = True
         assert exception_raised
 
     @inlineCallbacks
     def test_bjork_hunter_exists(self):
-        lyrics = yield self.get_lyrics('Björk', 'Hunter')
+        lyrics = yield self.getLyrics('Björk', 'Hunter')
         self.assertIn('hunter', lyrics)
 
     @inlineCallbacks
     def test_bjork_bachelorette_exists(self):
-        lyrics = yield self.get_lyrics('Björk', 'Bachelorette')
+        lyrics = yield self.getLyrics('Björk', 'Bachelorette')
+        self.assertIn('Loving me is the easiest thing', lyrics)
 
-    def get_lyrics(self, artist, track):
-        return LyricsWikiaComLyricsGainer(artist, track).get()
