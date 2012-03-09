@@ -1,2 +1,5 @@
 *.pyc
 settings/local.py
+deploy/environments/*
+!deploy/environments/__init__.py
+!deploy/environments/local/
