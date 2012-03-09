@@ -46,6 +46,11 @@ class TestLyricsWikiaComLyricsGainer(BaseSiteLyricsGainerTestCase):
             return
         assert False
 
+    @inlineCallbacks
+    def test_refused_worms_of_sences(self):
+        lyrics = yield self.getLyrics('Refused', 'Worms Of The Senses/Faculties Of The Skull')
+        self.assertIn('Let\'s take the first bus out of here', lyrics)
+
 
 class TestAZLyricsLyricsGainer(BaseSiteLyricsGainerTestCase):
     TESTED_LYRICS_GAINER_CLASS = AZLyricsLyricsGainer

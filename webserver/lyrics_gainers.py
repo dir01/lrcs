@@ -126,8 +126,16 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
     @inlineCallbacks
     def get(self):
         apiResponse = yield getPage(self._getApiResponseUrl())
-        lyricsPageUrl = self._parseApiResponse(apiResponse)
-        lyricsPage = yield getPage(lyricsPageUrl)
+        lyricsPageUrl = self._extractUrlFromApiResponse(apiResponse)
+        try:
+            lyricsPage = yield getPage(lyricsPageUrl)
+        except Exception, e:
+            # For some reasons, twisted treats redirects as 404 response
+            # Luckily, exception contains all the page text,
+            # so we can grab it from here
+            # TODO: This is a dirty hack
+            # we need to figure out how to handle redirects properly in future.
+            lyricsPage = e.response
         lyrics = self._parseLyricsPage(lyricsPage)
         if self._isLyricsBlank(lyrics):
             raise LyricsNotFound('Empty lyrics')
@@ -142,12 +150,12 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
         ))
         return '%s/api.php?%s' % (self.base_url, query)
 
-    def _parseApiResponse(self, response):
+    def _extractUrlFromApiResponse(self, response):
         xml = BeautifulSoup(response)
         if xml.find('lyrics').text == 'Not found':
             raise LyricsNotFound()
-        result = xml.find('url').text
-        return str(result)
+        url = xml.find('url').text
+        return str(url)
 
     def _parseLyricsPage(self, page):
         soup = self._getSoup(page, 'div', {'class':'lyricbox'})
