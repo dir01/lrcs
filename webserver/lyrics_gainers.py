@@ -116,6 +116,9 @@ class BaseSiteLyricsGainer(LyricsGainer):
     def _removeHtmlTags(self, string):
         return self.RE_HTML_TAG.sub('', string)
 
+    def _isLyricsBlank(self, lyrics):
+        return not bool(lyrics.strip())
+
 
 class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
     base_url = 'http://lyrics.wikia.com'
@@ -126,6 +129,8 @@ class LyricsWikiaComLyricsGainer(BaseSiteLyricsGainer):
         lyricsPageUrl = self._parseApiResponse(apiResponse)
         lyricsPage = yield getPage(lyricsPageUrl)
         lyrics = self._parseLyricsPage(lyricsPage)
+        if self._isLyricsBlank(lyrics):
+            raise LyricsNotFound('Empty lyrics')
         returnValue(lyrics)
 
     def _getApiResponseUrl(self):

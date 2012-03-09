@@ -38,6 +38,14 @@ class TestLyricsWikiaComLyricsGainer(BaseSiteLyricsGainerTestCase):
         lyrics = yield self.getLyrics('Björk', 'Bachelorette')
         self.assertIn('Loving me is the easiest thing', lyrics)
 
+    @inlineCallbacks
+    def test_queen_adreena_come_down(self):
+        try:
+            lyrics = yield self.getLyrics('Queen Adreena', 'Come Down')
+        except LyricsNotFound:
+            return
+        assert False
+
 
 class TestAZLyricsLyricsGainer(BaseSiteLyricsGainerTestCase):
     TESTED_LYRICS_GAINER_CLASS = AZLyricsLyricsGainer
