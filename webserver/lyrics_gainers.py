@@ -4,6 +4,7 @@ from twisted.internet import reactor, protocol
 from twisted.internet.defer import inlineCallbacks, returnValue
 from twisted.web.client import getPage
 from BeautifulSoup import BeautifulSoup, SoupStrainer, Comment
+from unidecode import unidecode
 from txredis.protocol import Redis
 
 
@@ -178,7 +179,16 @@ class AZLyricsLyricsGainer(BaseSiteLyricsGainer):
         )
 
     def  _transform(self, string):
-        return re.sub('[^\w]', '', string.replace('&', 'and')).lower()
+        unicode_string = unicode(string, 'utf-8')
+        unicode_string = self._transform_umlauts_to_ascii(unicode_string)
+        unicode_string = unicode_string.replace('&', 'and')
+        unicode_string = re.sub('[^\w]', '', unicode_string)
+        unicode_string = unicode_string.lower()
+        string = unicode_string.encode('utf-8')
+        return string
+
+    def _transform_umlauts_to_ascii(self, s):
+        return unidecode(s)
 
     def _extractLyricsFromPage(self, lyricsPage):
         lyrics = self._getPartOfStringBetweenTwoSubstrings(
