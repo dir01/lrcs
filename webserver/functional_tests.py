@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from twisted.internet.defer import inlineCallbacks
 from twisted.trial.unittest import TestCase
-from webserver.lyrics_gainers import LyricsWikiaComLyricsGainer, LyricsNotFound
+from webserver.lyrics_gainers import LyricsWikiaComLyricsGainer, LyricsNotFound, AZLyricsLyricsGainer
 
 
 class BaseSiteLyricsGainerTestCase(TestCase):
@@ -37,4 +37,23 @@ class TestLyricsWikiaComLyricsGainer(BaseSiteLyricsGainerTestCase):
     def test_bjork_bachelorette_exists(self):
         lyrics = yield self.getLyrics('Björk', 'Bachelorette')
         self.assertIn('Loving me is the easiest thing', lyrics)
+
+
+class TestAZLyricsLyricsGainer(BaseSiteLyricsGainerTestCase):
+    TESTED_LYRICS_GAINER_CLASS = AZLyricsLyricsGainer
+
+    @inlineCallbacks
+    def test_gorillaz_clint_eastwood(self):
+        lyrics = yield self.getLyrics('Gorillaz', 'Clint Eastwood')
+        self.assertIn('My future is coming on', lyrics)
+
+    @inlineCallbacks
+    def test_lcd_soundsystem_someone_great_exists(self):
+        lyrics = yield self.getLyrics('LCD Soundsystem', 'Someone Great')
+        self.assertIn('When someone great is gone', lyrics)
+
+    @inlineCallbacks
+    def test_bjork_bachelorette(self):
+        lyrics = yield self.getLyrics('Björk', 'Bachelorette')
+        self.assertIn('I\'m a tree that grows hearts', lyrics)
 
