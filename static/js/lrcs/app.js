@@ -143,8 +143,8 @@ lrcs.views = lrcs.views || {};
         },
 
         albumLoading: function() {
-            this.sidebarView.displayLoadingIndicator();
-            this.albumArtView.hide();
+            this.sidebarView.invalidate();
+            this.albumArtView.invalidate();
         },
 
         albumChange: function(app, album) {
@@ -153,7 +153,7 @@ lrcs.views = lrcs.views || {};
         },
 
         lyricsLoading: function() {
-            this.lyricsView.displayLoadingIndicator();
+            this.lyricsView.invalidate();
         },
 
         lyricsChange: function(app, lyrics) {

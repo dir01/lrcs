@@ -32,6 +32,10 @@ lrcs.views = lrcs.views || {};
             return this;
         },
 
+        invalidate: function() {
+            this.displayLoadingIndicator();
+        },
+
         renderNotFound: function() {
             return this.renderMessage("No lyrics found for “" +
                     this.lyrics.track.get('title') + "” by " +
@@ -153,6 +157,10 @@ lrcs.views = lrcs.views || {};
                 this.hide();
         },
 
+        invalidate: function() {
+            this.hide();
+        },
+
         show: function() {
             this.$img.css('opacity', 1);
         },
@@ -194,6 +202,10 @@ lrcs.views = lrcs.views || {};
             else
                 this.renderTrackList();
             return this;
+        },
+
+        invalidate: function() {
+            this.displayLoadingIndicator();
         },
 
         renderEmpty: function() {
