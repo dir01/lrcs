@@ -67,7 +67,7 @@ lrcs.views = lrcs.views || {};
     });
 
 
-    lrcs.views.App = Backbone.View.extend({
+    lrcs.views.AppView = Backbone.View.extend({
 
         initialize: function() {
             this.searchFormView = this.createSearchFormView();
