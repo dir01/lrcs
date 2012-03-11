@@ -3,12 +3,11 @@ var lrcs = lrcs || {};
 
 (function(lrcs) {
 
-
     lrcs.Music = function() { this.initialize.apply(this, arguments); }
     lrcs.Music.prototype = {
 
-        initialize: function(lastfm) {
-            this.lastfm = lastfm;
+        initialize: function(options) {
+            this.lastfm = options.lastFm;
         },
 
         // query
@@ -63,7 +62,6 @@ var lrcs = lrcs || {};
             return new lrcs.models.Track(data);
         }
 
-    }
-
+    };
 
 })(lrcs);
