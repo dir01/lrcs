@@ -18,18 +18,17 @@ lrcs.views = lrcs.views || {};
 
         setLyrics: function(lyrics) {
             this.lyrics = lyrics;
-            this.render()
+            this.render();
             this.hideLoadingIndicator();
         },
 
         render: function() {
             if (!this.lyrics)
-                return this;
+                return;
             else if (this.lyrics.isEmpty())
                 this.renderNotFound();
             else
                 this.renderLyrics();
-            return this;
         },
 
         invalidate: function() {
@@ -37,37 +36,33 @@ lrcs.views = lrcs.views || {};
         },
 
         renderNotFound: function() {
-            return this.renderMessage("No lyrics found for “" +
-                    this.lyrics.track.get('title') + "” by " +
-                    this.lyrics.track.get('artist') + ".")
+            this.renderMessage("No lyrics found for “" +
+                this.lyrics.track.get('title') + "” by " +
+                this.lyrics.track.get('artist') + ".")
         },
 
         renderMessage: function(message) {
             this.showOverlay('message');
             this.$text.html('');
             this.$message.html(message);
-            return this;
         },
 
         renderLyrics: function(lyrics) {
             this.hideOverlay('message');
             this.$text.html(this.getPrettyLyrics());
-            return this;
-        },
-
-        getPrettyLyrics: function() {
-            return this.lyrics.getPrettyText();
         },
 
         displayLoadingIndicator: function() {
             this.hideOverlay('message');
             this.showOverlay('loading');
-            return this;
         },
 
         hideLoadingIndicator: function() {
             this.hideOverlay('loading');
-            return this;
+        },
+
+        getPrettyLyrics: function() {
+            return this.lyrics.getPrettyText();
         },
 
         /* Show overlays */
@@ -144,8 +139,10 @@ lrcs.views = lrcs.views || {};
         },
 
         render: function() {
-            if (!this.album)
-                return this.hide();
+            if (!this.album) {
+                this.hide();
+                return;
+            }
 
             var url = this.album.get('image'),
                 hasImage = Boolean(url);
@@ -201,7 +198,6 @@ lrcs.views = lrcs.views || {};
                 this.renderEmpty();
             else
                 this.renderTrackList();
-            return this;
         },
 
         invalidate: function() {
@@ -259,12 +255,10 @@ lrcs.views = lrcs.views || {};
 
         displayLoadingIndicator: function() {
             this.$el.addClass('loading');
-            return this;
         },
 
         hideLoadingIndicator: function() {
             this.$el.removeClass('loading');
-            return this;
         }
 
     });
@@ -310,7 +304,6 @@ lrcs.views = lrcs.views || {};
                 this.renderEmpty();
             else
                 this.renderQuery();
-            return this;
         },
 
         renderEmpty: function() {
