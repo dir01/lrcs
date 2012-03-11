@@ -15,7 +15,6 @@ lrcs.views = lrcs.views || {};
             this.$text = this.$('#lyrics');
             this.$overlays = this.$('#overlays-box');
             this.$message = this.$('#message');
-            this.$image = this.$('#lyrics-background-art');
         },
 
         setLyrics: function(lyrics) {
