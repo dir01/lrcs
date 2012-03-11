@@ -21,6 +21,10 @@ lrcs.views = lrcs.views || {};
             this.render();
         },
 
+        invalidate: function() {
+            this.showOverlay('loading');
+        },
+
         render: function() {
             if (this.hasLyrics())
                 this.renderLyrics();
@@ -28,14 +32,8 @@ lrcs.views = lrcs.views || {};
                 this.renderNotFound();
         },
 
-        invalidate: function() {
-            this.hideOverlay('message');
-            this.showOverlay('loading');
-        },
-
         renderLyrics: function() {
-            this.hideOverlay('message');
-            this.hideOverlay('loading');
+            this.hideAllOverlays();
             this.$text.html(this.getPrettyLyrics());
         },
 
@@ -47,7 +45,6 @@ lrcs.views = lrcs.views || {};
 
         renderMessage: function(message) {
             this.showOverlay('message');
-            this.hideOverlay('loading');
             this.$text.html('');
             this.$message.html(message);
         },
@@ -64,6 +61,7 @@ lrcs.views = lrcs.views || {};
 
         showOverlay: function(overlay) {
             this.$overlays.show();
+            this.hideAllOverlaysBut(overlay);
             this.showOverlayElement(overlay);
             this.markOverlayVisibleDelayed(overlay);
         },
@@ -83,34 +81,54 @@ lrcs.views = lrcs.views || {};
 
         /* Hide overlays */
 
-        hideOverlay: function(overlay) {
-            this.markOverlayHidden(overlay);
-            this.hideOverlayElementDelayed(overlay);
+        hideAllOverlays: function() {
+            var elements = this.getAllOverlayElements();
+            this.hideOverlayByElement(element);
         },
 
-        markOverlayHidden: function(overlay) {
-            this.getOverlayElement(overlay).removeClass('visible');
+        hideAllOverlaysBut: function(overlay) {
+            var allElements = this.getAllOverlayElements();
+                element = this.getOverlayElement(overlay);
+            this.hideOverlayByElement(allElements.not(element));
+        },
+
+        hideOverlay: function(overlay) {
+            var element = this.getOverlayElement(overlay);
+            this.hideOverlayByElement(element);
+        },
+
+        hideOverlayByElement: function(element) {
+            this.markOverlayElementHidden(element);
+            this.hideOverlayElementDelayed(element);
+        },
+
+        markOverlayElementHidden: function(element) {
+            element.removeClass('visible');
             if (this.hasNoVisibleOverlays())
                 this.$overlays.removeClass('visible');
         },
 
-        hideOverlayElementDelayed: function(overlay) {
-            this.hideOverlayElementAfter(overlay, this.animationLength);
+        hideOverlayElementDelayed: function(element) {
+            this.hideOverlayElementAfter(element, this.animationLength);
         },
 
-        hideOverlayElementAfter: function(overlay, delay) {
-            window.setTimeout(this.hideOverlayElement.bind(this, overlay), delay);
+        hideOverlayElementAfter: function(element, delay) {
+            window.setTimeout(this.hideOverlayElement.bind(this, element), delay);
         },
 
-        hideOverlayElement: function(overlay) {
-            this.getOverlayElement(overlay).hide();
+        hideOverlayElement: function(element) {
+            element.hide();
             if (this.hasNoVisibleOverlays())
                 this.$overlays.hide();
         },
 
         hasNoVisibleOverlays: function() {
-            var overlays = this.$overlays.children()
-            return !overlays.hasClass('visible');
+            var elements = this.getAllOverlayElements();
+            return !elements.hasClass('visible');
+        },
+
+        getAllOverlayElements: function() {
+            return this.$overlays.children();
         },
 
         getOverlayElement: function(overlay) {
