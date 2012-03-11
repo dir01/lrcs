@@ -147,13 +147,13 @@ lrcs.views = lrcs.views || {};
             this.albumArtView.hide();
         },
 
-        lyricsLoading: function() {
-            this.lyricsView.displayLoadingIndicator();
-        },
-
         albumChange: function(app, album) {
             this.sidebarView.setAlbum(album);
             this.albumArtView.setAlbum(album);
+        },
+
+        lyricsLoading: function() {
+            this.lyricsView.displayLoadingIndicator();
         },
 
         lyricsChange: function(app, lyrics) {
