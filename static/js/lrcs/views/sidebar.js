@@ -20,7 +20,6 @@ lrcs.views = lrcs.views || {};
         setAlbum: function(album) {
             this.album = album;
             this.render();
-            this.hideLoadingIndicator();
         },
 
         setTrack: function(track) {
@@ -29,19 +28,25 @@ lrcs.views = lrcs.views || {};
         },
 
         render: function() {
-            if (!this.album || this.album.isEmpty())
-                this.renderEmpty();
+            this.hideLoadingIndicator();
+            if (this.hasAlbum())
+                this.renderAlbum();
             else
-                this.renderTrackList();
+                this.renderEmpty();
+        },
+
+        renderAlbum: function() {
+            this.$el
+                .html(this.renderTemplate())
+                .removeClass('hidden');
         },
 
         renderEmpty: function() {
             this.$el.addClass('hidden');
         },
 
-        renderTrackList: function() {
-            this.$el.html(this.renderTemplate());
-            this.$el.removeClass('hidden');
+        hasAlbum: function() {
+            return this.album && !this.album.isEmpty();
         },
 
         renderTemplate: function() {
