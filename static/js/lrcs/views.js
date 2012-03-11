@@ -24,11 +24,6 @@ lrcs.views = lrcs.views || {};
             this.hideLoadingIndicator();
         },
 
-        setAlbum: function(album) {
-            this.album = album;
-            this.renderImage();
-        },
-
         render: function() {
             if (!this.lyrics)
                 return this;
@@ -58,29 +53,8 @@ lrcs.views = lrcs.views || {};
             return this;
         },
 
-        renderImage: function() {
-            var url = this.getImageURL(),
-                hasImage = Boolean(url);
-            if (hasImage)
-                this.$image
-                    .attr('src', url)
-                    .one('load', this.showImage.bind(this));
-        },
-
         getPrettyLyrics: function() {
             return this.lyrics.getPrettyText();
-        },
-
-        getImageURL: function() {
-            return this.album.get('image');
-        },
-
-        showImage: function() {
-            this.$image.css('opacity', 1);
-        },
-
-        hideImage: function() {
-            this.$image.css('opacity', 0);
         },
 
         displayLoadingIndicator: function() {
@@ -149,6 +123,48 @@ lrcs.views = lrcs.views || {};
 
         getOverlayElement: function(overlay) {
             return this.$('#' + overlay + '-overlay');
+        }
+
+    });
+
+
+    lrcs.views.AlbumArtView = Backbone.View.extend({
+
+        album: null,
+
+        initialize: function() {
+            this.$img = this.$('img');
+        },
+
+        setAlbum: function(album) {
+            this.album = album;
+            this.render();
+        },
+
+        render: function() {
+            if (!this.album)
+                return this.hide();
+
+            var url = this.album.get('image'),
+                hasImage = Boolean(url);
+            if (hasImage)
+                this.$img
+                    .attr('src', url)
+                    .one('load', this.show.bind(this));
+            else
+                this.hide();
+        },
+
+        show: function() {
+            this.$img.css('opacity', 1);
+        },
+
+        hide: function() {
+            this.$img.css('opacity', 0);
+        },
+
+        getImageURL: function() {
+            return this.album.get('url');
         }
 
     });

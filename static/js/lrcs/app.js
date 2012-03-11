@@ -72,6 +72,7 @@ lrcs.views = lrcs.views || {};
         initialize: function() {
             this.searchFormView = this.createSearchFormView();
             this.lyricsView = this.createLyricsView();
+            this.albumArtView = this.createAlbumArtView();
             this.sidebarView = this.createSidebarView();
 
             this.createLastFmConnector();
@@ -106,6 +107,11 @@ lrcs.views = lrcs.views || {};
             return view;
         },
 
+        createAlbumArtView: function() {
+            var view = new lrcs.views.AlbumArtView({ el: $('#lyrics-background') });
+            return view;
+        },
+
         createSidebarView: function() {
             view = new lrcs.views.SidebarView({
                 el: $('#sidebar-box'),
@@ -127,6 +133,7 @@ lrcs.views = lrcs.views || {};
             this.searchFormView.render();
             this.lastFmView.render();
             this.lyricsView.render();
+            this.albumArtView.render();
             this.sidebarView.render();
         },
 
@@ -137,7 +144,7 @@ lrcs.views = lrcs.views || {};
 
         albumLoading: function() {
             this.sidebarView.displayLoadingIndicator();
-            this.lyricsView.hideImage();
+            this.albumArtView.hide();
         },
 
         lyricsLoading: function() {
@@ -146,7 +153,7 @@ lrcs.views = lrcs.views || {};
 
         albumChange: function(app, album) {
             this.sidebarView.setAlbum(album);
-            this.lyricsView.setAlbum(album);
+            this.albumArtView.setAlbum(album);
         },
 
         lyricsChange: function(app, lyrics) {
