@@ -23,7 +23,7 @@ lrcs.views = lrcs.views || {};
         },
 
         bindAutocomplete: function() {
-            this.autocomplete = new lrcs.views.FormSearchAutocomplete({
+            this.autocomplete = new lrcs.SearchAutocomplete({
                 input: this.$query,
                 template: lrcs.tools.template('autocomplete-item-template'),
                 callback: this.selectTrack.bind(this)
@@ -57,24 +57,25 @@ lrcs.views = lrcs.views || {};
     });
 
 
-    lrcs.views.FormSearchAutocomplete = function(options) {
-        this.options = _.extend(this.defaults, options);
-
-        this.options.input.suggester({
-            autoSelectFirst: true,
-            restrictToSuggestions: true,
-            fetch: this.fetch.bind(this),
-            parse: this.parse.bind(this),
-            renderItem: this.renderItem.bind(this),
-            select: this.select.bind(this)
-        });
-    }
-
-    lrcs.views.FormSearchAutocomplete.prototype = {
+    lrcs.SearchAutocomplete = function() { this.initialize.apply(this, arguments); }
+    lrcs.SearchAutocomplete.prototype = {
 
         defaults: {
             input: null,
-            callback: function(){}
+            callback: function() {}
+        },
+
+        initialize: function(options) {
+            this.options = _.extend(this.defaults, options);
+
+            this.options.input.suggester({
+                autoSelectFirst: true,
+                restrictToSuggestions: true,
+                fetch: this.fetch.bind(this),
+                parse: this.parse.bind(this),
+                renderItem: this.renderItem.bind(this),
+                select: this.select.bind(this)
+            });
         },
 
         fetch: function(query, done) {
