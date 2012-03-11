@@ -97,13 +97,13 @@ lrcs.views = lrcs.views || {};
         },
 
         createSearchFormView: function() {
-            view = new lrcs.views.SearchFormView({ el: $('#search-box') });
+            var view = new lrcs.views.SearchFormView({ el: $('#search-box') });
             view.on('track-searched', this.whenSearchedForTrack, this);
             return view;
         },
 
         createLyricsView: function() {
-            view = new lrcs.views.LyricsView({ el: $('#lyrics-box') });
+            var view = new lrcs.views.LyricsView({ el: $('#lyrics-box') });
             return view;
         },
 
@@ -113,7 +113,7 @@ lrcs.views = lrcs.views || {};
         },
 
         createSidebarView: function() {
-            view = new lrcs.views.SidebarView({
+            var view = new lrcs.views.SidebarView({
                 el: $('#sidebar-box'),
                 template: lrcs.tools.template('sidebar-template')
             });
