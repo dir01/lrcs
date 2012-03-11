@@ -19,20 +19,24 @@ lrcs.views = lrcs.views || {};
         setLyrics: function(lyrics) {
             this.lyrics = lyrics;
             this.render();
-            this.hideLoadingIndicator();
         },
 
         render: function() {
-            if (!this.lyrics)
-                return;
-            else if (this.lyrics.isEmpty())
-                this.renderNotFound();
-            else
+            if (this.hasLyrics())
                 this.renderLyrics();
+            else
+                this.renderNotFound();
         },
 
         invalidate: function() {
-            this.displayLoadingIndicator();
+            this.hideOverlay('message');
+            this.showOverlay('loading');
+        },
+
+        renderLyrics: function() {
+            this.hideOverlay('message');
+            this.hideOverlay('loading');
+            this.$text.html(this.getPrettyLyrics());
         },
 
         renderNotFound: function() {
@@ -43,22 +47,13 @@ lrcs.views = lrcs.views || {};
 
         renderMessage: function(message) {
             this.showOverlay('message');
+            this.hideOverlay('loading');
             this.$text.html('');
             this.$message.html(message);
         },
 
-        renderLyrics: function(lyrics) {
-            this.hideOverlay('message');
-            this.$text.html(this.getPrettyLyrics());
-        },
-
-        displayLoadingIndicator: function() {
-            this.hideOverlay('message');
-            this.showOverlay('loading');
-        },
-
-        hideLoadingIndicator: function() {
-            this.hideOverlay('loading');
+        hasLyrics: function() {
+            return this.lyrics && !this.lyrics.isEmpty();
         },
 
         getPrettyLyrics: function() {
