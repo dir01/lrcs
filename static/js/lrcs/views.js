@@ -7,7 +7,6 @@ lrcs.views = lrcs.views || {};
     lrcs.views.LyricsView = Backbone.View.extend({
 
         lyrics: null,
-        album: null,
 
         animationLength: 300, // ms
 
