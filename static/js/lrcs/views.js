@@ -139,14 +139,8 @@ lrcs.views = lrcs.views || {};
         },
 
         render: function() {
-            if (!this.album) {
-                this.hide();
-                return;
-            }
-
-            var url = this.album.get('image'),
-                hasImage = Boolean(url);
-            if (hasImage)
+            var url = this.getImageURL();
+            if (url)
                 this.$img
                     .attr('src', url)
                     .one('load', this.show.bind(this));
@@ -167,7 +161,7 @@ lrcs.views = lrcs.views || {};
         },
 
         getImageURL: function() {
-            return this.album.get('url');
+            return this.album && this.album.get('image');
         }
 
     });
