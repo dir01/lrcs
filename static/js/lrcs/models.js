@@ -17,6 +17,9 @@ lrcs.models = lrcs.models || {};
         },
 
         equals: function(track) {
+            if (!track)
+                return false;
+
             var importantFields = ['artist', 'album', 'title'],
                 us = this,
                 ourImportantData = {},
@@ -31,6 +34,9 @@ lrcs.models = lrcs.models || {};
         },
 
         hasDifferentAlbumFrom: function(track) {
+            if (!track)
+                return true;
+
             return this.get('album') !== track.get('album') ||
                 this.get('artist') !== track.get('artist');
         },
