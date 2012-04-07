@@ -33,6 +33,10 @@ lrcs.models = lrcs.models || {};
             return _.isEqual(ourImportantData, theirImportantData);
         },
 
+		hasAlbum: function() {
+			return Boolean(this.get('album'));
+		},
+
         hasDifferentAlbumFrom: function(track) {
             if (!track)
                 return true;

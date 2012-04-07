@@ -38,11 +38,14 @@ lrcs.views = lrcs.views || {};
 
         loadAlbumForTrack: function(track) {
             this.trigger('loading:album');
-            lrcs.music.getAlbum(
-                track.get('artist'),
-                track.get('album'),
-                this.setAlbum.bind(this)
-            );
+            if (track.hasAlbum())
+	            lrcs.music.getAlbum(
+	                track.get('artist'),
+	                track.get('album'),
+	                this.setAlbum.bind(this)
+	            );
+	        else
+	        	this.setAlbum(null);
         },
 
         handleLyricsError: function(lyrics, response) {
