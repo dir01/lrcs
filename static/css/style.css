@@ -210,13 +210,27 @@ a#lastfm-control:hover {
 #lyrics-background img {
     width: 100%;
     height: auto;
-    vertical-align: top;
+    vertical-align: middle;
 
     transition: 0.2s;
     -o-transition: 0.2s;
     -ms-transition: 0.2s;
     -moz-transition: 0.2s;
     -webkit-transition: 0.2s;
+}
+
+#lyrics-background.hidden {
+     display: block;
+}
+
+#lyrics-background.hidden img {
+    transform: scale(0.8);
+    -o-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+
+    opacity: 0;
 }
 
 #lyrics p {

@@ -32,11 +32,11 @@ lrcs.views = lrcs.views || {};
         },
 
         show: function() {
-            this.$img.css('opacity', 1);
+            this.$el.removeClass('hidden');
         },
 
         hide: function() {
-            this.$img.css('opacity', 0);
+            this.$el.addClass('hidden');
         },
 
         getImageURL: function() {
