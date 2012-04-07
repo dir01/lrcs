@@ -31,7 +31,7 @@ lrcs.views = lrcs.views || {};
             this.trigger('loading:lyrics');
             var lyrics = new lrcs.models.Lyrics();
             lyrics.setTrack(track).fetch({
-                success: this.setLyrics.bind(this),
+                success: this.setLyricsIfAppropriate.bind(this),
                 error: this.handleLyricsError.bind(this)
             });
         },
@@ -47,9 +47,16 @@ lrcs.views = lrcs.views || {};
 
         handleLyricsError: function(lyrics, response) {
             if (response.status === 404)
-                this.setLyrics(lyrics);
+                this.setLyricsIfAppropriate(lyrics);
             else
                 this.trigger('error');
+        },
+
+        setLyricsIfAppropriate: function(lyrics) {
+        	var lyricsTrack = lyrics.getTrack(),
+        		currentTrack = this.get('track');
+        	if (lyricsTrack.equals(currentTrack))
+        		this.setLyrics(lyrics);
         },
 
         setTrack: function(track) {

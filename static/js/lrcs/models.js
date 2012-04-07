@@ -79,6 +79,10 @@ lrcs.models = lrcs.models || {};
             this.track = track;
             return this;
         },
+        
+        getTrack: function() {
+        	return this.track;
+        },
 
         url: function() {
             return [
