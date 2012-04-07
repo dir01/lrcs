@@ -19,9 +19,6 @@ lrcs.views = lrcs.views || {};
 
         onTrackChanged: function(app, track) {
             var previousTrack = this.previous('track');
-            if (track.equals(previousTrack))
-                return;
-
             this.loadLyricsForTrack(track);
             if (track.hasDifferentAlbumFrom(previousTrack))
                 this.loadAlbumForTrack(track);
@@ -63,7 +60,9 @@ lrcs.views = lrcs.views || {};
         },
 
         setTrack: function(track) {
-            this.set({ track: track });
+            var currentTrack = this.get('track');
+            if (!track.equals(currentTrack))
+                this.set({ track: track });
         },
 
         setAlbum: function(album) {
