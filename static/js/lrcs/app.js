@@ -14,10 +14,10 @@ lrcs.views = lrcs.views || {};
         },
 
         initialize: function() {
-            this.on('change:track', this.trackChange, this);
+            this.on('change:track', this.onTrackChanged, this);
         },
 
-        trackChange: function(app, track) {
+        onTrackChanged: function(app, track) {
             var previousTrack = this.previous('track');
             if (track.equals(previousTrack))
                 return;
