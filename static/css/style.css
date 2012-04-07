@@ -250,15 +250,23 @@ a#lastfm-control:hover {
     background: silver url('../images/spinner-large.gif') no-repeat center 200px;
 }
 
-#sidebar-box.loading > *,
-#sidebar-box > *.hidden {
-    display: block;
-    right: 100%;
-}
-
 #artist,
 #album,
 #tracklist {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    display: block;
+    clear: both;
+
+    box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+
     transition: 0.2s;
     -o-transition: 0.2s;
     -ms-transition: 0.2s;
@@ -266,8 +274,13 @@ a#lastfm-control:hover {
     -webkit-transition: 0.2s;
 }
 
+#artist.hidden, #sidebar-box.loading #artist,
+#album.hidden, #sidebar-box.loading #album,
+#tracklist.hidden, #sidebar-box.loading #tracklist {
+	right: 100%;
+}
+
 #artist {
-    position: relative;
     float: left;
     padding: 0.4em 1.5em 0.4em 0.35em;
     margin-bottom: 0.1em;
@@ -281,9 +294,7 @@ a#lastfm-control:hover {
 }
 
 #album {
-    position: relative;
     float: left;
-    clear: left;
     padding: 0.5em 1.5em 0.5em 0.85em;
     margin-bottom: 0.4em;
     background: #CD5555;
@@ -293,7 +304,6 @@ a#lastfm-control:hover {
 }
 
 #tracklist {
-    position: relative;
     list-style-type: none;
     counter-reset: position;
 }
@@ -306,7 +316,6 @@ a#lastfm-control:hover {
 }
 
 #tracklist li a {
-    display: block;
     display: block;
     color: white;
     padding: 0.5em 1.5em 0.5em 0.5em;
