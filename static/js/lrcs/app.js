@@ -22,12 +22,12 @@ lrcs.views = lrcs.views || {};
             if (track.equals(previousTrack))
                 return;
 
-            this.loadLyricsFor(track);
+            this.loadLyricsForTrack(track);
             if (track.hasDifferentAlbumFrom(previousTrack))
-                this.loadAlbumFor(track);
+                this.loadAlbumForTrack(track);
         },
 
-        loadLyricsFor: function(track) {
+        loadLyricsForTrack: function(track) {
             this.trigger('loading:lyrics');
             var lyrics = new lrcs.models.Lyrics();
             lyrics.setTrack(track).fetch({
@@ -36,7 +36,7 @@ lrcs.views = lrcs.views || {};
             });
         },
 
-        loadAlbumFor: function(track) {
+        loadAlbumForTrack: function(track) {
             this.trigger('loading:album');
             lrcs.music.getAlbum(
                 track.get('artist'),
