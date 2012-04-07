@@ -19,6 +19,7 @@ lrcs.views = lrcs.views || {};
 
         setAlbum: function(album) {
             this.album = album;
+            this.hideLoadingIndicator();
             this.render();
         },
 
@@ -28,7 +29,6 @@ lrcs.views = lrcs.views || {};
         },
 
         render: function() {
-            this.hideLoadingIndicator();
             if (this.hasAlbum())
                 this.renderAlbum();
             else
