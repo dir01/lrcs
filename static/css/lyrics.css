@@ -1,0 +1,46 @@
+#lyrics {
+	padding: 2em;
+	overflow: hidden;
+	background: white;
+	text-align: left;
+	line-height: 1.5em;
+	border: 1px solid #ddd;
+	width: 500px;
+	margin: 0 auto;
+}
+
+#lyrics hgroup {
+	margin-bottom: 1em;
+}
+
+#lyrics h1 {
+	font-size: 2em;
+}
+
+#lyrics h2 {
+	font-style: italic;
+	font-size: 0.9em;
+	color: #999;
+	margin: 0.25em 0;
+}
+
+#lyrics p {
+	margin: 1em 0;
+}
+
+#lyrics p:first-child {
+	margin-top: 0;
+}
+
+#lyrics p:last-child {
+	margin-bottom: 0;
+}
+
+#lyrics p:empty {
+	display: none;
+}
+
+#lyrics .error {
+	text-align: center;
+	color: #666;
+}

@@ -1,0 +1,129 @@
+
+#last-fm {
+    width: 500px;
+    margin: 3em auto;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Geneva, sans-serif;
+    font-size: 0.7em;
+    position: relative;
+}
+
+#last-fm.active {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#last-fm-header {
+    overflow: hidden;
+}
+
+.last-fm-button {
+    background: #cc0000;
+    border: 0;
+    color: white;
+    padding: 0.5em 1em;
+    margin: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 2em;
+    line-height: 1em;
+    vertical-align: top;
+}
+
+.last-fm-button:hover {
+    background: #dd0000;
+}
+
+.last-fm-button.active {
+    background: #aa0000;
+    cursor: default;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Prompt */
+
+#connect-last-fm.active {
+    border-radius: 5px 5px 0 0;
+}
+
+#last-fm-connection-prompt {
+    padding: 0.5em;
+    background: #ddd;
+    border-radius: 0.5em;
+    display: inline-block;
+}
+
+#last-fm-username-prompt {
+	border: 1px solid #AAA;
+    padding: 0 1em;
+    margin: 0;
+    border-radius: 5px;
+    height: 2em;
+    line-height: 1em;
+    vertical-align: top;
+    width: 20em;
+}
+
+
+/* Logged-in */
+
+#last-fm-username-box {
+    overflow: hidden;
+}
+
+#last-fm-username-link {
+    display: block;
+    text-align: left;
+    padding-left: 50px;
+    background-image: url('../img/last.fm.png');
+    background-repeat: no-repeat;
+    background-position: 1em center;
+}
+
+#last-fm-controls {
+    float: right;
+}
+
+#last-fm-tracks {
+    margin: 0.5em 0;
+    text-align: left;
+    line-height: 2em;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+}
+
+#last-fm-tracks li {
+    border-top: 1px solid #eee;
+    background: white;
+}
+
+#last-fm-tracks li:first-child {
+    border-top: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#last-fm-tracks li:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#last-fm-tracks a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    padding: 0 1em;
+}
+
+#last-fm-tracks li:hover {
+    background: #fffae6;
+}
+
+#last-fm-tracks .time {
+    float: right;
+    font-size: 0.9em;
+    color: #999;
+    font-style: italic;
+    pointer-events: none;
+    margin-right: 1em;
+}
