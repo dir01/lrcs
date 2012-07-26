@@ -1,92 +1,58 @@
-{% extends 'base.jinja2' %}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
+        <meta http-equiv="content-style-type" content="text/css"/>
 
-{% block scripts %}
-    <script type="text/template" id="lastfm-watching-template">
-        <div id="lastfm-control" class="active">
-            @<%= username %>
-            |
-            <a href="#" id="lastfm-stop-watching">stop watching</a>
-            |
-            <a href="#" id="lastfm-disconnect">disconnect</a>
-        </div>
-    </script>
+        <meta name="last-fm-api-key" content="{{ LASTFM_API_KEY }}">
 
-    <script type="text/template" id="lastfm-idle-template">
-        <div id="lastfm-control" class="idle">
-            @<%= username %>
-            |
-            <a href="#" id="lastfm-start-watching">start watching</a>
-            |
-            <a href="#" id="lastfm-disconnect">disconnect</a>
-        </div>
-    </script>
+        <title>Lyri.sk</title>
 
-    <script type="text/template" id="lastfm-disconnected-template">
-        <a href="#" id="lastfm-control">connect</a>
-    </script>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/reset.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/base.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/animations.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/last.fm.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/lyrics.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/album.css"/>
 
-    <script type="text/template" id="sidebar-template">
-        <div id="artist"<% if (!artist) { print('class="hidden"'); } %>>
-        <%= artist %>
-        </div>
-        <div id="album"<% if (!title) { print('class="hidden"'); } %>>
-        <%= title %>
-        </div>
-        <ol id="tracklist">
-            <% _.each(tracks, function(track){ %>
-            <li<% if (track.current) print(' class="active"'); %>>
-                <a href="#" data-cid="<%= track.cid %>"><span class="title"><%= track.attributes.title %></span></a>
-            </li>
-            <% }); %>
-        </ol>
-    </script>
+        <script type="text/javascript" src="/js/jquery.js"></script>
+        <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="/js/jquery.suggester.js"></script>
 
-    <script type="text/template" id="autocomplete-item-template">
-        <li>
-            <img alt="<%= artist %> - <% title %>" src="<% if (image) { %><%= image %><% } else { %>http://cdn.last.fm/flatness/catalogue/noimage/2/default_artist_small.png<% } %>"/>
-            <div class="label">
-                <div class="title"><%= title %></div>
-                <div class="artist"><%= artist %></div>
+        <script type="text/javascript" src="/js/underscore.js"></script>
+        <script type="text/javascript" src="/js/backbone.js"></script>
+
+        <script type="text/javascript" src="/js/lastfm.api.js"></script>
+        <script type="text/javascript" src="/js/lastfm.api.md5.js"></script>
+        <script type="text/javascript" src="/js/lastfm.api.cache.js"></script>
+
+        <script type="text/javascript" src="/js/lrcs/tools.js"></script>
+        <script type="text/javascript" src="/js/lrcs/lastfm.js"></script>
+        <script type="text/javascript" src="/js/lrcs/music.js"></script>
+
+
+        {% if GOOGLE_ANALYTICS_TRACKING_ID %}
+            {% include 'includes/google_analitycs.jinja2' %}
+        {% endif %}
+    </head>
+    <body>
+        <div id="base">
+
+            <header>
+                <div id="logo">lyri.sk</div>
+                <p id="motto">your favorite last.fm-enabled lyrics search engine</p>
+            </header>
+
+            <div id="content">
+
             </div>
-        </li>
-    </script>
 
-{% endblock %}
+            <footer>
+                &copy; lyri.sk
+            </footer>
 
-
-{% block content %}
-
-<form method="get" action="/api/search/" id="search-box">
-    <div>
-        <input id="id_query" placeholder="Type in the name of a song or an artist"/>
-    </div>
-    <div id="lastfm-control-box"></div>
-</form>
-
-<div id="main-box">
-
-    <div id="lyrics-box">
-        <div id="lyrics-inner-box">
-            <div id="overlays-box" class="visible">
-                <div id="message-overlay" class="overlay visible">
-                    <div id="message-box">
-                        <div id="message">
-                            Nothing to see here <sub>yet.</sub>
-                        </div>
-                    </div>
-                </div>
-                <div id="loading-overlay" class="overlay">
-                    <div id="spinner"></div>
-                </div>
-            </div>
-            <div id="lyrics"></div>
-            <div id="lyrics-background" class="hidden"><img src="" alt="" id="lyrics-background-art"/></div>
         </div>
-    </div>
-
-    <div id="sidebar-box" class="hidden">
-    </div>
-
-</div>
-{% endblock %}
-
+    </body>
+</html>
