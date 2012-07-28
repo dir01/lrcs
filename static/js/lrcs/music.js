@@ -1,4 +1,3 @@
-
 var lrcs = lrcs || {};
 
 (function(lrcs) {

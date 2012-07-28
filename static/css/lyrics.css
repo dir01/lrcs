@@ -7,6 +7,29 @@
 	border: 1px solid #ddd;
 	width: 500px;
 	margin: 0 auto;
+	position: relative;
+	min-height: 400px;
+}
+
+#lyrics::after {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	top: 100px;
+	left: 50%;
+	margin-left: -100px;
+	background: url('../images/spinner.png') no-repeat left top;
+	display: none;
+	animation: rotate360 linear 1s infinite;
+	-webkit-animation: rotate360 linear 1s infinite;
+	-moz-animation: rotate360 linear 1s infinite;
+	-ms-animation: rotate360 linear 1s infinite;
+	-o-animation: rotate360 linear 1s infinite;
+	content: ' ';
+}
+
+#lyrics.waiting:after {
+	display: block;
 }
 
 #lyrics hgroup {

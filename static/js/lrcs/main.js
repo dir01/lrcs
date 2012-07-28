@@ -1,17 +1,48 @@
-
 $(function() {
 
-    lrcs.lastFm = new lrcs.LastFmAPIAdapter({
-        apiKey: $('meta[name=last-fm-api-key]').attr('content')
+    var App = Backbone.View.extend({
+
+        el: $('#content')[0],
+
+        initialize: function() {
+            this.main = new lrcs.views.Main;
+
+            this.$el.append(
+                this.main.el
+            )
+        },
+
+        loadLyrics: function(artist, title) {
+            var lyrics = new lrcs.models.Lyrics({
+                artist: artist,
+                title: title
+            });
+            lyrics.fetch();
+            this.main.setLyrics(lyrics);
+        }
+
     });
 
-    lrcs.music = new lrcs.Music({
-        lastFm: lrcs.lastFm
-    });
+    var Router = Backbone.Router.extend({
 
-    var app = new lrcs.models.App(),
-        appView = new lrcs.views.AppView({ model: app });
-    appView.render();
+        initialize: function(options) {
+            this.app = options.app;
+        },
+
+        routes: {
+            ':artist/:title': 'lyrics', 
+        },
+
+        lyrics: function(artist, title) {
+            this.app.loadLyrics(artist, title);
+        }
+
+    });
+    
+    var app = new App(),
+        router = new Router({ app: app });
+    
+    Backbone.history.start();
 
 });
 

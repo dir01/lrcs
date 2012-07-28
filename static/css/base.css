@@ -19,13 +19,17 @@ body {
 	min-height: 100%;
 	text-align: center;
 	position: relative;
-	padding-top: 2em;
+	padding-top: 1em;
 	padding-bottom: 3em;
 }
 
 button, input {
 	font-size: inherit;
 	font-family: inherit;
+}
+
+header {
+	margin: 1em auto;
 }
 
 #logo {

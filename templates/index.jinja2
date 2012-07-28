@@ -18,20 +18,17 @@
         <link rel="stylesheet" type="text/css" media="all" href="/css/album.css"/>
 
         <script type="text/javascript" src="/js/jquery.js"></script>
-        <script type="text/javascript" src="/js/jquery.cookie.js"></script>
-        <script type="text/javascript" src="/js/jquery.suggester.js"></script>
-
         <script type="text/javascript" src="/js/underscore.js"></script>
         <script type="text/javascript" src="/js/backbone.js"></script>
 
-        <script type="text/javascript" src="/js/lastfm.api.js"></script>
-        <script type="text/javascript" src="/js/lastfm.api.md5.js"></script>
-        <script type="text/javascript" src="/js/lastfm.api.cache.js"></script>
-
         <script type="text/javascript" src="/js/lrcs/tools.js"></script>
-        <script type="text/javascript" src="/js/lrcs/lastfm.js"></script>
-        <script type="text/javascript" src="/js/lrcs/music.js"></script>
+        <script type="text/javascript" src="/js/lrcs/models/lyrics.js"></script>
+        <script type="text/javascript" src="/js/lrcs/views/lyrics.js"></script>
+        <script type="text/javascript" src="/js/lrcs/views/main.js"></script>
+        <script type="text/javascript" src="/js/lrcs/main.js"></script>
 
+        <script type="text/x-js-template" id="lyrics-template">{% include 'js/lyrics.jstmpl' %}</script>
+        <script type="text/x-js-template" id="lyrics-not-found-template">{% include 'js/lyrics-not-found.jstmpl' %}</script>
 
         {% if GOOGLE_ANALYTICS_TRACKING_ID %}
             {% include 'includes/google_analitycs.jinja2' %}
