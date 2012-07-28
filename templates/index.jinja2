@@ -6,13 +6,14 @@
         <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
         <meta http-equiv="content-style-type" content="text/css"/>
 
-        <meta name="last-fm-api-key" content="{{ LASTFM_API_KEY }}">
+        <meta name="last-fm-api-key" content="{{ LASTFM_API_KEY }}"/>
 
         <title>Lyri.sk</title>
 
         <link rel="stylesheet" type="text/css" media="all" href="/css/reset.css"/>
         <link rel="stylesheet" type="text/css" media="all" href="/css/base.css"/>
         <link rel="stylesheet" type="text/css" media="all" href="/css/animations.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/search.css"/>
         <link rel="stylesheet" type="text/css" media="all" href="/css/last.fm.css"/>
         <link rel="stylesheet" type="text/css" media="all" href="/css/lyrics.css"/>
         <link rel="stylesheet" type="text/css" media="all" href="/css/album.css"/>
@@ -21,12 +22,25 @@
         <script type="text/javascript" src="/js/underscore.js"></script>
         <script type="text/javascript" src="/js/backbone.js"></script>
 
+        <script type="text/javascript" src="/js/jquery.suggester.js"></script>
+
+        <script type="text/javascript" src="/js/lastfm.api.js"></script>
+        <script type="text/javascript" src="/js/lastfm.api.cache.js"></script>
+        <script type="text/javascript" src="/js/lastfm.api.md5.js"></script>
+
         <script type="text/javascript" src="/js/lrcs/tools.js"></script>
+        <script type="text/javascript" src="/js/lrcs/lastfm.js"></script>
+        <script type="text/javascript" src="/js/lrcs/music.js"></script>
         <script type="text/javascript" src="/js/lrcs/models/lyrics.js"></script>
+        <script type="text/javascript" src="/js/lrcs/models/track.js"></script>
+        <script type="text/javascript" src="/js/lrcs/views/search-result.js"></script>
+        <script type="text/javascript" src="/js/lrcs/views/search.js"></script>
         <script type="text/javascript" src="/js/lrcs/views/lyrics.js"></script>
         <script type="text/javascript" src="/js/lrcs/views/main.js"></script>
         <script type="text/javascript" src="/js/lrcs/main.js"></script>
 
+        <script type="text/x-js-template" id="search-template">{% include 'js/search.jstmpl' %}</script>
+        <script type="text/x-js-template" id="search-result-template">{% include 'js/search-result.jstmpl' %}</script>
         <script type="text/x-js-template" id="lyrics-template">{% include 'js/lyrics.jstmpl' %}</script>
         <script type="text/x-js-template" id="lyrics-not-found-template">{% include 'js/lyrics-not-found.jstmpl' %}</script>
 

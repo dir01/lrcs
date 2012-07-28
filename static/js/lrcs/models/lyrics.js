@@ -7,31 +7,35 @@ lrcs.models = lrcs.models || {};
 
         toJSON: function() {
             return {
-                artist: this.getArtist(),
-                title: this.getTitle(),
-                lyrics: this.getPrettyText()
+                artist: this.artist(),
+                title: this.title(),
+                lyrics: this.prettyText()
             }
         },
 
         url: function() {
-            return '/lyrics?' + this.getQueryString();
+            return '/lyrics?' + this.queryString();
         },
 
-        getQueryString: function() {
+        path: function() {
+            return this.artist() + '/' + this.title();
+        },
+
+        queryString: function() {
             return $.param({
-                artist: this.getArtist(),
-                track: this.getTitle()
+                artist: this.artist(),
+                track: this.title()
             });
         },
 
-        getPrettyText: function() {
-            return this.prettyText = this.prettyText || this.createPrettyText();
+        prettyText: function() {
+            return this._prettyText = this._prettyText || this.createPrettyText();
         },
 
         createPrettyText: function() {
             if (!this.hasText())
                 return;
-            var uglyText = this.getText(),
+            var uglyText = this.text(),
                 paragraphs = uglyText.split('\n\n'),
                 filteredParagraphs = _.compact(paragraphs),
                 taggedParagraphs = _.map(filteredParagraphs, function(item) {
@@ -45,15 +49,15 @@ lrcs.models = lrcs.models || {};
             return this.has('lyrics');
         },
 
-        getArtist: function() {
+        artist: function() {
             return this.get('artist');
         },
 
-        getTitle: function() {
+        title: function() {
             return this.get('title');
         },
 
-        getText: function() {
+        text: function() {
             return this.get('lyrics');
         }
 

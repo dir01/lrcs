@@ -1,0 +1,72 @@
+#search {
+    width: 500px;
+    margin: 1em auto;
+}
+
+#search-field {
+    width: 100%;
+    font-size: 1.5em;
+    background: white;
+    padding: 0.25em 0.5em;
+    margin: 0;
+    border: 1px solid #AAA;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    border-radius: 1em;
+    vertical-align: top;
+}
+
+#search-field:focus {
+    outline: none;
+    border-color: #666;
+}
+
+.suggestions ul {
+    background: white;
+    margin: 0 1.5em;
+    overflow: hidden;
+    border: 1px solid #bbb;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
+
+.suggestions li:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.suggestions img {
+    float: left;
+    vertical-align: top;
+}
+
+.suggestions a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    padding: 0.5em;
+    overflow: hidden;
+}
+
+.suggestions a:hover,
+.suggestions li.selected a {
+    background: #fffae6;
+}
+
+.suggestions .track-name {
+    display: block;
+    overflow: hidden;
+    padding: 0.1em 0.5em;
+    height: 34px;
+}
+
+.suggestions .title {
+    display: block;
+}
+
+.suggestions .artist {
+    display: block;
+    font-style: italic;
+    color: #999;
+    font-size: 0.9em;
+    margin-top: 0.1em;
+}
