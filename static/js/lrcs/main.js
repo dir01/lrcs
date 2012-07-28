@@ -45,19 +45,16 @@ $(function() {
             this.main.hide();
         },
 
-        loadLyricsByTrack: function(track) {
-            this.loadLyrics(
-                track.artist(),
-                track.title()
-            );
-        },
-
         loadLyrics: function(artist, title) {
-            var lyrics = new lrcs.models.Lyrics({
+            var track = new lrcs.models.Track({
                 artist: artist,
                 title: title
             });
-            lyrics.fetch();
+            this.loadLyricsByTrack(track);
+        },
+
+        loadLyricsByTrack: function(track) {
+            var lyrics = track.lyrics();
             this.main.show();
             this.lyrics.setModel(lyrics);
             this.router.navigate(lyrics.path());
