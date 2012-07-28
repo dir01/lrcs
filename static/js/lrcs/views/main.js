@@ -13,14 +13,18 @@ lrcs.views = lrcs.views || {};
 
         initialize: function() {
             this.lyrics = new lrcs.views.Lyrics;
-            
+
             this.$el.append(
                 this.lyrics.el
             );
         },
 
-        setLyrics: function(lyricsModel) {
-            this.lyrics.setModel(lyricsModel);
+        hide: function() {
+            this.$el.hide();
+        },
+
+        show: function() {
+            this.$el.show();
         }
 
     });

@@ -3,6 +3,7 @@ $(function() {
     var Router = Backbone.Router.extend({
 
         routes: {
+            '': 'index',
             ':artist/:title': 'lyrics', 
         }
 
@@ -31,10 +32,17 @@ $(function() {
                 this.main.el
             );
 
+            this.lyrics = this.main.lyrics;
+
             this.router = new Router();
+            this.router.on('route:index', this.index, this);
             this.router.on('route:lyrics', this.loadLyrics, this);
 
             Backbone.history.start();
+        },
+
+        index: function() {
+            this.main.hide();
         },
 
         loadLyricsByTrack: function(track) {
@@ -50,7 +58,8 @@ $(function() {
                 title: title
             });
             lyrics.fetch();
-            this.main.setLyrics(lyrics);
+            this.main.show();
+            this.lyrics.setModel(lyrics);
             this.router.navigate(lyrics.path());
         }
 
