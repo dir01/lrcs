@@ -7,16 +7,54 @@ lrcs.views = lrcs.views || {};
 
         tagName: 'div',
         id: 'main',
-        attributes: {
-            role: 'main'
-        },
+
+        views: {},
 
         initialize: function() {
-            this.lyrics = new lrcs.views.Lyrics;
+            this.views.lyrics = new lrcs.views.Lyrics;
+            this.views.album = new lrcs.views.Album;
 
             this.$el.append(
-                this.lyrics.el
+                this.views.lyrics.el,
+                this.views.album.el
             );
+        },
+
+        setModel: function(track) {
+            var oldTrack = this.model;
+
+            if (track.isEqualTo(oldTrack))
+                return;
+
+            if (track.isStub()) {
+                track.fetch().then(this.setModel.bind(this, track));
+                return;
+            }
+
+            this.model = track;
+
+            this.updateLyrics();
+            if (track.hasAlbum() && !track.hasSameAlbumAs(oldTrack))
+                this.updateAlbum();
+
+            this.render();
+        },
+
+        updateLyrics: function() {
+            var lyrics = this.model.lyrics();
+            this.views.lyrics.setModel(lyrics);
+        },
+
+        updateAlbum: function() {
+            var album = this.model.album();
+            this.views.album.setModel(album);
+        },
+
+        render: function() {
+            if (!this.model.hasAlbum())
+                this.views.album.hide();
+            else
+                this.views.album.show();
         },
 
         hide: function() {

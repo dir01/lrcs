@@ -5,27 +5,19 @@ lrcs.models = lrcs.models || {};
 
     lrcs.models.Lyrics = Backbone.Model.extend({
 
-        toJSON: function() {
-            return {
-                artist: this.artist(),
-                title: this.title(),
-                lyrics: this.prettyText()
-            }
-        },
-
         url: function() {
             return '/lyrics?' + this.queryString();
-        },
-
-        path: function() {
-            return this.artist() + '/' + this.title();
         },
 
         queryString: function() {
             return $.param({
                 artist: this.artist(),
-                track: this.title()
+                track: this.track()
             });
+        },
+
+        isStub: function() {
+            return !this.hasText();
         },
 
         prettyText: function() {
@@ -53,8 +45,8 @@ lrcs.models = lrcs.models || {};
             return this.get('artist');
         },
 
-        title: function() {
-            return this.get('title');
+        track: function() {
+            return this.get('track');
         },
 
         text: function() {

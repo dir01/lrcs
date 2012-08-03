@@ -14,12 +14,11 @@ lrcs.views = lrcs.views || {};
             this.template = lrcs.tools.template(this.templateName);
             this.render();
 
-            this.music = options.music;
-
             this.$input = this.$('input')
                 .suggester({
                     autoSelectFirst: true,
                     fetch: this.fetch.bind(this),
+                    parse: this.parse.bind(this),
                     renderItem: this.renderItem.bind(this),
                     select: this.select.bind(this)
                 });
@@ -35,7 +34,11 @@ lrcs.views = lrcs.views || {};
         },
 
         fetch: function(query, done) {
-            this.music.searchTracks(query, done);
+            lrcs.lastfm.getTrackSearchQueryResults(query).done(done);
+        },
+
+        parse: function(items) {
+            return _.map(items, this.createTrackStub);
         },
 
         renderItem: function(item) {
@@ -45,7 +48,15 @@ lrcs.views = lrcs.views || {};
         
         select: function(item) {
             this.$input.val(item.toString());
-            this.trigger('select', item);
+            lrcs.dispatch.trigger('navigate:track', item);
+        },
+
+        createTrackStub: function(data) {
+            return new lrcs.models.Track({
+                artist: data.artist,
+                title: data.title,
+                image: data.image
+            });
         }
 
     });

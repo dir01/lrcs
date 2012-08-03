@@ -3,70 +3,95 @@ var lrcs = lrcs || {};
 
 (function(lrcs) {
 
-    lrcs.LastFmAPIAdapter = function(options) {
-        this.options = _.extend(this.options, options);
-        this.api = this.getLastFmApi();
-    }
+    lrcs.lastfm = {
 
-    lrcs.LastFmAPIAdapter.prototype = {
-
-        options: {
+        defaults: {
             apiKey: null
         },
 
-        getLastPlayedTrackInfo: function(username, callback){
-            this.api.user.getRecentTracks({
-                user: username,
-                limit: 1
-            }, {
-                success: this.processLastPlayedTrack.bind(this, callback)
+        initialize: function(options) {
+            this.options = _.extend({}, this.defaults, options);
+            this.api = this._createAPI();
+        },
+
+        /* Exposed interface */
+
+        getLastPlayedTrackInfo: function(username) {
+            return this.getRecentTracks(username, 1).pipe(_.first);
+        },
+
+        getRecentTracksInfo: function(username, count) {
+            return this._call(
+                'user.getRecentTracks',
+                {
+                    user: username,
+                    limit: count
+                }
+            ).pipe(this._processRecentTracks.bind(this));
+        },
+
+        getTrackSearchQueryResults: function(query) {
+            return this._call(
+                'track.search',
+                {
+                    track: query
+                }
+            ).pipe(this._processTrackQueryResults.bind(this));
+        },
+
+        getTrackInfo: function(artist, title) {
+            return this._call(
+                'track.getInfo',
+                {
+                    artist: artist,
+                    track: title
+                }
+            ).pipe(this._processTrackInfo.bind(this));
+        },
+
+        getAlbumInfo: function(artist, title) {
+            return this._call(
+                'album.getInfo',
+                {
+                    artist: artist,
+                    album: title
+                }
+            ).pipe(this._processAlbumInfo.bind(this));
+        },
+
+        /* Process results */
+
+        _processRecentTracks: function(data) {
+            return Sanitize.trackListData(data.recenttracks.track);
+        },
+
+        _processTrackQueryResults: function(data) {
+            return Sanitize.trackListData(data.results.trackmatches.track);
+        },
+
+        _processTrackInfo: function(data) {
+            return Sanitize.trackData(data.track);
+        },
+
+        _processAlbumInfo: function(data) {
+            return Sanitize.albumData(data.album);
+        },
+
+        /* Generic call function that uses jQuery.Deferred */
+
+        _call: function(fdef, params) {
+            var dfd = new $.Deferred(),
+                classAndMethod = fdef.split('.'),
+                justClass = classAndMethod[0],
+                method = classAndMethod[1];
+            this.api[justClass][method](params, {
+                success: function(response) { dfd.resolve(response); },
+                error: function(response) { dfd.reject(response); }
             });
+            return dfd.promise();
         },
 
-        queryTracks: function(query, callback) {
-            this.api.track.search({
-                track: query
-            }, {
-                success: this.proccessTracksQueryResults.bind(this, callback)
-            });
-        },
-
-        getTrackInfo: function(artist, title, callback) {
-            this.api.track.getInfo({
-                artist: artist,
-                track: title
-            }, {
-                success: this.processTrackInfoResult.bind(this, callback)
-            });
-        },
-
-        getAlbumInfo: function(artist, title, callback) {
-            this.api.album.getInfo({
-                artist: artist,
-                album: title
-            }, {
-                success: this.processAlbumInfoResult.bind(this, callback)
-            });
-        },
-
-        proccessTracksQueryResults: function(callback, data) {
-            callback(Sanitize.trackListData(data.results.trackmatches.track))
-        },
-
-        processLastPlayedTrack: function(callback, data) {
-            var tracks = Sanitize.array(data.recenttracks.track);
-            callback(Sanitize.trackData(tracks[0]));
-        },
-
-        processTrackInfoResult: function(callback, data) {
-            callback(Sanitize.trackData(data.track));
-        },
-
-        processAlbumInfoResult: function(callback, data) {
-            callback(Sanitize.albumData(data.album));
-        },
-
-        getLastFmApi: function() {
+        _createAPI: function() {
             var cache = new LastFMCache();
             var lastfm = new LastFM({
                 apiKey: this.options.apiKey,
@@ -77,11 +102,10 @@ var lrcs = lrcs || {};
 
     }
 
-
-    Sanitize = {
+    var Sanitize = {
 
         albumData: function(data) {
-            return new AlbumDataSanitizer(data).getJSON()
+            return new AlbumDataSanitizer(data).getJSON();
         },
 
         trackListData: function(data) {
@@ -160,6 +184,7 @@ var lrcs = lrcs || {};
                 title: this.getTitle(),
                 artist: this.getArtist(),
                 album: this.getAlbum(),
+                albumArtist: this.getAlbumArtist(),
                 image: this.getImage(),
                 isNowPlaying: this.getIsNowPlaying()
             }
@@ -167,6 +192,14 @@ var lrcs = lrcs || {};
 
         getTitle: function() {
             return this.data.name;
+        },
+
+        getAlbumArtist: function() {
+            var album = this.data.album;
+            if (typeof album === 'object')
+                if (typeof album.artist === 'string')
+                    return album.artist;
+            return this.getArtist();
         },
 
         getArtist: function() {

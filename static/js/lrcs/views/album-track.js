@@ -3,15 +3,15 @@ lrcs.views = lrcs.views || {};
 
 (function(lrcs) {
 
-    lrcs.views.SearchResult = Backbone.View.extend({
+    lrcs.views.AlbumTrack = Backbone.View.extend({
 
         tagName: 'li',
 
         events: {
-            'click a': lrcs.tools.preventEvent
+            'click a': 'activate'
         },
 
-        templateName: 'search-result-template',
+        templateName: 'album-track-template',
 
         initialize: function() {
             this.template = lrcs.tools.template(this.templateName);
@@ -25,6 +25,11 @@ lrcs.views = lrcs.views || {};
                 )
             );
             return this;
+        },
+
+        activate: function(event) {
+            event.preventDefault();
+            lrcs.dispatch.trigger('navigate:track', this.model);
         }
 
     });

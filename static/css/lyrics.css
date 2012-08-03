@@ -8,7 +8,9 @@
 	width: 500px;
 	margin: 0 auto;
 	position: relative;
-	min-height: 400px;
+	display: table-cell;
+	vertical-align: top;
+	z-index: 200;
 }
 
 #lyrics::after {

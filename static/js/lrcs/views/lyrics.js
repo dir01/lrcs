@@ -29,7 +29,7 @@ lrcs.views = lrcs.views || {};
             this.model = newModel;
             this.model.on('change', this.render, this);
             this.model.on('error', this.renderError, this);
-            if (!this.model.hasText())
+            if (this.model.isStub())
                 this.model.fetch();
 
             this.render();
@@ -55,9 +55,17 @@ lrcs.views = lrcs.views || {};
                 .removeClass('waiting')
                 .html(
                     template(
-                        this.model.toJSON()
+                        this.templateVars()
                     )
                 );
+        },
+        
+        templateVars: function() {
+            return {
+                artist: this.model.artist(),
+                title: this.model.track(),
+                lyrics: this.model.prettyText()
+            }
         }
 
     });

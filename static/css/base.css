@@ -48,6 +48,8 @@ header {
 
 #main {
 	margin: 1em auto;
+	height: 400px;
+	display: table;
 }
 
 footer {

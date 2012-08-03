@@ -6,6 +6,22 @@
     border-left: none;
     text-align: left;
     font-size: 0.9em;
+    position: relative;
+    display: table-cell;
+    vertical-align: top;
+    overflow: hidden;
+    min-height: 400px;
+
+    transition: margin 0.5s;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
+    -o-transition: 0.5s;
+}
+
+#album.hidden {
+    margin-right: -250px;
+    right: 500px;
 }
 
 #album-art img {

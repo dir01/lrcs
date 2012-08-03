@@ -1,0 +1,4 @@
+<p id="album-art">
+    <img src="<%= image %>" alt="<%= artist %> — <%= title %>"/>
+</p>
+<ol id="tracklist"></ol>
