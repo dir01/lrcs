@@ -13,7 +13,17 @@
 	z-index: 200;
 }
 
-#lyrics::after {
+#lyrics .waiter {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: rgba(255, 255, 255, 0.5);
+	display: none;
+}
+
+#lyrics .waiter .spinner {
 	position: absolute;
 	width: 200px;
 	height: 200px;
@@ -21,16 +31,14 @@
 	left: 50%;
 	margin-left: -100px;
 	background: url('../images/spinner.png') no-repeat left top;
-	display: none;
 	animation: rotate360 linear 1s infinite;
 	-webkit-animation: rotate360 linear 1s infinite;
 	-moz-animation: rotate360 linear 1s infinite;
 	-ms-animation: rotate360 linear 1s infinite;
 	-o-animation: rotate360 linear 1s infinite;
-	content: ' ';
 }
 
-#lyrics.waiting:after {
+#lyrics.waiting .waiter {
 	display: block;
 }
 

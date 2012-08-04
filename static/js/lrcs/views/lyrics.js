@@ -17,6 +17,17 @@ lrcs.views = lrcs.views || {};
             this.templates = {};
             for (var name in this.templateNames)
                 this.templates[name] = lrcs.tools.template(this.templateNames[name]);
+
+            this.$container = $('<div></div>').appendTo(this.el);
+            this.$waiter = this.createWaiter().appendTo(this.el);
+        },
+
+        createWaiter: function() {
+            var spinner = $('<div></div>')
+                .addClass('spinner');
+            return $('<div></div>')
+                .addClass('waiter')
+                .append(spinner);
         },
 
         setModel: function(newModel) {
@@ -51,13 +62,12 @@ lrcs.views = lrcs.views || {};
         },
 
         renderWithTemplate: function(template) {
-            this.$el
-                .removeClass('waiting')
-                .html(
-                    template(
-                        this.templateVars()
-                    )
-                );
+            this.$el.removeClass('waiting');
+            this.$container.html(
+                template(
+                    this.templateVars()
+                )
+            );
         },
         
         templateVars: function() {
