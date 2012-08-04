@@ -10,13 +10,13 @@
     display: table-cell;
     vertical-align: top;
     overflow: hidden;
-    min-height: 400px;
+    min-height: 250px;
 
-    transition: margin 0.5s;
-    -webkit-transition: 0.5s;
-    -moz-transition: 0.5s;
-    -ms-transition: 0.5s;
-    -o-transition: 0.5s;
+    transition: margin 0.5s, right 0.5s;
+    -webkit-transition: margin 0.5s, right 0.5s;
+    -moz-transition: margin 0.5s, right 0.5s;
+    -ms-transition: margin 0.5s, right 0.5s;
+    -o-transition: margin 0.5s, right 0.5s;
 }
 
 #album.hidden {
@@ -27,6 +27,7 @@
 #album-art img {
     width: 249px;
     height: 249px;
+    vertical-align: top;
 }
 
 #tracklist li {

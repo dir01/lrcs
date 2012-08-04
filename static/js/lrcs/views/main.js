@@ -53,8 +53,6 @@ lrcs.views = lrcs.views || {};
         render: function() {
             if (!this.model.hasAlbum())
                 this.views.album.hide();
-            else
-                this.views.album.show();
         },
 
         hide: function() {

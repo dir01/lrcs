@@ -34,6 +34,23 @@ lrcs.views = lrcs.views || {};
                 return;
             }
 
+            if (!this.isVisible()) {
+                this.show();
+                this.renderInsides();
+            } else
+                this.slideIn(
+                    this.renderUpdated.bind(this)
+                );
+        },
+
+        renderUpdated: function() {
+            this.renderInsides();
+            this.slideOut(
+                this.resetLeft.bind(this)
+            );
+        },
+
+        renderInsides: function() {
             this.$el
                 .removeClass('waiting')
                 .html(
@@ -62,6 +79,32 @@ lrcs.views = lrcs.views || {};
                 artist: this.model.artist(),
                 title: this.model.title()
             }
+        },
+
+        slideIn: function(next) {
+            this.$el.animate({
+                left: -250
+            }, {
+                duration: 250,
+                complete: next
+            });
+        },
+
+        slideOut: function(next) {
+            this.$el.animate({
+                left: 0
+            }, {
+                duration: 250,
+                complete: next
+            });
+        },
+
+        resetLeft: function() {
+            this.$el.css('left', '');
+        },
+
+        isVisible: function() {
+            return !this.$el.hasClass('hidden');
         },
 
         show: function() {
