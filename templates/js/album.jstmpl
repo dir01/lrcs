@@ -1,4 +1,13 @@
-<p id="album-art">
-    <img src="<%= image %>" alt="<%= artist %> — <%= title %>"/>
-</p>
+<% if (image) { %>
+<h1 id="album-art">
+    <img src="<%= image %>" alt="<%= title %> by <%= artist %>"/>
+</h1>
+<% } else { %>
+<div id="album-art">
+    <hgroup id="album-header">
+        <h1 id="album-title"><%- title %></h1>
+        <h2 id="album-artist">by <%- artist %></h2>
+    </hgroup>
+</div>
+<% } %>
 <ol id="tracklist"></ol>
