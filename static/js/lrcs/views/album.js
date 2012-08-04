@@ -12,7 +12,19 @@ lrcs.views = lrcs.views || {};
 
         initialize: function() {
             this.template = lrcs.tools.template(this.templateName);
+
+            this.$container = $('<div></div>').appendTo(this.el);
+            this.$waiter = this.createWaiter().appendTo(this.el);
+
             this.hide();
+        },
+
+        createWaiter: function() {
+            var spinner = $('<div></div>')
+                .addClass('spinner small');
+            return $('<div></div>')
+                .addClass('waiter')
+                .append(spinner);
         },
 
         setModel: function(newModel) {
@@ -53,13 +65,12 @@ lrcs.views = lrcs.views || {};
         },
 
         renderInsides: function() {
-            this.$el
-                .removeClass('waiting')
-                .html(
-                    this.template(
-                        this.templateVars()
-                    )
-                );
+            this.$el.removeClass('waiting');
+            this.$container.html(
+                this.template(
+                    this.templateVars()
+                )
+            );
             this.model.tracklist()
                 .each(
                     this.addTrack.bind(this)

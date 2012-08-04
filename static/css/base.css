@@ -28,6 +28,43 @@ button, input {
 	font-family: inherit;
 }
 
+.waiter {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: rgba(255, 255, 255, 0.5);
+	display: none;
+}
+
+.waiting .waiter {
+	display: block;
+}
+
+.waiter .spinner {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	top: 100px;
+	left: 50%;
+	margin-left: -100px;
+	background: url('../images/spinner.png') no-repeat left top;
+	animation: rotate360 linear 1s infinite;
+	-webkit-animation: rotate360 linear 1s infinite;
+	-moz-animation: rotate360 linear 1s infinite;
+	-ms-animation: rotate360 linear 1s infinite;
+	-o-animation: rotate360 linear 1s infinite;
+}
+
+.waiter .spinner.small {
+	width: 100px;
+	height: 100px;
+	top: 75px;
+	margin-left: -50px;
+	background-image: url('../images/spinner-small.png');
+}
+
 header {
 	margin: 1em auto;
 }
