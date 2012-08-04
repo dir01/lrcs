@@ -167,6 +167,7 @@ var lrcs = lrcs || {};
 
         addMissingTrackData: function(data) {
             data.album = this.getTitle();
+            data.albumArtist = this.getArtist();
             return data;
         }
 
