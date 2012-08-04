@@ -18,6 +18,10 @@ lrcs.models = lrcs.models || {};
             return !this.has('tracks') && !this.has('image');
         },
 
+        isEmpty: function() {
+            return !this.has('tracks') || this.get('tracks').length == 0
+        },
+
         artist: function() {
             return this.get('artist');
         },

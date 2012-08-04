@@ -34,7 +34,9 @@ lrcs.views = lrcs.views || {};
                 return;
             }
 
-            if (!this.isVisible()) {
+            if (this.model.isEmpty())
+                this.hide();
+            else if (!this.isVisible()) {
                 this.show();
                 this.renderInsides();
             } else
