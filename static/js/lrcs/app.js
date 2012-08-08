@@ -41,8 +41,8 @@ var lrcs = lrcs || {};
             var track;
             if (arguments.length == 2)
                 track = new lrcs.models.Track({
-                    artist: arguments[0],
-                    title: arguments[1]
+                    artist: lrcs.tools.decodeURIPart(arguments[0]),
+                    title: lrcs.tools.decodeURIPart(arguments[1])
                 });
             else
                 track = arguments[0];
