@@ -31,6 +31,13 @@ class Lyrics(Resource):
         request.finish()
 
 
+def getChildOrIndexPage(self, path, request):
+    resource = Resource.getChild(self, path, request)
+    if isinstance(resource, NoResource):
+        return IndexPage()
+    return resource
+
+
 class IndexPage(Resource):
     TEMPLATE_NAME = 'index.jinja2'
 
@@ -53,7 +60,14 @@ class IndexPage(Resource):
             'GOOGLE_ANALYTICS_TRACKING_ID': ga_id
         }
 
-root = Resource()
+    getChild = getChildOrIndexPage
+
+
+class RootResource(Resource):
+    getChild = getChildOrIndexPage
+
+
+root = RootResource()
 root.putChild('', IndexPage())
 root.putChild('js', File(os.path.join(settings.STATIC_ROOT, 'js')))
 root.putChild('css', File(os.path.join(settings.STATIC_ROOT, 'css')))
