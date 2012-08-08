@@ -19,18 +19,21 @@ var lrcs = lrcs || {};
 
             this.$el = $('#content');
             this.$title = $('title');
-    
+
             this.views.search = new lrcs.views.Search;
+            this.views.lastfm = new lrcs.views.LastFm;
             this.views.main = new lrcs.views.Main;
-    
+
             this.$el.append(
                 this.views.search.el,
+                this.views.lastfm.el,
                 this.views.main.el
             );
         },
 
         index: function() {
             this.views.main.hide();
+            this.views.lastfm.setInactive();
             this.$title.text('lyri.sk');
         },
 
@@ -47,6 +50,7 @@ var lrcs = lrcs || {};
             this.navigate(track.path());
             this.views.main.setModel(track);
             this.views.main.show();
+            this.views.lastfm.setActive();
 
             this.$title.text(track.toString());
         }

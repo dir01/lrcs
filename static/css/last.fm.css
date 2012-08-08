@@ -5,6 +5,12 @@
     font-family: "Lucida Grande", "Lucida Sans Unicode", Geneva, sans-serif;
     font-size: 0.7em;
     position: relative;
+
+    transition: margin 0.2s;
+    -webkit-transition: margin 0.2s;
+    -moz-transition: margin 0.2s;
+    -ms-transition: margin 0.2s;
+    -o-transition: margin 0.2s;
 }
 
 #last-fm.active {
@@ -44,13 +50,35 @@
 
 #connect-last-fm.active {
     border-radius: 5px 5px 0 0;
+
+    transition: border-radius 0.2s, background 0.2s;
+    -webkit-transition: border-radius 0.2s, background 0.2s;
+    -moz-transition: border-radius 0.2s, background 0.2s;
+    -ms-transition: border-radius 0.2s, background 0.2s;
+    -o-transition: border-radius 0.2s, background 0.2s;
 }
 
 #last-fm-connection-prompt {
+    overflow: hidden;
+    height: 0;
+
+    transition: 0.2s;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -o-transition: 0.2s;
+}
+
+#last-fm-connection-prompt.active {
+    height: 3em
+}
+
+#last-fm-connection-box {
     padding: 0.5em;
     background: #ddd;
     border-radius: 0.5em;
     display: inline-block;
+    text-align: left;
 }
 
 #last-fm-username-prompt {
@@ -59,7 +87,6 @@
     margin: 0;
     border-radius: 5px;
     height: 2em;
-    line-height: 1em;
     vertical-align: top;
     width: 20em;
 }
@@ -75,7 +102,7 @@
     display: block;
     text-align: left;
     padding-left: 50px;
-    background-image: url('../img/last.fm.png');
+    background-image: url('../images/last.fm.png');
     background-repeat: no-repeat;
     background-position: 1em center;
 }
