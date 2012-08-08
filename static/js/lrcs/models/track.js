@@ -27,7 +27,8 @@ lrcs.models = lrcs.models || {};
         },
 
         path: function() {
-            return this.artist() + '/' + this.title();
+            return lrcs.tools.encodeURIPart(this.artist()) +
+                '/' + lrcs.tools.encodeURIPart(this.title());
         },
 
         toString: function() {
