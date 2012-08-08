@@ -14,6 +14,14 @@ var lrcs = lrcs || {};
 
         preventEvent: function(event) {
             event.preventDefault();
+        },
+
+        encodeURIPart: function(string) {
+            return string.split(' ').join('_');
+        },
+
+        decodeURIPart: function(string) {
+            return decodeURIComponent(string).split('_').join(' ');
         }
 
     }
