@@ -13,4 +13,7 @@ def main():
 
 if __name__ == '__main__':
     from utils import autoreload
-    autoreload.main(main, root=settings.PROJECT_ROOT, extensions=['.py', '.jinja2'])
+    autoreload.main(main,
+        root=settings.PROJECT_ROOT,
+        extensions=['.py', '.jinja2', '.jstmpl']
+    )
