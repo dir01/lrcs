@@ -2,6 +2,7 @@
 from twisted.internet.defer import inlineCallbacks
 from twisted.trial.unittest import TestCase
 from webserver.lyrics_gainers import LyricsWikiaComLyricsGainer, LyricsNotFound, AZLyricsLyricsGainer
+from utils.testing import assertInlineCallbackRaises
 
 
 class BaseSiteLyricsGainerTestCase(TestCase):
@@ -21,12 +22,8 @@ class TestLyricsWikiaComLyricsGainer(BaseSiteLyricsGainerTestCase):
 
     @inlineCallbacks
     def test_lcd_soundsystem_someone_great_raises_copyright_error(self):
-        exception_raised = False
-        try:
+        with assertInlineCallbackRaises(LyricsNotFound):
             lyrics = yield self.getLyrics('LCD Soundsystem', 'Someone Great')
-        except LyricsNotFound:
-            exception_raised = True
-        assert exception_raised
 
     @inlineCallbacks
     def test_bjork_hunter_exists(self):
@@ -40,11 +37,8 @@ class TestLyricsWikiaComLyricsGainer(BaseSiteLyricsGainerTestCase):
 
     @inlineCallbacks
     def test_queen_adreena_come_down(self):
-        try:
+        with assertInlineCallbackRaises(LyricsNotFound):
             lyrics = yield self.getLyrics('Queen Adreena', 'Come Down')
-        except LyricsNotFound:
-            return
-        assert False
 
     @inlineCallbacks
     def test_refused_worms_of_senses(self):
