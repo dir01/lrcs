@@ -2,8 +2,12 @@
 from twisted.internet.defer import inlineCallbacks
 from twisted.trial.unittest import TestCase
 from twisted.web.client import getPage
+
+from lyrics.grabbers.azlyrics_com import AZLyricsLyricsGainer
+from lyrics.grabbers.lyrics_wikia_com import LyricsWikiaComLyricsGainer
+from lyrics.grabbers.songmeanings_net import SongMeaningsLyricsGainer
+from lyrics.errors import LyricsNotFound
 from utils.testing import assertInlineCallbackRaises
-from webserver.lyrics_gainers import LyricsWikiaComLyricsGainer, LyricsNotFound, AZLyricsLyricsGainer, SongMeaningsLyricsGainer
 
 
 class BaseSiteLyricsGainerTestCase(TestCase):

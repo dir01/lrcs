@@ -6,17 +6,17 @@ from twisted.web.server import Site, NOT_DONE_YET
 from twisted.web.static import File
 from twisted.web.resource import Resource, NoResource
 
-from webserver.jinja2_environment import jinja2_env
-from webserver.lyrics_gainers import LyricsGainer
+from lyrics.manager import LyricsManager
 from settings import settings
 from utils.memoized import memoized
+from webserver.jinja2_environment import jinja2_env
 
 
 class Lyrics(Resource):
     def render_GET(self, request):
         artist = request.args.get('artist')[0]
         track = request.args.get('track')[0]
-        d = LyricsGainer(artist, track).get()
+        d = LyricsManager(artist, track).get()
         d.addCallback(partial(self.renderWhenLyricsReady, request))
         d.addErrback(partial(self.responseNotFound, request))
         return NOT_DONE_YET
