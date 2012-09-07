@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
 from twisted.internet.defer import inlineCallbacks
 from twisted.trial.unittest import TestCase
-from webserver.lyrics_gainers import LyricsWikiaComLyricsGainer, LyricsNotFound, AZLyricsLyricsGainer
+from twisted.web.client import getPage
 from utils.testing import assertInlineCallbackRaises
+from webserver.lyrics_gainers import LyricsWikiaComLyricsGainer, LyricsNotFound, AZLyricsLyricsGainer, SongMeaningsLyricsGainer
 
 
 class BaseSiteLyricsGainerTestCase(TestCase):
     TESTED_LYRICS_GAINER_CLASS = NotImplemented
 
     def getLyrics(self, artist, track):
-        return self.TESTED_LYRICS_GAINER_CLASS(artist, track).get()
+        return self.buildGainer(artist, track).get()
+
+    def buildGainer(self, artist, track):
+        return self.TESTED_LYRICS_GAINER_CLASS(artist, track)
 
 
 class TestLyricsWikiaComLyricsGainer(BaseSiteLyricsGainerTestCase):
@@ -64,3 +68,42 @@ class TestAZLyricsLyricsGainer(BaseSiteLyricsGainerTestCase):
         lyrics = yield self.getLyrics('Björk', 'Bachelorette')
         self.assertIn('I\'m a tree that grows hearts', lyrics)
 
+
+class TestSongMeaningsNetLyricsGainer(BaseSiteLyricsGainerTestCase):
+    TESTED_LYRICS_GAINER_CLASS = SongMeaningsLyricsGainer
+
+    @inlineCallbacks
+    def test_search_matches_artist_exactly(self):
+        # When searched artist matches exactly, url
+        # http://www.songmeanings.net/query/?query=cat%20power&type=artists
+        # redirects directly to the artist page on url
+        # http://www.songmeanings.net/artist/view/songs/7465/
+        lyrics = yield self.getLyrics('Cat Power', 'Silent Machine')
+        self.assertIn('the silent machine is eating me child', lyrics)
+
+    @inlineCallbacks
+    def test_artist_search_renders_search_page(self):
+        # There is more then 1 artist with name, for instance, Atmosphere on
+        # http://www.songmeanings.net/query/?query=atmosphere&type=artists
+        lyrics = yield self.getLyrics('Atmosphere', 'Like Today')
+        self.assertIn('I wanna kiss her mom just for having this daughter', lyrics)
+
+    @inlineCallbacks
+    def test_lyrics_page_is_empty(self):
+        with assertInlineCallbackRaises(LyricsNotFound):
+            lyrics = yield self.getLyrics('Cat Power', 'Cherokee')
+
+    @inlineCallbacks
+    def test_korn_twisted_transistor(self):
+        with assertInlineCallbackRaises(LyricsNotFound):
+            lyrics = yield self.getLyrics('koRn', 'twisted transistor')
+
+    @inlineCallbacks
+    def test_artist_page_has_more_popular_result_which_is_not_exact_match(self):
+        # If this test breaks, it's possible that Pink became more popular than Pink Floyd
+        # ... or wait, that's impossible
+        pink_search_url = 'http://www.songmeanings.net/query/?query=pink&type=artists'
+        pink_serp = yield getPage(pink_search_url)
+        selected_url = self.TESTED_LYRICS_GAINER_CLASS.getArtistSearchUrlByArtistsPage('pink', pink_serp)
+        pink_artist_url = 'http://www.songmeanings.net/artist/view/songs/70/'
+        self.assertEqual(pink_artist_url, selected_url)
