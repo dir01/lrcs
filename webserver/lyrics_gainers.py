@@ -37,6 +37,7 @@ class LyricsGainer(object):
         return [
             LyricsWikiaComLyricsGainer,
             AZLyricsLyricsGainer,
+            SongMeaningsLyricsGainer,
         ]
 
     @inlineCallbacks
