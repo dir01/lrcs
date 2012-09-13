@@ -6,6 +6,7 @@ from twisted.web.client import getPage
 from lyrics.grabbers.azlyrics_com import AZLyricsLyricsGainer
 from lyrics.grabbers.lyrics_wikia_com import LyricsWikiaComLyricsGainer
 from lyrics.grabbers.songmeanings_net import SongMeaningsLyricsGainer
+from lyrics.grabbers.vkontakte_ru import VkontakteLyricsGainer
 from lyrics.errors import LyricsNotFound
 from utils.testing import assertInlineCallbackRaises
 
@@ -111,3 +112,23 @@ class TestSongMeaningsNetLyricsGainer(BaseSiteLyricsGainerTestCase):
         selected_url = self.TESTED_LYRICS_GAINER_CLASS.getArtistSearchUrlByArtistsPage('pink', pink_serp)
         pink_artist_url = 'http://www.songmeanings.net/artist/view/songs/70/'
         self.assertEqual(pink_artist_url, selected_url)
+
+
+class TestVkontakteLyricsGainer(BaseSiteLyricsGainerTestCase):
+    TESTED_LYRICS_GAINER_CLASS = VkontakteLyricsGainer
+
+    @inlineCallbacks
+    def test_cat_power_silent_machine(self):
+        lyrics = yield self.getLyrics('Cat Power', 'Silent Machine')
+        # TODO: That should raise error since lyrics is junk rather than real lyrics
+
+    @inlineCallbacks
+    def test_krovostok_besporyadki(self):
+        lyrics = yield self.getLyrics('Кровосток', 'Беспорядки')
+        self.assertIn(u'и уже потушат Кремль', lyrics)
+
+    @inlineCallbacks
+    def test_short_lyrics_are_filtered(self):
+        with assertInlineCallbackRaises(LyricsNotFound):
+            lyrics = yield self.getLyrics('Кровосток', 'Белый ягуар')
+
