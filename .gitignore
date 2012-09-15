@@ -1,4 +1,5 @@
 *.pyc
+_trial_temp
 settings/local.py
 deploy/environments/*
 !deploy/environments/__init__.py
