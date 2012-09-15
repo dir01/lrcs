@@ -56,7 +56,7 @@ lrcs.views = lrcs.views || {};
             return this;
         },
 
-        renderConnected: function(t) {
+        renderConnected: function() {
             this.$el.html(
                 this.templates.connected(
                     this.templateVars()

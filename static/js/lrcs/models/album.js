@@ -6,11 +6,10 @@ lrcs.models = lrcs.models || {};
     lrcs.models.Album = Backbone.Model.extend({
 
         fetch: function() {
-            return lrcs.lastfm.getAlbumInfo(
-                this.artist(), this.title()
-            ).done(
-                this.set.bind(this),
-                this.trigger.bind(this, 'error')
+            var dfdAlbumInfo = lrcs.lastfm.getAlbumInfo(this.artist(), this.title());
+            return dfdAlbumInfo
+                .done(this.set.bind(this))
+                .fail(this.trigger.bind(this, 'error')
             );
         },
 

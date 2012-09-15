@@ -21,42 +21,27 @@ var lrcs = lrcs || {};
         },
 
         getRecentTracksInfo: function(username, count) {
-            return this._call(
-                'user.getRecentTracks',
-                {
-                    user: username,
-                    limit: count
-                }
-            ).pipe(this._processRecentTracks.bind(this));
+            var params = { user: username, limit: count };
+            var dfdRecentTracks = this._call('user.getRecentTracks', params);
+            return dfdRecentTracks.pipe(this._processRecentTracks.bind(this));
         },
 
         getTrackSearchQueryResults: function(query) {
-            return this._call(
-                'track.search',
-                {
-                    track: query
-                }
-            ).pipe(this._processTrackQueryResults.bind(this));
+            var params = { track: query };
+            var dfdTrackSearch = this._call('track.search', params);
+            return dfdTrackSearch.pipe(this._processTrackQueryResults.bind(this));
         },
 
         getTrackInfo: function(artist, title) {
-            return this._call(
-                'track.getInfo',
-                {
-                    artist: artist,
-                    track: title
-                }
-            ).pipe(this._processTrackInfo.bind(this));
+            var data = { artist: artist, track: title };
+            var dfdTrackInfo = this._call('track.getInfo', data);
+            return dfdTrackInfo.pipe(this._processTrackInfo.bind(this));
         },
 
         getAlbumInfo: function(artist, title) {
-            return this._call(
-                'album.getInfo',
-                {
-                    artist: artist,
-                    album: title
-                }
-            ).pipe(this._processAlbumInfo.bind(this));
+            var params = { artist: artist, album: title };
+            var dfdAlbumInfo = this._call('album.getInfo', params);
+            return dfdAlbumInfo.pipe(this._processAlbumInfo.bind(this));
         },
 
         /* Process results */
@@ -109,7 +94,7 @@ var lrcs = lrcs || {};
         },
 
         trackListData: function(data) {
-            var dataList = Sanitize.array(data);
+            var dataList = Sanitize._toArray(data);
             return _.map(dataList, Sanitize.trackData);
         },
 
@@ -117,7 +102,7 @@ var lrcs = lrcs || {};
             return new TrackDataSanitizer(data).getJSON()
         },
 
-        array: function(supposedlyArray) {
+        _toArray: function(supposedlyArray) {
             if (_.isArray(supposedlyArray))
                 return supposedlyArray
             if (typeof supposedlyArray === 'undefined')
@@ -125,7 +110,7 @@ var lrcs = lrcs || {};
             return [supposedlyArray];
         }
 
-    }
+    };
 
 
     function AlbumDataSanitizer(data) {
@@ -171,7 +156,7 @@ var lrcs = lrcs || {};
             return data;
         }
 
-    }
+    };
 
 
     function TrackDataSanitizer(data) {
