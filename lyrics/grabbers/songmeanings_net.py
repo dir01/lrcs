@@ -65,7 +65,7 @@ class SongMeaningsLyricsGainer(BaseSiteLyricsGainer):
         return urljoin(self.base_url, str(url))
 
     def getLyricsByLyricsPage(self, song_page):
-        soup = self._getSoup(song_page, 'div', {'id': 'lyricsblock2'})
+        soup = self._getSoup(song_page, 'div', {'id': 'textblock'})
         return self._removeHtmlTags(str(soup))
 
     def isArtistSearchPage(self, page):
