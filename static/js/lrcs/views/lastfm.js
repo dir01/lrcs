@@ -62,7 +62,7 @@ lrcs.views = lrcs.views || {};
             $.cookie(ACCOUNT_COOKIE_NAME, account);
             this.startWatching();
             this.pollTracks();
-            this.doAutoLoadLatest();
+            this.doAutoLoadNowPlaying();
             this.renderConnected();
         },
 
@@ -70,7 +70,7 @@ lrcs.views = lrcs.views || {};
             delete this.account;
             $.cookie(ACCOUNT_COOKIE_NAME, null);
             this.stopWatching();
-            this.dontAutoLoadLatest();
+            this.dontAutoLoadNowPlaying();
             this.renderConnectionForm();
         },
 
@@ -103,12 +103,12 @@ lrcs.views = lrcs.views || {};
             }
         },
 
-        doAutoLoadLatest: function() {
-            this.autoLoadLatest = true;
+        doAutoLoadNowPlaying: function() {
+            this.autoLoadNowPlaying = true;
         },
 
-        dontAutoLoadLatest: function() {
-            this.autoLoadLatest = false;
+        dontAutoLoadNowPlaying: function() {
+            this.autoLoadNowPlaying = false;
         },
 
         renderConnectionForm: function() {
