@@ -13,18 +13,23 @@ lrcs.views = lrcs.views || {};
 
         templateName: 'album-track-template',
 
-        initialize: function() {
+        initialize: function(options) {
             this.template = lrcs.tools.template(this.templateName);
-            this.model.on('change', this.render, this);
+
+            this.listenTo(this.model, 'change', this.render);
+            this.listenTo(lrcs.dispatch, 'navigate:track', this.toggleActive);
+
+            this.toggleActive(options.active ? this.model : null);
         },
 
         render: function() {
-            this.$el.html(
-                this.template(
-                    this.model.toJSON()
-                )
-            );
+            var html = this.template(this.model.toJSON());
+            this.$el.html(html);
             return this;
+        },
+
+        toggleActive: function(activeTrack) {
+            this.$el.toggleClass('active', this.model.isEqualTo(activeTrack));
         },
 
         activate: function(event) {
