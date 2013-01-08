@@ -30,16 +30,13 @@ lrcs.views = lrcs.views || {};
                 .append(spinner);
         },
 
-        setModel: function(newModel) {
-            var oldModel = this.model;
-            if (oldModel) {
-                oldModel.off('change', this.render, this);
-                oldModel.off('error', this.renderError, this);
-            }
+        setModel: function(model) {
+            this.stopListening();
+            this.model = model;
 
-            this.model = newModel;
-            this.model.on('change', this.render, this);
-            this.model.on('error', this.renderError, this);
+            this.listenTo(this.model, 'change', this.render);
+            this.listenTo(this.model, 'error', this.renderError);
+
             if (this.model.isStub())
                 this.model.fetch();
 
