@@ -42,7 +42,7 @@ var lrcs = lrcs || {};
                 artist: lrcs.tools.decodeURIPart(artist),
                 title: lrcs.tools.decodeURIPart(title)
             });
-            this.showTrack(track);
+            lrcs.dispatch.trigger('navigate:track', track);
         },
 
         showTrack: function(track) {
