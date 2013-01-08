@@ -25,6 +25,7 @@ lrcs.views = lrcs.views || {};
             if (track.isEqualTo(oldTrack))
                 return;
 
+            this.upcomingTrack = track;
             if (track.isStub())
                 track.fetch().then(this.showTrack.bind(this, track));
             else
@@ -32,6 +33,9 @@ lrcs.views = lrcs.views || {};
         },
 
         showTrack: function(track) {
+            if (track !== this.upcomingTrack)
+                return;
+
             var oldTrack = this.model;
             this.model = track;
 
