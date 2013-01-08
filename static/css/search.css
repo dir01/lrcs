@@ -35,7 +35,6 @@
 }
 
 .suggestions img {
-    float: left;
     vertical-align: top;
 }
 
@@ -50,6 +49,12 @@
 .suggestions a:hover,
 .suggestions li.selected a {
     background: #fffae6;
+}
+
+.suggestions .track-image {
+    float: left;
+    width: 34px;
+    height: 34px;
 }
 
 .suggestions .track-name {
