@@ -3,6 +3,9 @@ lrcs.views = lrcs.views || {};
 
 (function(lrcs) {
 
+    var ACCOUNT_COOKIE_NAME = 'last-fm-account',
+        WATCHING_TIMEOUT = 3000;
+
     lrcs.views.LastFm = Backbone.View.extend({
 
         tagName: 'div',
@@ -24,12 +27,22 @@ lrcs.views = lrcs.views || {};
             for (var name in this.templateNames)
                 this.templates[name] = lrcs.tools.template(this.templateNames[name]);
 
-            this.account = $.cookie('last-fm-account');
+            var account = $.cookie(ACCOUNT_COOKIE_NAME);
+            if (account)
+                this.setAccount(account);
+            else
+                this.renderConnectionForm();
+        },
 
-            if (this.account) {
-                this.renderConnected();
-            } else
-                this.renderLogIn();
+        // user actions
+
+        toggleConnectionForm: function(event) {
+            event.preventDefault();
+            var form = this.connectionForm();
+            form.toggleClass('active');
+            this.connectButton().toggleClass('active');
+            if (form.hasClass('active'))
+                this.usernameInput().focus();
         },
 
         connectAccount: function(event) {
@@ -37,31 +50,76 @@ lrcs.views = lrcs.views || {};
             this.setAccount(this.usernameInput().val());
         },
 
+        disconnectAccount: function(event) {
+            event.preventDefault();
+            this.unsetAccount();
+        },
+
+        // actual logic
+
         setAccount: function(account) {
             this.account = account;
-            $.cookie('last-fm-account', account);
+            $.cookie(ACCOUNT_COOKIE_NAME, account);
+            this.startWatching();
+            this.pollTracks();
+            this.doAutoLoadLatest();
             this.renderConnected();
         },
 
-        disconnectAccount: function(event) {
+        unsetAccount: function() {
             delete this.account;
-            $.cookie('last-fm-account', null);
-            this.renderLogIn();
+            $.cookie(ACCOUNT_COOKIE_NAME, null);
+            this.stopWatching();
+            this.dontAutoLoadLatest();
+            this.renderConnectionForm();
         },
 
-        renderLogIn: function() {
-            this.$el.html(
-                this.templates.logIn()
-            );
-            return this;
+        startWatching: function() {
+            if (this.timer)
+                return;
+            this.timer = setTimeout(WATCHING_TIMEOUT, this.pollTracks.bind(this));
+        },
+
+        pollTracks: function() {
+            lrcs.lastfm.getRecentTracksInfo(this.account, 1)
+                .done(this.updateTracks.bind(this));
+        },
+
+        updateTracks: function(tracksInfoList) {
+            var container = this.$('#last-fm-tracks');
+            container.html('');
+            _.each(tracksInfoList, function(trackInfo) {
+                var track = new lrcs.models.Track(trackInfo),
+                    view = new lrcs.views.LastFmRecentTrack({ model: track });
+                view.render();
+                container.append(view.el);
+            })
+        },
+
+        stopWatching: function() {
+            if (this.timer) {
+                clearTimeout(this.timer);
+                delete this.timer;
+            }
+        },
+
+        doAutoLoadLatest: function() {
+            this.autoLoadLatest = true;
+        },
+
+        dontAutoLoadLatest: function() {
+            this.autoLoadLatest = false;
+        },
+
+        renderConnectionForm: function() {
+            var html = this.templates.logIn()
+            this.$el.html(html);
         },
 
         renderConnected: function() {
-            this.$el.html(
-                this.templates.connected(
-                    this.templateVars()
-                )
-            );
+            var templateVars = this.templateVars(),
+                html = this.templates.connected(templateVars);
+            this.$el.html(html);
         },
 
         templateVars: function() {
@@ -80,15 +138,6 @@ lrcs.views = lrcs.views || {};
             this.$el.removeClass('active');
             this.connectButton().removeClass('active');
             this.connectionForm().removeClass('active');
-        },
-
-        toggleConnectionForm: function(event) {
-            event.preventDefault();
-            var form = this.connectionForm();
-            form.toggleClass('active');
-            this.connectButton().toggleClass('active');
-            if (form.hasClass('active'))
-                this.usernameInput().focus();
         },
 
         connectionForm: function() {

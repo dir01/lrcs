@@ -6,3 +6,5 @@
         <a href="http://last.fm/user/<%= username %>" id="last-fm-username-link" class="last-fm-button"><%= username %></a>
     </div>
 </div>
+
+<ul id="last-fm-tracks"></ul>
