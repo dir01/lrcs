@@ -42,11 +42,12 @@ var lrcs = lrcs || {};
                 artist: lrcs.tools.decodeURIPart(artist),
                 title: lrcs.tools.decodeURIPart(title)
             });
-            lrcs.dispatch.trigger('navigate:track', track);
+            lrcs.dispatch.trigger('navigate:track', track, true);
         },
 
-        showTrack: function(track) {
-            this.navigate(track.path())
+        showTrack: function(track, dontNavigate) {
+            if (!dontNavigate)
+                this.navigate(track.path())
             this.views.main.setModel(track);
             this.views.main.show();
             this.views.lastfm.setActive();
