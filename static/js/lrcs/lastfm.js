@@ -17,7 +17,7 @@ var lrcs = lrcs || {};
         /* Exposed interface */
 
         getLastPlayedTrackInfo: function(username) {
-            return this.getRecentTracks(username, 1).pipe(_.first);
+            return this.getRecentTracksInfo(username, 1).pipe(_.first);
         },
 
         getRecentTracksInfo: function(username, count) {
