@@ -86,14 +86,29 @@ lrcs.views = lrcs.views || {};
         },
 
         updateTracks: function(tracksInfoList) {
-            var container = this.$('#last-fm-tracks');
-            container.html('');
-            _.each(tracksInfoList, function(trackInfo) {
-                var track = new lrcs.models.Track(trackInfo),
-                    view = new lrcs.views.LastFmRecentTrack({ model: track });
-                view.render();
-                container.append(view.el);
-            })
+            var tracklist = new lrcs.collections.Tracklist(tracksInfoList);
+            this.$('#last-fm-tracks').empty();
+            this.updateTracklist(tracklist);
+            if (this.autoLoadNowPlaying)
+                lrcs.dispatch.trigger('navigate:track', tracklist.first());
+        },
+
+        updateTracklist: function(tracklist) {
+            this.clear();
+            tracklist.each(this.addTrack.bind(this));
+        },
+
+        clear: function() {
+            _.invoke(this.trackViews, 'remove');
+            this.trackViews = [];
+        },
+
+        addTrack: function(track) {
+            var view = new lrcs.views.LastFmRecentTrack({ model: track });
+            view.render();
+
+            this.$('#last-fm-tracks').append(view.el);
+            this.trackViews.push(view);
         },
 
         stopWatching: function() {
