@@ -111,6 +111,10 @@
     float: right;
 }
 
+#last-fm-controls .last-fm-button {
+    margin-left: 5px;
+}
+
 #last-fm-tracks {
     margin: 0.5em 0;
     text-align: left;
