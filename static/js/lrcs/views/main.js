@@ -22,15 +22,17 @@ lrcs.views = lrcs.views || {};
 
         setModel: function(track) {
             var oldTrack = this.model;
-
             if (track.isEqualTo(oldTrack))
                 return;
 
-            if (track.isStub()) {
-                track.fetch().then(this.setModel.bind(this, track));
-                return;
-            }
+            if (track.isStub())
+                track.fetch().then(this.showTrack.bind(this, track));
+            else
+                this.showTrack(track);
+        },
 
+        showTrack: function(track) {
+            var oldTrack = this.model;
             this.model = track;
 
             this.updateLyrics();
