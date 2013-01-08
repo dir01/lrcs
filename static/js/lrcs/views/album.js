@@ -27,13 +27,11 @@ lrcs.views = lrcs.views || {};
                 .append(spinner);
         },
 
-        setModel: function(newModel) {
-            var oldModel = this.model;
-            if (oldModel)
-                oldModel.off('change', this.render, this);
+        setModel: function(model) {
+            this.stopListening();
+            this.model = model;
 
-            this.model = newModel;
-            this.model.on('change', this.render, this);
+            this.listenTo(this.model, 'change', this.render);
             if (this.model.isStub())
                 this.model.fetch();
 
@@ -65,25 +63,29 @@ lrcs.views = lrcs.views || {};
         },
 
         renderInsides: function() {
+            var templateVars = this.templateVars(),
+                html = this.template(templateVars);
             this.$el.removeClass('waiting');
-            this.$container.html(
-                this.template(
-                    this.templateVars()
-                )
-            );
-            this.model.tracklist()
-                .each(
-                    this.addTrack.bind(this)
-                );
+            this.$container.html(html);
+            this.updateTracklist(this.model.tracklist());
+        },
+
+        updateTracklist: function(tracklist) {
+            this.clear();
+            tracklist.each(this.addTrack.bind(this));
+        },
+
+        clear: function() {
+            _.invoke(this.trackViews, 'remove');
+            this.trackViews = [];
         },
 
         addTrack: function(track) {
             var view = new lrcs.views.AlbumTrack({ model: track });
-            view.on('activate', this.select, this);
-            this.$('ol')
-                .append(
-                    view.render().el
-                );
+            view.render();
+
+            this.$('ol').append(view.el);
+            this.trackViews.push(view);
         },
 
         templateVars: function() {
