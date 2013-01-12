@@ -4,7 +4,7 @@ lrcs.views = lrcs.views || {};
 (function(lrcs) {
 
     var ACCOUNT_COOKIE_NAME = 'last-fm-account',
-        WATCHING_TIMEOUT = 3000;
+        WATCHING_INTERVAL = 3000;
 
     lrcs.views.LastFm = Backbone.View.extend({
 
@@ -77,7 +77,14 @@ lrcs.views = lrcs.views || {};
         startWatching: function() {
             if (this.timer)
                 return;
-            this.timer = setTimeout(WATCHING_TIMEOUT, this.pollTracks.bind(this));
+            this.timer = setInterval(this.pollTracks.bind(this), WATCHING_INTERVAL);
+        },
+
+        stopWatching: function() {
+            if (this.timer) {
+                clearInterval(this.timer);
+                delete this.timer;
+            }
         },
 
         pollTracks: function() {
@@ -112,13 +119,6 @@ lrcs.views = lrcs.views || {};
 
             this.$('#last-fm-tracks').append(view.el);
             this.trackViews.push(view);
-        },
-
-        stopWatching: function() {
-            if (this.timer) {
-                clearTimeout(this.timer);
-                delete this.timer;
-            }
         },
 
         doAutoLoadNowPlaying: function() {
