@@ -172,7 +172,8 @@ var lrcs = lrcs || {};
                 album: this.getAlbum(),
                 albumArtist: this.getAlbumArtist(),
                 image: this.getImage(),
-                isNowPlaying: this.getIsNowPlaying()
+                isNowPlaying: this.getIsNowPlaying(),
+                timePlayed: this.getTimePlayed()
             }
         },
 
@@ -220,6 +221,13 @@ var lrcs = lrcs || {};
 
         getIsNowPlaying: function() {
             return Boolean(this.data['@attr'] && this.data['@attr'].nowplaying == 'true')
+        },
+
+        getTimePlayed: function() {
+            var date = this.data.date;
+            if (typeof date === 'undefined')
+                return date;
+            return date.uts ? Number(date.uts) : date.uts; 
         }
 
     }
