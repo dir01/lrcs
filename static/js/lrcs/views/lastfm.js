@@ -96,11 +96,7 @@ lrcs.views = lrcs.views || {};
             var tracklist = new lrcs.collections.Tracklist(tracksInfoList);
             this.$('#last-fm-tracks').empty();
             this.updateTracklist(tracklist);
-            if (this.autoLoadNowPlaying) {
-                var track = tracklist.first();
-                if (track.isNowPlaying())
-                    lrcs.dispatch.trigger('navigate:track', track);
-            }
+            this.navigateToTrackIfNeeded(tracklist.first());
         },
 
         updateTracklist: function(tracklist) {
@@ -119,6 +115,11 @@ lrcs.views = lrcs.views || {};
 
             this.$('#last-fm-tracks').append(view.el);
             this.trackViews.push(view);
+        },
+
+        navigateToTrackIfNeeded: function(track) {
+            if (this.autoLoadNowPlaying && track.isNowPlaying())
+                lrcs.dispatch.trigger('navigate:track', track);
         },
 
         doAutoLoadNowPlaying: function() {
