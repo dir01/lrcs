@@ -89,8 +89,11 @@ lrcs.views = lrcs.views || {};
             var tracklist = new lrcs.collections.Tracklist(tracksInfoList);
             this.$('#last-fm-tracks').empty();
             this.updateTracklist(tracklist);
-            if (this.autoLoadNowPlaying)
-                lrcs.dispatch.trigger('navigate:track', tracklist.first());
+            if (this.autoLoadNowPlaying) {
+                var track = tracklist.first();
+                if (track.isNowPlaying())
+                    lrcs.dispatch.trigger('navigate:track', track);
+            }
         },
 
         updateTracklist: function(tracklist) {

@@ -45,6 +45,10 @@ lrcs.models = lrcs.models || {};
                 this.title() == track.title();
         },
 
+        isNowPlaying: function() {
+            return this.get('isNowPlaying');
+        },
+
         hasSameAlbumAs: function(track) {
             return Boolean(track) &&
                 this.albumArtist() == track.albumArtist() &&
