@@ -88,20 +88,32 @@ lrcs.views = lrcs.views || {};
         },
 
         pollTracks: function() {
-            lrcs.lastfm.getRecentTracksInfo(this.account, 1)
-                .done(this.updateTracks.bind(this));
+            if (this.isActive())
+                lrcs.lastfm.getLastPlayedTrackInfo(this.account)
+                    .done(this.updateTracksFromOneTrackInfo.bind(this));
+            else
+                lrcs.lastfm.getRecentTracksInfo(this.account, 10)
+                    .done(this.updateTracksFromListOfInfo.bind(this));
         },
 
-        updateTracks: function(tracksInfoList) {
+        updateTracksFromOneTrackInfo: function(trackInfo) {
+            if (!this.isActive())
+                return;
+
+            var track = new lrcs.models.Track(trackInfo);
+            this.clear();
+            this.addTrack(track);
+            this.navigateToTrackIfNeeded(track);
+        },
+
+        updateTracksFromListOfInfo: function(tracksInfoList) {
+            if (this.isActive())
+                return;
+
             var tracklist = new lrcs.collections.Tracklist(tracksInfoList);
-            this.$('#last-fm-tracks').empty();
-            this.updateTracklist(tracklist);
-            this.navigateToTrackIfNeeded(tracklist.first());
-        },
-
-        updateTracklist: function(tracklist) {
             this.clear();
             tracklist.each(this.addTrack.bind(this));
+            this.navigateToTrackIfNeeded(tracklist.first());
         },
 
         clear: function() {
@@ -145,6 +157,10 @@ lrcs.views = lrcs.views || {};
             return {
                 username: this.account
             }
+        },
+
+        isActive: function() {
+            return this.$el.hasClass('active');
         },
 
         setActive: function() {
