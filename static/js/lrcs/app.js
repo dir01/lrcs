@@ -51,6 +51,12 @@ var lrcs = lrcs || {};
             this.views.main.setModel(track);
             this.views.main.show();
             this.views.lastfm.setActive();
+
+            if (track.isNowPlaying())
+                this.views.lastfm.doAutoLoadNowPlaying();
+            else
+                this.views.lastfm.dontAutoLoadNowPlaying();
+
             this.$title.text(track.toString());
         }
     
