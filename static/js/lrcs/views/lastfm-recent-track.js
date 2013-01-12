@@ -20,9 +20,18 @@ lrcs.views = lrcs.views || {};
         },
 
         render: function() {
-            var html = this.template(this.model.toJSON());
+            var templateVars = this.templateVars(),
+                html = this.template(templateVars);
             this.$el.html(html);
             return this;
+        },
+
+        templateVars: function() {
+            return {
+                artist: this.model.artist(),
+                title: this.model.title(),
+                timePlayed: this.model.timePlayed()
+            }
         },
 
         activate: function(event) {

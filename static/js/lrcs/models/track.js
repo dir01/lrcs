@@ -51,6 +51,17 @@ lrcs.models = lrcs.models || {};
                 this.albumName() == track.albumName();
         },
 
+        timePlayed: function() {
+            if (this.isNowPlaying())
+                return "playing now";
+            else {
+                var timePlayed = this.get('timePlayed');
+                if (timePlayed)
+                    return moment.unix(timePlayed).fromNow();
+            }
+            return "never";
+        },
+
         lyrics: function() {
             return this._lyrics = this._lyrics || this._createLyrics();
         },
