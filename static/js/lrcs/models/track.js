@@ -45,10 +45,6 @@ lrcs.models = lrcs.models || {};
                 this.title() == track.title();
         },
 
-        isNowPlaying: function() {
-            return this.get('isNowPlaying');
-        },
-
         hasSameAlbumAs: function(track) {
             return Boolean(track) &&
                 this.albumArtist() == track.albumArtist() &&
@@ -81,6 +77,10 @@ lrcs.models = lrcs.models || {};
 
         albumName: function() {
             return this.get('album');
+        },
+
+        isNowPlaying: function() {
+            return this.get('isNowPlaying');
         },
 
         _createLyrics: function() {
