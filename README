@@ -9,3 +9,33 @@ Installation
 
 3. Deploy
     `VIRTUAL_ENV="/wherever/you/want/virtualenv/to/be/installed/" fab activate:local deploy`
+
+
+Running backend tests
+=====================
+
+  To run functional tests, while in virtualenv, run
+
+    $ trial lyrics.grabbers.functional_tests
+
+
+Running frontend tests
+======================
+
+1. Install js test driver
+
+    $ brew install js-test-driver
+
+2. Start JSTD server
+
+    $ js-test-driver --port 9876
+
+3. In target browsers, open [http://localhost:9876]
+
+4. Compile CoffeScript tests to JavaScript
+
+    $ coffee --compile --output static/js/tests/compiled static/js/tests/*.coffee
+
+5. From projects root folder, containing `jsTestDriver.conf`, run
+
+    $ js-test-driver --reset --tests all

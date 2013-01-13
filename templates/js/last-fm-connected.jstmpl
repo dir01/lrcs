@@ -1,0 +1,8 @@
+<div id="last-fm-header">
+    <div id="last-fm-controls">
+        <button type="button" class="last-fm-button last-fm-control" id="disconnect-last-fm">Log out</button>
+    </div>
+    <div id="last-fm-username-box">
+        <a href="http://last.fm/user/<%= username %>" id="last-fm-username-link" class="last-fm-button" target="_blank"><%= username %></a>
+    </div>
+</div>

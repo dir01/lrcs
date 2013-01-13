@@ -3,70 +3,78 @@ var lrcs = lrcs || {};
 
 (function(lrcs) {
 
-    lrcs.LastFmAPIAdapter = function(options) {
-        this.options = _.extend(this.options, options);
-        this.api = this.getLastFmApi();
-    }
+    lrcs.lastfm = {
 
-    lrcs.LastFmAPIAdapter.prototype = {
-
-        options: {
+        defaults: {
             apiKey: null
         },
 
-        getLastPlayedTrackInfo: function(username, callback){
-            this.api.user.getRecentTracks({
-                user: username,
-                limit: 1
-            }, {
-                success: this.processLastPlayedTrack.bind(this, callback)
+        initialize: function(options) {
+            this.options = _.extend({}, this.defaults, options);
+            this.api = this._createAPI();
+        },
+
+        /* Exposed interface */
+
+        getRecentTracksInfo: function(username, count) {
+            var params = { user: username, limit: count };
+            var dfdRecentTracks = this._call('user.getRecentTracks', params);
+            return dfdRecentTracks.pipe(this._processRecentTracks.bind(this, count));
+        },
+
+        getTrackSearchQueryResults: function(query) {
+            var params = { track: query };
+            var dfdTrackSearch = this._call('track.search', params);
+            return dfdTrackSearch.pipe(this._processTrackQueryResults.bind(this));
+        },
+
+        getTrackInfo: function(artist, title) {
+            var data = { artist: artist, track: title };
+            var dfdTrackInfo = this._call('track.getInfo', data);
+            return dfdTrackInfo.pipe(this._processTrackInfo.bind(this));
+        },
+
+        getAlbumInfo: function(artist, title) {
+            var params = { artist: artist, album: title };
+            var dfdAlbumInfo = this._call('album.getInfo', params);
+            return dfdAlbumInfo.pipe(this._processAlbumInfo.bind(this));
+        },
+
+        /* Process results */
+
+        _processRecentTracks: function(count, data) {
+            var sanitizedData = Sanitize.trackListData(data.recenttracks.track),
+                theRightAmountOfData = sanitizedData.slice(0, count);
+            return theRightAmountOfData;
+        },
+
+        _processTrackQueryResults: function(data) {
+            return Sanitize.trackListData(data.results.trackmatches.track);
+        },
+
+        _processTrackInfo: function(data) {
+            return Sanitize.trackData(data.track);
+        },
+
+        _processAlbumInfo: function(data) {
+            return Sanitize.albumData(data.album);
+        },
+
+        /* Generic call function that uses jQuery.Deferred */
+
+        _call: function(fdef, params) {
+            var dfd = new $.Deferred(),
+                classAndMethod = fdef.split('.'),
+                justClass = classAndMethod[0],
+                method = classAndMethod[1];
+            this.api[justClass][method](params, {
+                success: function(response) { dfd.resolve(response); },
+                error: function(response) { dfd.reject(response); }
             });
+            return dfd.promise();
         },
 
-        queryTracks: function(query, callback) {
-            this.api.track.search({
-                track: query
-            }, {
-                success: this.proccessTracksQueryResults.bind(this, callback)
-            });
-        },
-
-        getTrackInfo: function(artist, title, callback) {
-            this.api.track.getInfo({
-                artist: artist,
-                track: title
-            }, {
-                success: this.processTrackInfoResult.bind(this, callback)
-            });
-        },
-
-        getAlbumInfo: function(artist, title, callback) {
-            this.api.album.getInfo({
-                artist: artist,
-                album: title
-            }, {
-                success: this.processAlbumInfoResult.bind(this, callback)
-            });
-        },
-
-        proccessTracksQueryResults: function(callback, data) {
-            callback(Sanitize.trackListData(data.results.trackmatches.track))
-        },
-
-        processLastPlayedTrack: function(callback, data) {
-            var tracks = Sanitize.array(data.recenttracks.track);
-            callback(Sanitize.trackData(tracks[0]));
-        },
-
-        processTrackInfoResult: function(callback, data) {
-            callback(Sanitize.trackData(data.track));
-        },
-
-        processAlbumInfoResult: function(callback, data) {
-            callback(Sanitize.albumData(data.album));
-        },
-
-        getLastFmApi: function() {
+        _createAPI: function() {
             var cache = new LastFMCache();
             var lastfm = new LastFM({
                 apiKey: this.options.apiKey,
@@ -77,15 +85,14 @@ var lrcs = lrcs || {};
 
     }
 
-
-    Sanitize = {
+    var Sanitize = {
 
         albumData: function(data) {
-            return new AlbumDataSanitizer(data).getJSON()
+            return new AlbumDataSanitizer(data).getJSON();
         },
 
         trackListData: function(data) {
-            var dataList = Sanitize.array(data);
+            var dataList = Sanitize._toArray(data);
             return _.map(dataList, Sanitize.trackData);
         },
 
@@ -93,7 +100,7 @@ var lrcs = lrcs || {};
             return new TrackDataSanitizer(data).getJSON()
         },
 
-        array: function(supposedlyArray) {
+        _toArray: function(supposedlyArray) {
             if (_.isArray(supposedlyArray))
                 return supposedlyArray
             if (typeof supposedlyArray === 'undefined')
@@ -101,7 +108,7 @@ var lrcs = lrcs || {};
             return [supposedlyArray];
         }
 
-    }
+    };
 
 
     function AlbumDataSanitizer(data) {
@@ -143,10 +150,11 @@ var lrcs = lrcs || {};
 
         addMissingTrackData: function(data) {
             data.album = this.getTitle();
+            data.albumArtist = this.getArtist();
             return data;
         }
 
-    }
+    };
 
 
     function TrackDataSanitizer(data) {
@@ -160,13 +168,23 @@ var lrcs = lrcs || {};
                 title: this.getTitle(),
                 artist: this.getArtist(),
                 album: this.getAlbum(),
+                albumArtist: this.getAlbumArtist(),
                 image: this.getImage(),
-                isNowPlaying: this.getIsNowPlaying()
+                isNowPlaying: this.getIsNowPlaying(),
+                timePlayed: this.getTimePlayed()
             }
         },
 
         getTitle: function() {
             return this.data.name;
+        },
+
+        getAlbumArtist: function() {
+            var album = this.data.album;
+            if (typeof album === 'object')
+                if (typeof album.artist === 'string')
+                    return album.artist;
+            return this.getArtist();
         },
 
         getArtist: function() {
@@ -201,6 +219,13 @@ var lrcs = lrcs || {};
 
         getIsNowPlaying: function() {
             return Boolean(this.data['@attr'] && this.data['@attr'].nowplaying == 'true')
+        },
+
+        getTimePlayed: function() {
+            var date = this.data.date;
+            if (typeof date === 'undefined')
+                return date;
+            return date.uts ? Number(date.uts) : date.uts; 
         }
 
     }
