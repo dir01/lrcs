@@ -21,6 +21,16 @@ body {
 	position: relative;
 	padding-top: 1em;
 	padding-bottom: 3em;
+
+	transition: padding 0.2s;
+	-webkit-transition: padding 0.2s;
+	-moz-transition: padding 0.2s;
+	-ms-transition: padding 0.2s;
+	-o-transition: padding 0.2s;
+}
+
+body.index #base {
+	padding-top: 4em;
 }
 
 button, input {
