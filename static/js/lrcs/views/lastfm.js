@@ -3,7 +3,7 @@ lrcs.views = lrcs.views || {};
 
 (function(lrcs) {
 
-    var ACCOUNT_COOKIE_NAME = 'last-fm-account',
+    var USERNAME_COOKIE_NAME = 'last-fm-username',
         WATCHING_INTERVAL = 3000;
 
     lrcs.views.LastFm = Backbone.View.extend({
@@ -11,73 +11,47 @@ lrcs.views = lrcs.views || {};
         tagName: 'div',
         id: 'last-fm',
 
-        events: {
-            'click #connect-last-fm': 'toggleConnectionForm',
-            'submit #last-fm-connection-prompt': 'connectAccount',
-            'click #disconnect-last-fm': 'disconnectAccount'
-        },
-
-        templateNames: {
-            logIn: 'last-fm-login-template',
-            connected: 'last-fm-connected-template'
-        },
-
         initialize: function() {
-            this.templates = {};
-            for (var name in this.templateNames)
-                this.templates[name] = lrcs.tools.template(this.templateNames[name]);
-
-            var account = $.cookie(ACCOUNT_COOKIE_NAME);
-            if (account)
-                this.setAccount(account);
+            var username = $.cookie(USERNAME_COOKIE_NAME);
+            if (username)
+                this.logInto(username);
             else
-                this.renderConnectionForm();
+                this.logout();
         },
 
-        // user actions
+        logInto: function(username) {
+            this.username = username;
+            $.cookie(USERNAME_COOKIE_NAME, username);
 
-        toggleConnectionForm: function(event) {
-            event.preventDefault();
-            var form = this.connectionForm();
-            form.toggleClass('active');
-            this.connectButton().toggleClass('active');
-            if (form.hasClass('active'))
-                this.usernameInput().focus();
-        },
+            var controlsView = new lrcs.views.LastFmControls({ username: this.username });
+            this.listenTo(controlsView, 'disconnect', this.logout);
+            this.switchToView(controlsView);
 
-        connectAccount: function(event) {
-            event.preventDefault();
-            this.setAccount(this.usernameInput().val());
-        },
+            this.recentTracklist = controlsView.getRecentTracklistCollection();
+            this.listenTo(this.recentTracklist, 'reset', this.navigateToLatestTrackIfNeeded);
 
-        disconnectAccount: function(event) {
-            event.preventDefault();
-            this.unsetAccount();
-        },
-
-        // actual logic
-
-        setAccount: function(account) {
-            this.account = account;
-            $.cookie(ACCOUNT_COOKIE_NAME, account);
+            this.setAutoLoadNowPlaying(true);
             this.startWatching();
-            this.pollTracks();
-            this.doAutoLoadNowPlaying();
-            this.renderConnected();
         },
 
-        unsetAccount: function() {
-            delete this.account;
-            $.cookie(ACCOUNT_COOKIE_NAME, null);
+        logout: function() {
+            if (this.username)
+                delete this.username;
+            $.cookie(USERNAME_COOKIE_NAME, null);
+
+            var loginView = new lrcs.views.LastFmLoginForm;
+            this.listenTo(loginView, 'connect', this.logInto);
+            this.switchToView(loginView);
+
+            this.setAutoLoadNowPlaying(false);
             this.stopWatching();
-            this.dontAutoLoadNowPlaying();
-            this.renderConnectionForm();
         },
 
         startWatching: function() {
             if (this.timer)
                 return;
-            this.timer = setInterval(this.pollTracks.bind(this), WATCHING_INTERVAL);
+            this.timer = setInterval(this.pollRecentTracks.bind(this), WATCHING_INTERVAL);
+            this.pollRecentTracks();
         },
 
         stopWatching: function() {
@@ -87,104 +61,33 @@ lrcs.views = lrcs.views || {};
             }
         },
 
-        pollTracks: function() {
-            if (this.isActive())
-                lrcs.lastfm.getLastPlayedTrackInfo(this.account)
-                    .done(this.updateTracksFromOneTrackInfo.bind(this));
-            else
-                lrcs.lastfm.getRecentTracksInfo(this.account, 10)
-                    .done(this.updateTracksFromListOfInfo.bind(this));
-        },
-
-        updateTracksFromOneTrackInfo: function(trackInfo) {
-            if (!this.isActive())
+        pollRecentTracks: function() {
+            if (!this.isLoggedIn())
                 return;
 
-            var track = new lrcs.models.Track(trackInfo);
-            this.clear();
-            this.addTrack(track);
-            this.navigateToTrackIfNeeded(track);
+            this.recentTracklist.fetch();
         },
 
-        updateTracksFromListOfInfo: function(tracksInfoList) {
-            if (this.isActive())
-                return;
-
-            var tracklist = new lrcs.collections.Tracklist(tracksInfoList);
-            this.clear();
-            tracklist.each(this.addTrack.bind(this));
-            this.navigateToTrackIfNeeded(tracklist.first());
-        },
-
-        clear: function() {
-            _.invoke(this.trackViews, 'remove');
-            this.trackViews = [];
-        },
-
-        addTrack: function(track) {
-            var view = new lrcs.views.LastFmRecentTrack({ model: track });
-            view.render();
-
-            this.$('#last-fm-tracks').append(view.el);
-            this.trackViews.push(view);
-        },
-
-        navigateToTrackIfNeeded: function(track) {
+        navigateToLatestTrackIfNeeded: function() {
+            var track = this.recentTracklist.first();
             if (this.autoLoadNowPlaying && track.isNowPlaying())
                 lrcs.dispatch.trigger('navigate:track', track);
         },
 
-        doAutoLoadNowPlaying: function() {
-            this.autoLoadNowPlaying = true;
+        switchToView: function(view) {
+            if (this.activeView)
+                this.activeView.remove();
+            this.activeView = view;
+            view.render();
+            this.$el.append(view.el);
         },
 
-        dontAutoLoadNowPlaying: function() {
-            this.autoLoadNowPlaying = false;
+        setAutoLoadNowPlaying: function(autoLoadNowPlaying) {
+            this.autoLoadNowPlaying = autoLoadNowPlaying;
         },
 
-        renderConnectionForm: function() {
-            var html = this.templates.logIn()
-            this.$el.html(html);
-        },
-
-        renderConnected: function() {
-            var templateVars = this.templateVars(),
-                html = this.templates.connected(templateVars);
-            this.$el.html(html);
-        },
-
-        templateVars: function() {
-            return {
-                username: this.account
-            }
-        },
-
-        isActive: function() {
-            return this.$el.hasClass('active');
-        },
-
-        setActive: function() {
-            this.$el.addClass('active');
-            this.connectButton().removeClass('active');
-            this.connectionForm().removeClass('active');
-        },
-
-        setInactive: function() {
-            this.$el.removeClass('active');
-            this.connectButton().removeClass('active');
-            this.connectionForm().removeClass('active');
-        },
-
-        connectionForm: function() {
-            return this.$('#last-fm-connection-prompt');
-        },
-
-        usernameInput: function() {
-            return this.$('#last-fm-username-prompt');
-        },
-
-        connectButton: function() {
-            return this.$('#connect-last-fm');
+        isLoggedIn: function() {
+            return Boolean(this.username);
         }
 
     });

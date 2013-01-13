@@ -33,7 +33,6 @@ var lrcs = lrcs || {};
 
         visitIndex: function() {
             this.views.main.hide();
-            this.views.lastfm.setInactive();
             this.$title.text('lyri.sk');
         },
 
@@ -50,12 +49,7 @@ var lrcs = lrcs || {};
                 this.navigate(track.path())
             this.views.main.setModel(track);
             this.views.main.show();
-            this.views.lastfm.setActive();
-
-            if (track.isNowPlaying())
-                this.views.lastfm.doAutoLoadNowPlaying();
-            else
-                this.views.lastfm.dontAutoLoadNowPlaying();
+            this.views.lastfm.setAutoLoadNowPlaying(track.isNowPlaying());
 
             this.$title.text(track.toString());
         }
