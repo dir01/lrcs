@@ -82,6 +82,16 @@ lrcs.views = lrcs.views || {};
             this.$el.append(view.el);
         },
 
+        expand: function() {
+            this.$el.removeClass('collapsed');
+        },
+
+        collapse: function() {
+            this.$el.addClass('collapsed');
+            if (!this.isLoggedIn())
+                this.activeView.collapse();
+        },
+
         setAutoLoadNowPlaying: function(autoLoadNowPlaying) {
             this.autoLoadNowPlaying = autoLoadNowPlaying;
         },

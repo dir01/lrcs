@@ -126,6 +126,18 @@ body.index #last-fm {
     min-height: 2em;
     border: 1px solid #bbb;
     border-radius: 5px;
+    overflow: hidden;
+    height: auto;
+
+    transition: height 0.2s;
+    -webkit-transition: height 0.2s;
+    -moz-transition: height 0.2s;
+    -ms-transition: height 0.2s;
+    -o-transition: height 0.2s;
+}
+
+#last-fm.collapsed #last-fm-tracks {
+    height: 2em;
 }
 
 #last-fm-tracks li {

@@ -47,6 +47,7 @@ var lrcs = lrcs || {};
 
         showIndex: function() {
             this.views.main.hide();
+            this.views.lastfm.expand();
 
             this.$title.text('lyri.sk');
             this.$body.addClass('index');
@@ -59,6 +60,7 @@ var lrcs = lrcs || {};
             this.views.main.setModel(track);
             this.views.main.show();
             this.views.lastfm.setAutoLoadNowPlaying(track.isNowPlaying());
+            this.views.lastfm.collapse();
 
             this.$title.text(track.toString());
             this.$body.removeClass('index');

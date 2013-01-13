@@ -36,6 +36,10 @@ lrcs.views = lrcs.views || {};
             this.$el.html(html);
         },
 
+        expand: function() {
+            return;
+        },
+
         collapse: function() {
             this.connectButton().removeClass('active');
             this.connectionForm().removeClass('active');
