@@ -15,6 +15,7 @@ var lrcs = lrcs || {};
             lrcs.lastfm.initialize({ apiKey: lrcs.tools.getMeta('last-fm-api-key') });
             lrcs.dispatch = _.clone(Backbone.Events);
 
+            lrcs.dispatch.on('navigate:index', this.showIndex, this);
             lrcs.dispatch.on('navigate:track', this.showTrack, this);
 
             this.$el = $('#content');
@@ -32,8 +33,7 @@ var lrcs = lrcs || {};
         },
 
         visitIndex: function() {
-            this.views.main.hide();
-            this.$title.text('lyri.sk');
+            lrcs.dispatch.trigger('navigate:index');
         },
 
         visitTrackPage: function(artist, title) {
@@ -44,9 +44,16 @@ var lrcs = lrcs || {};
             lrcs.dispatch.trigger('navigate:track', track, true);
         },
 
+        showIndex: function() {
+            this.views.main.hide();
+
+            this.$title.text('lyri.sk');
+        },
+
         showTrack: function(track, dontNavigate) {
             if (!dontNavigate)
                 this.navigate(track.path())
+
             this.views.main.setModel(track);
             this.views.main.show();
             this.views.lastfm.setAutoLoadNowPlaying(track.isNowPlaying());
