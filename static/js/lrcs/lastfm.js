@@ -16,10 +16,6 @@ var lrcs = lrcs || {};
 
         /* Exposed interface */
 
-        getLastPlayedTrackInfo: function(username) {
-            return this.getRecentTracksInfo(username, 1).pipe(_.first);
-        },
-
         getRecentTracksInfo: function(username, count) {
             var params = { user: username, limit: count };
             var dfdRecentTracks = this._call('user.getRecentTracks', params);
