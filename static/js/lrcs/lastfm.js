@@ -23,7 +23,7 @@ var lrcs = lrcs || {};
         getRecentTracksInfo: function(username, count) {
             var params = { user: username, limit: count };
             var dfdRecentTracks = this._call('user.getRecentTracks', params);
-            return dfdRecentTracks.pipe(this._processRecentTracks.bind(this));
+            return dfdRecentTracks.pipe(this._processRecentTracks.bind(this, count));
         },
 
         getTrackSearchQueryResults: function(query) {
@@ -46,8 +46,10 @@ var lrcs = lrcs || {};
 
         /* Process results */
 
-        _processRecentTracks: function(data) {
-            return Sanitize.trackListData(data.recenttracks.track);
+        _processRecentTracks: function(count, data) {
+            var sanitizedData = Sanitize.trackListData(data.recenttracks.track),
+                theRightAmountOfData = sanitizedData.slice(0, count);
+            return theRightAmountOfData;
         },
 
         _processTrackQueryResults: function(data) {
