@@ -14,8 +14,8 @@ def assertInlineCallbackRaises(exc_type):
     except exc_type:
         pass
     except Exception, e:
-        raise AssertionError('Expected exception %s, not %s' % (
-            exc_type.__name__, type(e)
+        raise AssertionError('Expected exception %s, not %s %s' % (
+            exc_type.__name__, type(e), str(e)
         ))
     else:
         raise AssertionError('%s was not raised' % exc_type.__name__)
