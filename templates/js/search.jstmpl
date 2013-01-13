@@ -1,0 +1,3 @@
+<div>
+    <input type="text" autocomplete="off" autofocus="autofocus" id="search-field" placeholder="Type here and see what happens"/>
+</div>

@@ -1,105 +1,118 @@
+* {
+	box-sizing: border-box;
+}
 
-body, html {
-    height: 100%;
+html, body {
+	width: 100%;
+	height: 100%;
 }
 
 body {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 14pt;
-    background: #DDDDDD;
-    padding-top: 6.4em; /* height of the search thingie */
-    padding-bottom: 3.8em; /* height of the footer */
-    padding-right: 2em; /* for kicks */
-    padding-left: 0;
-    box-sizing: border-box;
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 12pt;
+	background: #eee;
 }
 
-.side-box {
-    display: block;
-    font-size: 0.6em;
-    padding: 1em 2em 1em 1.5em;
-    color: black;
-    text-shadow: 1px 1px 0 white;
-    font-weight: bolder;
-    border-left: 2px solid;
+#base {
+	width: 750px;
+	margin: 0 auto;
+	min-height: 100%;
+	text-align: center;
+	position: relative;
+	padding-top: 1em;
+	padding-bottom: 3em;
+
+	transition: padding 0.2s;
+	-webkit-transition: padding 0.2s;
+	-moz-transition: padding 0.2s;
+	-ms-transition: padding 0.2s;
+	-o-transition: padding 0.2s;
 }
 
-.hidden { display: none; }
-
-
-/* Main layout */
-
-#big-bad-box {
-    position: relative;
-    display: table;
-    vertical-align: top;
-    height: 100%;
-    width: 100%;
+body.index #base {
+	padding-top: 4em;
 }
 
-#side-box {
-    display: table-cell;
-    vertical-align: top;
-    height: 100%;
+button, input {
+	font-size: inherit;
+	font-family: inherit;
+}
+
+.waiter {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: rgba(255, 255, 255, 0.5);
+	display: none;
+}
+
+.waiting .waiter {
+	display: block;
+}
+
+.waiter .spinner {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	top: 100px;
+	left: 50%;
+	margin-left: -100px;
+	background: url('../images/spinner.png') no-repeat left top;
+	animation: rotate360 linear 1s infinite;
+	-webkit-animation: rotate360 linear 1s infinite;
+	-moz-animation: rotate360 linear 1s infinite;
+	-ms-animation: rotate360 linear 1s infinite;
+	-o-animation: rotate360 linear 1s infinite;
+}
+
+.waiter .spinner.small {
+	width: 100px;
+	height: 100px;
+	top: 75px;
+	margin-left: -50px;
+	background-image: url('../images/spinner-small.png');
+}
+
+.waiter .spinner.tiny {
+	width: 16px;
+	height: 16px;
+	top: 3px;
+	margin-left: -8px;
+	background-image: url('../images/spinner-tiny.png');
+}
+
+header {
+	margin: 1em auto;
 }
 
 #logo {
-    position: relative;
-    top: -3.2em;
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-weight: bolder;
+	letter-spacing: 0px;
+	font-size: 2.5em;
 }
 
-#content-box {
-    display: table-cell;
-    vertical-align: top;
-    width: 100%;
-    height: 100%;
+#motto {
+	font-style: oblique;
+	font-size: 0.8em;
+	margin-top: 0.5em;
+	opacity: 0.5;
 }
 
-#footer-box {
-    padding: 1em 0;
+#main {
+	margin: 1em auto;
+	height: 400px;
+	display: table;
 }
 
-
-/* Content layout */
-
-#search-box {
-    padding: 0 0 1em 0;
-    margin-top: -5.4em;
+footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	font-size: 0.8em;
+	color: #999;
+	padding: 1em 0;
 }
-
-#main-box {
-    position: relative;
-    display: table;
-    table-layout: fixed;
-    vertical-align: top;
-    width: 100%;
-    height: 100%;
-}
-
-#lyrics-box {
-    position: relative;
-    display: table-cell;
-    vertical-align: top;
-    height: 100%;
-    overflow: hidden;
-}
-
-#lyrics-inner-box {
-    position: relative;
-    display: table;
-    height: 100%;
-    width: 100%;
-    vertical-align: top;
-}
-
-#sidebar-box {
-    display: table-cell;
-    vertical-align: top;
-    width: 27.5%;
-    height: 100%;
-}
-

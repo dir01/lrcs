@@ -1,0 +1,5 @@
+<hgroup>
+    <h1><%- title %></h1>
+    <h2>by <%- artist %></h2>
+</hgroup>
+<%= lyrics %>

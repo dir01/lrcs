@@ -1,0 +1,8 @@
+<p>
+    <button type="button" class="last-fm-button" id="connect-last-fm">Connect your <img src="/images/last.fm.png" alt="last.fm"/> account</button>
+</p>
+<form action="" method="post" id="last-fm-connection-prompt">
+    <p id="last-fm-connection-box">
+        <input type="text" id="last-fm-username-prompt" placeholder="Your username"/> <input type="submit" class="last-fm-button" value="Connect">
+    </p>
+</form>

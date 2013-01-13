@@ -1,104 +1,64 @@
-
 var lrcs = lrcs || {};
 lrcs.views = lrcs.views || {};
 
 (function(lrcs) {
 
-    lrcs.views.SearchFormView = Backbone.View.extend({
+    lrcs.views.Search = Backbone.View.extend({
 
-        track: null,
+        tagName: 'form',
+        id: 'search',
 
-        events: {
-            'submit': 'preventSubmit'
-        },
-
-        initialize: function() {
-            this.$query = this.$('#id_query');
-            this.bindAutocomplete();
-        },
-
-        setTrack: function(track) {
-            this.track = track;
-            this.render();
-        },
-
-        bindAutocomplete: function() {
-            this.autocomplete = new lrcs.SearchAutocomplete({
-                input: this.$query,
-                template: lrcs.tools.template('autocomplete-item-template'),
-                callback: this.selectTrack.bind(this)
-            });
-        },
-
-        selectTrack: function(track) {
-            if (!track.isEmpty())
-                this.trigger('track-searched', track);
-        },
-
-        preventSubmit: function(event) {
-            event.preventDefault();
-        },
-
-        render: function() {
-            if (!this.track || this.track.isEmpty())
-                this.renderEmpty();
-            else
-                this.renderQuery();
-        },
-
-        renderEmpty: function() {
-            this.$query.val('');
-        },
-
-        renderQuery: function() {
-            this.$query.val(this.track.toString())
-        }
-
-    });
-
-
-    lrcs.SearchAutocomplete = function() { this.initialize.apply(this, arguments); }
-    lrcs.SearchAutocomplete.prototype = {
-
-        defaults: {
-            input: null,
-            callback: function() {}
-        },
+        templateName: 'search-template',
 
         initialize: function(options) {
-            this.options = _.extend(this.defaults, options);
+            this.template = lrcs.tools.template(this.templateName);
+            this.render();
 
-            this.options.input.suggester({
-                autoSelectFirst: true,
-                restrictToSuggestions: true,
-                fetch: this.fetch.bind(this),
-                parse: this.parse.bind(this),
-                renderItem: this.renderItem.bind(this),
-                select: this.select.bind(this)
-            });
+            this.$input = this.$('input')
+                .suggester({
+                    autoSelectFirst: true,
+                    fetch: this.fetch.bind(this),
+                    parse: this.parse.bind(this),
+                    renderItem: this.renderItem.bind(this),
+                    select: this.select.bind(this)
+                });
+
+            this.$el.submit(lrcs.tools.preventEvent);
+        },
+
+        render: function(lyricsModel) {
+            this.$el.html(
+                this.template
+            );
+            return this;
         },
 
         fetch: function(query, done) {
-            lrcs.music.searchTracks(query, done);
+            lrcs.lastfm.getTrackSearchQueryResults(query).done(done);
         },
 
-        parse: function(response) {
-            return _.invoke(response, 'toJSON');
+        parse: function(items) {
+            return _.map(items, this.createTrackStub);
         },
 
         renderItem: function(item) {
-            return $(this.options.template(item));
+            var view = new lrcs.views.SearchResult({ model: item });
+            return view.render().el;
+        },
+        
+        select: function(item) {
+            this.$input.val(item.toString());
+            lrcs.dispatch.trigger('navigate:track', item);
         },
 
-        select: function(item) {
-            this.options.input.val(item.artist + ' - ' + item.title);
-            lrcs.music.getTrack(
-                item.artist,
-                item.title,
-                this.options.callback
-            );
+        createTrackStub: function(data) {
+            return new lrcs.models.Track({
+                artist: data.artist,
+                title: data.title,
+                image: data.image
+            });
         }
 
-    }
+    });
 
 })(lrcs);
