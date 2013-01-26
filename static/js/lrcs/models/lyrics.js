@@ -12,7 +12,7 @@ lrcs.models = lrcs.models || {};
         queryString: function() {
             return $.param({
                 artist: this.artist(),
-                track: this.track()
+                track: this.saneTrackName()
             });
         },
 
@@ -43,6 +43,16 @@ lrcs.models = lrcs.models || {};
 
         artist: function() {
             return this.get('artist');
+        },
+
+        saneTrackName: function() {
+            return this.track()
+                .replace(/\(feat\..+?\)/, '')
+                .replace(/\(ft .+?\)/, '')
+                .replace(/ft\. .+?/, '')
+                .replace(/\(ft\. .+?\)/, '')
+                .replace(/\s+/, '')
+                .trim();
         },
 
         track: function() {
