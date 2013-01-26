@@ -1,1 +1,1 @@
-<li><span class="time"><%- timePlayed %></span><a href="/<%= artist %>/<%= title %>"><%- artist %> &mdash; <%- title %></a></li>
+<li><span class="time"><%- timePlayed %></span><a href="<%= path %>"><%- artist %> &mdash; <%- title %></a></li>

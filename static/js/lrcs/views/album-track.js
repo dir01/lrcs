@@ -23,9 +23,17 @@ lrcs.views = lrcs.views || {};
         },
 
         render: function() {
-            var html = this.template(this.model.toJSON());
+            var templateVars = this.templateVars(),
+                html = this.template(templateVars);
             this.$el.html(html);
             return this;
+        },
+
+        templateVars: function() {
+            return {
+                path: this.model.path(),
+                title: this.model.title()
+            }
         },
 
         toggleActive: function(activeTrack) {

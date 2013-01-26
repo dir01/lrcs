@@ -28,6 +28,7 @@ lrcs.views = lrcs.views || {};
 
         templateVars: function() {
             return {
+                path: this.model.path(),
                 artist: this.model.artist(),
                 title: this.model.title(),
                 timePlayed: this.model.timePlayed()
