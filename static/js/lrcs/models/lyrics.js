@@ -47,11 +47,11 @@ lrcs.models = lrcs.models || {};
 
         saneTrackName: function() {
             return this.track()
-                .replace(/\(feat\..+?\)/, '')
-                .replace(/\(ft .+?\)/, '')
-                .replace(/ft\. .+?/, '')
-                .replace(/\(ft\. .+?\)/, '')
-                .replace(/\s+/, '')
+                .replace(/\([Ff]eat\..+?\)/, '')
+                .replace(/\([Ff]t .+?\)/, '')
+                .replace(/[Ff]t\. .+?/, '')
+                .replace(/\([Ff]t\. .+?\)/, '')
+                .replace(/\s{2,}/g, ' ')
                 .trim();
         },
 
