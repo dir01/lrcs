@@ -22,13 +22,16 @@ var LyricsView = Backbone.View.extend({
         for (var name in this.templateNames)
             this.templates[name] = Tools.template(this.templateNames[name]);
 
-        this.$container = $('<div></div>').appendTo(this.el);
         this.$waiter = this.createWaiter().appendTo(this.el);
+        this.$container = this.createContainer().appendTo(this.el);
     },
 
     createWaiter: function() {
-        // TODO: Move this shit to Tools
-        return $('<div class="waiter"><div class="spinner"></div></div>');
+        return Tools.createWaiter();
+    },
+
+    createContainer: function() {
+        return $('<div></div>');
     },
 
     setLyrics: function(lyrics) {

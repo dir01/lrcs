@@ -2,8 +2,9 @@ define([
     'lib/jquery',
     'lib/underscore',
     'lib/backbone',
+    'core/tools',
     'views/lastfm-recent-track'
-], function($, _, Backbone, LastFmRecentTrackView) {
+], function($, _, Backbone, Tools, LastFmRecentTrackView) {
 
 'use strict';
 
@@ -16,8 +17,8 @@ var LastFmRecentTracklistView = Backbone.View.extend({
     initialize: function(options) {
         this.trackViews = [];
 
-        this.$list = this.createList().appendTo(this.el);
         this.$waiter = this.createWaiter().appendTo(this.el);
+        this.$list = this.createList().appendTo(this.el);
 
         this.listenTo(this.collection, 'reset', this.render);
 
@@ -25,7 +26,7 @@ var LastFmRecentTracklistView = Backbone.View.extend({
     },
 
     createWaiter: function() {
-        return $('<div class="waiter"><div class="spinner tiny"></div></div>');
+        return Tools.createWaiter('tiny');
     },
 
     createList: function() {

@@ -19,15 +19,18 @@ var AlbumView = Backbone.View.extend({
     initialize: function() {
         this.template = Tools.template(this.templateName);
 
-        this.$container = $('<div></div>').appendTo(this.el);
         this.$waiter = this.createWaiter().appendTo(this.el);
+        this.$container = this.createContainer().appendTo(this.el);
 
         this.hide();
     },
 
     createWaiter: function() {
-        // TODO: Move this shit to Tools
-        return $('<div class="waiter"><div class="spinner small"></div></div>');
+        return Tools.createWaiter('small');
+    },
+
+    createContainer: function() {
+        return $('<div></div>');
     },
 
     setAlbum: function(album) {

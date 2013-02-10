@@ -20,6 +20,10 @@ var Tools = {
         event.preventDefault();
     },
 
+    createWaiter: function(additionalClassName){
+        return $('<div class="waiter"><div class="spinner ' + (additionalClassName || '') + '"></div></div>');
+    },
+
     encodeURIPart: function(string) {
         return string.split(' ').join('_');
     },
