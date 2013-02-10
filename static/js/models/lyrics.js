@@ -1,8 +1,9 @@
 define([
     'lib/jquery',
     'lib/underscore',
-    'lib/backbone'
-], function($, _, Backbone) {
+    'lib/backbone',
+    'core/tools'
+], function($, _, Backbone, Tools) {
 
 'use strict';
 
@@ -16,7 +17,7 @@ var Lyrics = Backbone.Model.extend({
     getQueryString: function() {
         // TODO: sanitize artist too
         return $.param({
-            artist: this.getArtist(),
+            artist: this.getSaneArtist(),
             track: this.getSaneTrackTitle()
         });
     },
@@ -44,14 +45,16 @@ var Lyrics = Backbone.Model.extend({
         return prettyText;
     },
 
+    getSaneArtist: function() {
+        var artist = this.getArtist();
+        artist = Tools.removeFeats(artist);
+        return Tools.cleanSpaces(artist);
+    },
+
     getSaneTrackTitle: function() {
-        return this.getTrackTitle()
-            .replace(/\([Ff]eat\..+?\)/, '')
-            .replace(/\([Ff]t .+?\)/, '')
-            .replace(/[Ff]t\. .+?/, '')
-            .replace(/\([Ff]t\. .+?\)/, '')
-            .replace(/\s{2,}/g, ' ')
-            .trim();
+        var trackTitle = this.getTrackTitle();
+        trackTitle = Tools.removeFeats(trackTitle);
+        return Tools.cleanSpaces(trackTitle);
     },
 
     hasText: function() {

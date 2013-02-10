@@ -62,6 +62,18 @@ var Tools = {
             options.domain  ? '; domain=' + options.domain : '',
             options.secure  ? '; secure' : ''
         ].join(''));
+    },
+
+    removeFeats: function(str) {
+        return str
+            .replace(/\([Ff]eat\..+?\)/, '')
+            .replace(/\([Ff]t\.? .+?\)/, '')
+            .replace(/ [Ff]eat\.? .+?/, '')
+            .replace(/ [Ff]t\.? .+?/, '');
+    },
+
+    cleanSpaces: function(str) {
+        return str.replace(/\s{2,}/g, ' ').trim();
     }
 
 }
