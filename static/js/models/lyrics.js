@@ -15,7 +15,6 @@ var Lyrics = Backbone.Model.extend({
     },
 
     getQueryString: function() {
-        // TODO: sanitize artist too
         return $.param({
             artist: this.getSaneArtist(),
             track: this.getSaneTrackTitle()
