@@ -54,6 +54,7 @@ var Lyrics = Backbone.Model.extend({
     getSaneTrackTitle: function() {
         var trackTitle = this.getTrackTitle();
         trackTitle = Tools.removeFeats(trackTitle);
+        trackTitle = Tools.removeExplicitness(trackTitle);
         return Tools.cleanSpaces(trackTitle);
     },
 

@@ -72,6 +72,12 @@ var Tools = {
             .replace(/ [Ff]t\.? .+?/, '');
     },
 
+    removeExplicitness: function(str) {
+        return str
+            .replace(/ [\[\(][eE]xplicit.*?[\)\]]/, '')
+            .replace(/ [\[\(][cC]lean.*?[\)\]]/, '');
+    },
+
     cleanSpaces: function(str) {
         return str.replace(/\s{2,}/g, ' ').trim();
     }
