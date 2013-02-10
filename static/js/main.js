@@ -35,12 +35,13 @@ require.config({
 
         'lib/jquery.suggester': ['lib/jquery'],
         'lib/md5': [],
-
     }
 
 });
 
 require(['lib/jquery', 'lib/backbone', 'core/app'], function($, Backbone, App) {
+
+    // TODO: some kind of progress indication for loading
 
     $(function() {
 
