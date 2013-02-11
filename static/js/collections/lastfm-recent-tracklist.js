@@ -34,7 +34,7 @@ var LastFmRecentTracklist = Tracklist.extend({
         var promise = LastFm.getRecentTracksInfo(this.username, this.number);
         promise.done(options.success);
         promise.fail(options.error);
-        return promise.promise();
+        return promise;
     }
 
 });
