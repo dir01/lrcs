@@ -8,6 +8,9 @@ define([
 'use strict';
 
 
+var NUMBER_OF_RECENT_TRACKS_TO_SHOW = 15;
+
+
 var LastFmControlsView = Backbone.View.extend({
 
     events: {
@@ -23,7 +26,11 @@ var LastFmControlsView = Backbone.View.extend({
 
         this.username = options.username;
 
-        this.recentTracklist = new LastFmRecentTracklist([], { username: this.username, number: 10 });
+        this.recentTracklist = new LastFmRecentTracklist([], {
+            username: this.username,
+            number: NUMBER_OF_RECENT_TRACKS_TO_SHOW
+        });
+
         this.views.recentTracklist = new LastFmRecentTracklistView({ collection: this.recentTracklist });
     },
 
