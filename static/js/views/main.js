@@ -24,6 +24,8 @@ var MainView = Backbone.View.extend({
             this.views.lyrics.el,
             this.views.album.el
         );
+
+        this.views.album.hide();
     },
 
     setTrack: function(track) {

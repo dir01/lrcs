@@ -32,8 +32,6 @@ var AlbumView = Backbone.View.extend({
             this.views.header.el,
             this.views.tracklist.el
         );
-
-        this.hide();
     },
 
     createWaiter: function() {
