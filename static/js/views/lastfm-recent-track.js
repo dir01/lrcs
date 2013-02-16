@@ -43,7 +43,7 @@ var LastFmRecentTrackView = Backbone.View.extend({
 
     activate: function(event) {
         event.preventDefault();
-        Dispatch.trigger('navigate:track', this.track);
+        Dispatch.visitTrack(this.track);
     }
 
 });

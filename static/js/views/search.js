@@ -58,7 +58,7 @@ var SearchView = Backbone.View.extend({
     
     selectItem: function(track) {
         this.$input.val(track.toString());
-        Dispatch.trigger('navigate:track', track);
+        Dispatch.visitTrack(track);
     },
 
     createTrackStub: function(data) {

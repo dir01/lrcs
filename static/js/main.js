@@ -45,8 +45,7 @@ require(['lib/jquery', 'lib/backbone', 'core/app'], function($, Backbone, App) {
 
     $(function() {
 
-        var app = new App;
-        Backbone.history.start({ pushState: true });
+        new App({ el: document });
 
     });
 

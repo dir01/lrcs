@@ -83,7 +83,7 @@ var LastFmView = Backbone.View.extend({
     navigateToLatestTrackIfNeeded: function() {
         var track = this.recentTracklist.first();
         if (this.autoLoadNowPlaying && track.isNowPlaying())
-            Dispatch.trigger('navigate:track', track);
+            Dispatch.visitTrack(track);
     },
 
     switchToView: function(view) {

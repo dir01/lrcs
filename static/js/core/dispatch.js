@@ -6,7 +6,22 @@ define([
 'use strict';
 
 
-var Dispatch = _.clone(Backbone.Events);
+var Dispatch = _.extend({}, Backbone.Events, {
+
+	NAVIGATE: {
+		INDEX: 'navigate:index',
+		TRACK_PAGE: 'navigate:track'
+	},
+
+	visitIndex: function() {
+		this.trigger(this.NAVIGATE.INDEX);
+	},
+
+	visitTrack: function(track) {
+		this.trigger(this.NAVIGATE.TRACK_PAGE, track);
+	}
+
+});
 
 return Dispatch;
 

@@ -2,6 +2,7 @@ define([
     'lib/underscore',
     'lib/jquery',
     'lib/backbone',
+    'core/router',
     'core/dispatch',
     'core/lastfm',
     'core/tools',
@@ -9,18 +10,17 @@ define([
     'views/search',
     'views/lastfm',
     'views/main'
-], function(_, $, Backbone, Dispatch, LastFm, Tools, Track, SearchView, LastFmView, MainView) {
+], function(_, $, Backbone, Router, Dispatch, LastFm, Tools, Track, SearchView, LastFmView, MainView) {
 
 'use strict';
 
 
-var App = Backbone.Router.extend({
+var App = Backbone.View.extend({
 
     title: 'Lyri.sk',
 
-    routes: {
-        '': 'visitIndex',
-        ':artist/:title': 'visitTrackPage',
+    events: {
+        'click #logo a': 'goToIndex'
     },
 
     views: {},
@@ -30,46 +30,33 @@ var App = Backbone.Router.extend({
     initialize: function() {
         LastFm.initialize({ apiKey: Tools.getMeta('last-fm-api-key') });
 
-        Dispatch.on('navigate:index', this.showIndex, this);
-        Dispatch.on('navigate:track', this.showTrack, this);
-
-        this.$el = $('#content');
-        this.$title = $('title');
-        this.$body = $('body');
-
-        $('#logo a').click(this.logoClicked.bind(this));
+        this.$content = this.$('#content');
+        this.$title = this.$('title');
+        this.$body = this.$('body');
 
         this.views.search = new SearchView;
         this.views.lastfm = new LastFmView;
         this.views.main = new MainView;
 
-        this.$el.append(
+        this.$content.append(
             this.views.search.el,
             this.views.lastfm.el,
             this.views.main.el
         );
+
+        this.listenTo(Dispatch, Dispatch.NAVIGATE.INDEX, this.showIndex);
+        this.listenTo(Dispatch, Dispatch.NAVIGATE.TRACK_PAGE, this.showTrack);
+
+        this.router = new Router();
+        Backbone.history.start({ pushState: true });
     },
 
-    logoClicked: function(event) {
+    goToIndex: function(event) {
         event.preventDefault();
-        this.visitIndex();
-    },
-
-    visitIndex: function() {
-        Dispatch.trigger('navigate:index');
-    },
-
-    visitTrackPage: function(artist, title) {
-        var track = new Track({
-            artist: Tools.decodeURIPart(artist),
-            title: Tools.decodeURIPart(title)
-        });
-        Dispatch.trigger('navigate:track', track, true);
+        Dispatch.visitIndex();
     },
 
     showIndex: function() {
-        this.navigate('/');
-
         this.views.main.hide();
         this.views.lastfm.setAutoLoadNowPlaying(this.firstVisit);
         this.views.lastfm.expand();
@@ -80,10 +67,7 @@ var App = Backbone.Router.extend({
         this.firstVisit = false;
     },
 
-    showTrack: function(track, dontNavigate) {
-        if (!dontNavigate)
-            this.navigate(track.getPath())
-
+    showTrack: function(track) {
         this.views.main.setTrack(track);
         this.views.main.show();
         this.views.lastfm.setAutoLoadNowPlaying(track.isNowPlaying());
