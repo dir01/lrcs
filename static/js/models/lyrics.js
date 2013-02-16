@@ -34,10 +34,14 @@ var Lyrics = Backbone.Model.extend({
             return;
 
         var uglyText = this.getText(),
-            paragraphs = uglyText.split('\n\n'),
+            textWithProperNewLines = uglyText.replace('\r', ''),
+            paragraphs = textWithProperNewLines.split('\n\n'),
             filteredParagraphs = _.compact(paragraphs),
-            taggedParagraphs = _.map(filteredParagraphs, function(item) {
-                return item.replace(/\n/g, '<br/>');
+            taggedParagraphs = _.map(filteredParagraphs, function(paragraph) {
+                var lines = paragraph.split('\n'),
+                    trimmedLines = _.invoke(lines, 'trim'),
+                    filteredLines = _.compact(trimmedLines);
+                return filteredLines.join('<br/>');
             }),
             prettyText = '<p>' + taggedParagraphs.join('</p><p>') + '</p>';
 
