@@ -62,8 +62,8 @@ var AlbumView = Backbone.View.extend({
         else if (this.album.isEmpty())
             this.hide();
         else if (!this.isVisible()) {
-            this.show();
             this.renderInsides();
+            this.show();
         } else
             this.slideIn(
                 this.renderUpdated.bind(this)
