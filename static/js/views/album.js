@@ -10,6 +10,10 @@ define([
 'use strict';
 
 
+var SLIDE_ANIMATION_DURATION = 250, // ms
+    SLIDE_DISTANCE = 250; // px
+
+
 var AlbumView = Backbone.View.extend({
 
     tagName: 'aside',
@@ -81,9 +85,9 @@ var AlbumView = Backbone.View.extend({
 
     slideIn: function(next) {
         this.$el.animate({
-            left: -250
+            left: -SLIDE_DISTANCE
         }, {
-            duration: 250,
+            duration: SLIDE_ANIMATION_DURATION,
             complete: next
         });
     },
@@ -92,7 +96,7 @@ var AlbumView = Backbone.View.extend({
         this.$el.animate({
             left: 0
         }, {
-            duration: 250,
+            duration: SLIDE_ANIMATION_DURATION,
             complete: next
         });
     },
