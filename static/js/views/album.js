@@ -3,8 +3,9 @@ define([
     'lib/underscore',
     'lib/backbone',
     'core/tools',
-    'views/album-track'
-], function($, _, Backbone, Tools, AlbumTrackView) {
+    'views/album-header',
+    'views/album-tracklist'
+], function($, _, Backbone, Tools, AlbumHeaderView, AlbumTrackListView) {
 
 'use strict';
 
@@ -14,13 +15,19 @@ var AlbumView = Backbone.View.extend({
     tagName: 'aside',
     id: 'album',
 
-    templateName: 'album-template',
+    views: {},
 
     initialize: function() {
-        this.template = Tools.template(this.templateName);
-
         this.$waiter = this.createWaiter().appendTo(this.el);
         this.$container = this.createContainer().appendTo(this.el);
+
+        this.views.header = new AlbumHeaderView();
+        this.views.tracklist = new AlbumTrackListView();
+
+        this.$container.append(
+            this.views.header.el,
+            this.views.tracklist.el
+        );
 
         this.hide();
     },
@@ -67,38 +74,9 @@ var AlbumView = Backbone.View.extend({
     },
 
     renderInsides: function() {
-        var templateVars = this.getTemplateVars(),
-            html = this.template(templateVars);
-        this.$container.html(html);
+        this.views.header.setAlbum(this.album);
+        this.views.tracklist.setTracklist(this.album.getTracklist());
         this.setWaiting(false);
-        this.updateTracklist(this.album.getTracklist());
-    },
-
-    updateTracklist: function(tracklist) {
-        // TODO: move this into a separate view god damn it
-        this.clear();
-        tracklist.each(this.addTrack.bind(this));
-    },
-
-    clear: function() {
-        _.invoke(this.trackViews, 'remove');
-        this.trackViews = [];
-    },
-
-    addTrack: function(track) {
-        var view = new AlbumTrackView({ track: track });
-        view.render();
-
-        this.$('ol').append(view.el);
-        this.trackViews.push(view);
-    },
-
-    getTemplateVars: function() {
-        return {
-            image: this.album.getImage(),
-            artist: this.album.getArtist(),
-            title: this.album.getTitle()
-        }
     },
 
     slideIn: function(next) {
