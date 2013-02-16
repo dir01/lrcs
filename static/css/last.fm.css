@@ -20,6 +20,8 @@ body.index #last-fm {
 
 #last-fm-header {
     overflow: hidden;
+    z-index: 50;
+    position: relative;
 }
 
 .last-fm-button {
@@ -28,7 +30,6 @@ body.index #last-fm {
     color: white;
     padding: 0.5em 1em;
     margin: 0;
-    border-radius: 5px;
     cursor: pointer;
     height: 2em;
     line-height: 1em;
@@ -49,13 +50,11 @@ body.index #last-fm {
 /* Prompt */
 
 #connect-last-fm.active {
-    border-radius: 5px 5px 0 0;
-
-    transition: border-radius 0.2s, background 0.2s;
-    -webkit-transition: border-radius 0.2s, background 0.2s;
-    -moz-transition: border-radius 0.2s, background 0.2s;
-    -ms-transition: border-radius 0.2s, background 0.2s;
-    -o-transition: border-radius 0.2s, background 0.2s;
+    transition: background 0.2s;
+    -webkit-transition: background 0.2s;
+    -moz-transition: background 0.2s;
+    -ms-transition: background 0.2s;
+    -o-transition: background 0.2s;
 }
 
 #last-fm-connection-prompt {
@@ -76,7 +75,6 @@ body.index #last-fm {
 #last-fm-connection-box {
     padding: 0.5em;
     background: #ddd;
-    border-radius: 0.5em;
     display: inline-block;
     text-align: left;
 }
@@ -85,7 +83,6 @@ body.index #last-fm {
 	border: 1px solid #AAA;
     padding: 0 1em;
     margin: 0;
-    border-radius: 5px;
     height: 2em;
     vertical-align: top;
     width: 20em;
@@ -117,15 +114,15 @@ body.index #last-fm {
 
 #last-fm-tracks-container {
     position: relative;
+    z-index: 10;
+    margin-top: -1px;
 }
 
 #last-fm-tracks {
-    margin: 0.5em 0;
     text-align: left;
     line-height: 2em;
     min-height: 2em;
     border: 1px solid #bbb;
-    border-radius: 5px;
     overflow: hidden;
     height: auto;
 
@@ -147,13 +144,6 @@ body.index #last-fm {
 
 #last-fm-tracks li:first-child {
     border-top: none;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-#last-fm-tracks li:last-child {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 #last-fm-tracks a {
