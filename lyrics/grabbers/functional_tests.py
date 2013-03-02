@@ -131,5 +131,5 @@ class TestVkontakteLyricsGainer(BaseSiteLyricsGainerTestCase):
     @inlineCallbacks
     def test_short_lyrics_are_filtered(self):
         with assertInlineCallbackRaises(LyricsNotFound):
-            lyrics = yield self.getLyrics('Кровосток', 'Белый ягуар')
+            lyrics = yield self.getLyrics('Timeline', 'drugs(http://vkontakte.ru/dubstepzombie)')
 
