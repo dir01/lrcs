@@ -19,7 +19,7 @@ lrcs.collections = lrcs.collections || {};
             var success = options.success;
             options.success = function(response) {
                 if (success)
-                    success(response, status);
+                    success(collection, response, options);
                 collection.trigger('sync', collection, response, options);
             };
 

@@ -4,6 +4,8 @@ var lrcs = lrcs || {};
 
     lrcs.App = Backbone.Router.extend({
 
+        title: 'Lyri.sk',
+
         routes: {
             '': 'visitIndex',
             ':artist/:title': 'visitTrackPage',
@@ -22,6 +24,8 @@ var lrcs = lrcs || {};
             this.$title = $('title');
             this.$body = $('body');
 
+            $('#logo a').click(this.logoClicked.bind(this));
+
             this.views.search = new lrcs.views.Search;
             this.views.lastfm = new lrcs.views.LastFm;
             this.views.main = new lrcs.views.Main;
@@ -31,6 +35,11 @@ var lrcs = lrcs || {};
                 this.views.lastfm.el,
                 this.views.main.el
             );
+        },
+
+        logoClicked: function(event) {
+            event.preventDefault();
+            this.visitIndex();
         },
 
         visitIndex: function() {
@@ -46,10 +55,12 @@ var lrcs = lrcs || {};
         },
 
         showIndex: function() {
+            this.navigate('/');
+
             this.views.main.hide();
             this.views.lastfm.expand();
 
-            this.$title.text('lyri.sk');
+            this.$title.text(this.title);
             this.$body.addClass('index');
         },
 
@@ -62,7 +73,7 @@ var lrcs = lrcs || {};
             this.views.lastfm.setAutoLoadNowPlaying(track.isNowPlaying());
             this.views.lastfm.collapse();
 
-            this.$title.text(track.toString());
+            this.$title.text(track.toString() + ' at ' + this.title);
             this.$body.removeClass('index');
         }
     

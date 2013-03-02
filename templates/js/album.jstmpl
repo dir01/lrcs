@@ -1,6 +1,6 @@
 <% if (image) { %>
 <h1 id="album-art">
-    <img src="<%= image %>" alt="<%= title %> by <%= artist %>"/>
+    <img src="<%= image %>" alt="<%- title %> by <%- artist %>" title="<%- title %> by <%- artist %>"/>
 </h1>
 <% } else { %>
 <div id="album-art">
