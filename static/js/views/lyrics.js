@@ -63,7 +63,7 @@ var LyricsView = Backbone.View.extend({
     },
 
     renderTemplate: function(template) {
-        this.setWaiting('false')
+        this.setWaiting(false);
         var templateVars = this.getTemplateVars(),
             html = template(templateVars);
         this.$container.html(html);
