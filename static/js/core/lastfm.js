@@ -219,11 +219,11 @@ TrackDataSanitizer.prototype = {
     },
 
     getImage: function() {
-        var image = this.data.image;
-        if (_.isUndefined(image))
+        var images = this.data.image;
+        if (_.isUndefined(images))
             if (!(_.isUndefined(this.data.album)))
-                image = this.data.image;
-        return image && image[0] && image[0]['#text'];
+                images = this.data.album.image;
+        return images && images[0] && images[0]['#text'];
     },
 
     getIsNowPlaying: function() {
