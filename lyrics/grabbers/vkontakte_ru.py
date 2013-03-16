@@ -22,7 +22,7 @@ class VkontakteLyricsGainer(BaseSiteLyricsGainer):
     }
 
     cookies = {
-        'remixsid': 'c076f2b62335aff1fe67eaba9ea095dc2722ae9a1af7a201ddec68845653855119b4'
+        'remixsid': '61eac7a8abe7fcd66c0d54be2231697c6132e400e347db2350708'
     }
 
     @inlineCallbacks
