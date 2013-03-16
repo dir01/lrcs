@@ -140,11 +140,10 @@ AlbumDataSanitizer.prototype = {
     },
 
     getImages: function() {
-        if (!_.isArray(this.data.image))
-            return;
         var images = {};
-        for (var i = 0, image; image = this.data.image[i++];)
-            images[image['size']] = image['#text'];
+        if (_.isArray(this.data.image))
+            for (var i = 0, image; image = this.data.image[i++];)
+                images[image['size']] = image['#text'];
         return images;
     },
 
