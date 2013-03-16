@@ -23,7 +23,7 @@ var AlbumTrackView = Backbone.View.extend({
         this.track = options.track;
 
         this.listenTo(this.track, 'change', this.render);
-        this.listenTo(Dispatch, Dispatch.NAVIGATE.TRACK, this.changeActiveTrack);
+        this.listenTo(Dispatch, Dispatch.NAVIGATE.TRACK_PAGE, this.changeActiveTrack);
 
         this.setActive(Boolean(options.active));
     },
