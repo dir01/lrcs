@@ -30,7 +30,7 @@ var AlbumHeaderView = Backbone.View.extend({
 
     getTemplateVars: function() {
         return {
-            image: this.album.getImage(),
+            image: this.album.getExtraLargeImage(),
             artist: this.album.getArtist(),
             title: this.album.getTitle()
         }

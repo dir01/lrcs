@@ -126,7 +126,7 @@ AlbumDataSanitizer.prototype = {
         return {
             artist: this.getArtist(),
             title: this.getTitle(),
-            image: this.getLargestImage(),
+            images: this.getImages(),
             tracks: this.getTracks()
         }
     },
@@ -139,13 +139,13 @@ AlbumDataSanitizer.prototype = {
         return this.data.name;
     },
 
-    getLargestImage: function() {
-        var largestImageIndex = this.data.image.length - 1;
-        return this.getImage(largestImageIndex);
-    },
-
-    getImage: function(index) {
-        return this.data.image[index]['#text'];
+    getImages: function() {
+        if (!_.isArray(this.data.image))
+            return;
+        var images = {};
+        for (var i = 0, image; image = this.data.image[i++];)
+            images[image['size']] = image['#text'];
+        return images;
     },
 
     getTracks: function() {

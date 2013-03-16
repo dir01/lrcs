@@ -49,8 +49,17 @@ var Album = Backbone.Model.extend({
         return this.get('title');
     },
 
-    getImage: function() {
-        return this.get('image');
+    getExtraLargeImage: function() {
+        return this.getImageBySize('extralarge');
+    },
+
+    getImageBySize: function(size) {
+        var allImages = this.getAllImages();
+        return allImages[size];
+    },
+
+    getAllImages: function() {
+        return this.get('images');
     },
 
     getTracklist: function() {
