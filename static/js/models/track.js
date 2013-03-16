@@ -89,6 +89,10 @@ var Track = CachedModel.extend({
         return "never";
     },
 
+    getImage: function() {
+        return this.get('image');
+    },
+
     getArtist: function() {
         return this.get('artist');
     },

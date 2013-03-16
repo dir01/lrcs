@@ -31,7 +31,12 @@ var SearchResultView = Backbone.View.extend({
     },
 
     getTemplateVars: function() {
-        return this.track.toJSON();
+        return {
+            artist: this.track.getArtist(),
+            title: this.track.getTitle(),
+            image: this.track.getImage(),
+            path: this.track.getPath()
+        };
     }
 
 });

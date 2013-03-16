@@ -1,4 +1,4 @@
-<a href="/<%= artist %>/<%= title %>">
+<a href="<%= path %>">
     <span class="track-image">
     <% if (image) { %><img src="<%= image %>" alt=""/><% } %>
     </span>
