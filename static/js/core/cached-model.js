@@ -21,6 +21,8 @@ var CachedModel = Backbone.Model.extend({
         if (!(id in cache)) {
             Backbone.Model.apply(this, arguments);
             cache[id] = this;
+        } else {
+            cache[id].set(attributes);
         }
 
         return cache[id];
