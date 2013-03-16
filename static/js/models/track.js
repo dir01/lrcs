@@ -1,14 +1,17 @@
 define([
-    'lib/backbone',
     'lib/moment',
+    'core/cached-model',
     'core/tools',
     'core/lastfm'
-], function(Backbone, Moment, Tools, LastFm) {
+], function(Moment, CachedModel, Tools, LastFm) {
 
 'use strict';
 
 
-var Track = Backbone.Model.extend({
+var Track = CachedModel.extend({
+
+    name: 'track',
+    identifiers: ['artist', 'title'],
 
     _hasBeenFetched: false,
 

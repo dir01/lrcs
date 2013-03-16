@@ -1,14 +1,17 @@
 define([
     'lib/jquery',
     'lib/underscore',
-    'lib/backbone',
+    'core/cached-model',
     'core/tools'
-], function($, _, Backbone, Tools) {
+], function($, _, CachedModel, Tools) {
 
 'use strict';
 
 
-var Lyrics = Backbone.Model.extend({
+var Lyrics = CachedModel.extend({
+
+    name: 'lyrics',
+    identifiers: ['artist', 'track'],
 
     url: function() {
         return '/lyrics?' + this.getQueryString();

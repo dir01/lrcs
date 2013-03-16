@@ -1,13 +1,16 @@
 define([
-    'lib/backbone',
+    'core/cached-model',
     'core/lastfm',
     'collections/tracklist'
-], function(Backbone, LastFm, Tracklist) {
+], function(CachedModel, LastFm, Tracklist) {
 
 'use strict';
 
 
-var Album = Backbone.Model.extend({
+var Album = CachedModel.extend({
+
+    name: 'album',
+    identifiers: ['artist', 'title'],
 
     sync: function(method, model, options) {
         if (method !== 'read')
