@@ -175,8 +175,13 @@ TrackDataSanitizer.prototype = {
             albumArtist: this.getAlbumArtist(),
             image: this.getImage(),
             isNowPlaying: this.getIsNowPlaying(),
+            lastFmURL: this.getLastFmURL(),
             timePlayed: this.getTimePlayed()
         }
+    },
+
+    getLastFmURL: function() {
+        return this.data.url;
     },
 
     getTitle: function() {
