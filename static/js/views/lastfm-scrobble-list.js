@@ -3,19 +3,19 @@ define([
     'lib/underscore',
     'lib/backbone',
     'core/tools',
-    'views/lastfm-recent-track'
-], function($, _, Backbone, Tools, LastFmRecentTrackView) {
+    'views/lastfm-scrobble'
+], function($, _, Backbone, Tools, LastFmScrobbleView) {
 
 'use strict';
 
 
-var LastFmRecentTracklistView = Backbone.View.extend({
+var LastFmScrobbleListView = Backbone.View.extend({
 
     tagName: 'div',
     id: 'last-fm-tracks-container',
 
     initialize: function(options) {
-        this.trackViews = [];
+        this.scrobbleViews = [];
 
         this.$waiter = this.createWaiter().appendTo(this.el);
         this.$list = this.createList().appendTo(this.el);
@@ -40,32 +40,32 @@ var LastFmRecentTracklistView = Backbone.View.extend({
     render: function() {
         this.$el.removeClass('waiting');
         this.clear();
-        this.addTracks(this.collection);
+        this.addScrobbles(this.collection);
     },
 
     clear: function() {
-        _.invoke(this.trackViews, 'remove');
-        this.trackViews = [];
+        _.invoke(this.scrobbleViews, 'remove');
+        this.scrobbleViews = [];
     },
 
-    addTracks: function(tracks) {
-        tracks.each(this.addTrack.bind(this));
+    addScrobbles: function(scrobbles) {
+        scrobbles.each(this.addScrobble.bind(this));
     },
 
-    addTrack: function(track) {
-        var view = this.createTrackView(track);
+    addScrobble: function(scrobble) {
+        var view = this.createScrobbleView(scrobble);
         view.render();
         this.$list.append(view.el);
-        this.trackViews.push(view);
+        this.scrobbleViews.push(view);
     },
 
-    createTrackView: function(track) {
-        return new LastFmRecentTrackView({ track: track });
+    createScrobbleView: function(scrobble) {
+        return new LastFmScrobbleView({ scrobble: scrobble });
     }
 
 });
 
-return LastFmRecentTracklistView;
+return LastFmScrobbleListView;
 
 
 });

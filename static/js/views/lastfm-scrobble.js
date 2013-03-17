@@ -7,7 +7,7 @@ define([
 'use strict';
 
 
-var LastFmRecentTrackView = Backbone.View.extend({
+var LastFmScrobbleView = Backbone.View.extend({
 
     tagName: 'li',
 
@@ -20,8 +20,10 @@ var LastFmRecentTrackView = Backbone.View.extend({
     initialize: function(options) {
         this.template = Tools.template(this.templateName);
 
-        this.track = options.track;
+        this.scrobble = options.scrobble;
+        this.track = this.scrobble.getTrack();
 
+        this.listenTo(this.scrobble, 'change', this.render);
         this.listenTo(this.track, 'change', this.render);
     },
 
@@ -37,7 +39,7 @@ var LastFmRecentTrackView = Backbone.View.extend({
             path: this.track.getPath(),
             artist: this.track.getArtist(),
             title: this.track.getTitle(),
-            timePlayed: this.track.getTimePlayedString()
+            timePlayed: this.scrobble.getTimePlayedString()
         }
     },
 
@@ -48,7 +50,7 @@ var LastFmRecentTrackView = Backbone.View.extend({
 
 });
 
-return LastFmRecentTrackView;
+return LastFmScrobbleView;
 
 
 });

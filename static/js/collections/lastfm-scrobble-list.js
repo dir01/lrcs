@@ -1,12 +1,15 @@
 define([
+    'lib/backbone',
     'core/lastfm',
-    'collections/tracklist'
-], function(LastFm, Tracklist) {
+    'models/scrobble'
+], function(Backbone, LastFm, Scrobble) {
 
 'use strict';
 
 
-var LastFmRecentTracklist = Tracklist.extend({
+var LastFmScrobbleList = Backbone.Collection.extend({
+
+    model: Scrobble,
 
     initialize: function(models, options) {
         this.username = options.username;
@@ -39,7 +42,7 @@ var LastFmRecentTracklist = Tracklist.extend({
 
 });
 
-return LastFmRecentTracklist;
+return LastFmScrobbleList;
 
 
 });

@@ -37,8 +37,8 @@ var LastFmView = Backbone.View.extend({
         this.listenTo(controlsView, 'disconnect', this.logout);
         this.switchToView(controlsView);
 
-        this.recentTracklist = controlsView.getRecentTracklistCollection();
-        this.listenTo(this.recentTracklist, 'reset', this.navigateToLatestTrackIfNeeded);
+        this.recentScrobbles = controlsView.getRecentScrobbles();
+        this.listenTo(this.recentScrobbles, 'reset', this.navigateToLatestTrackIfNeeded);
 
         this.setAutoLoadNowPlaying(true);
         this.startWatching();
@@ -62,8 +62,8 @@ var LastFmView = Backbone.View.extend({
     startWatching: function() {
         if (this.timer)
             return;
-        this.timer = setInterval(this.pollRecentTracks.bind(this), WATCHING_INTERVAL);
-        this.pollRecentTracks();
+        this.timer = setInterval(this.pollScrobbles.bind(this), WATCHING_INTERVAL);
+        this.pollScrobbles();
     },
 
     stopWatching: function() {
@@ -73,16 +73,17 @@ var LastFmView = Backbone.View.extend({
         }
     },
 
-    pollRecentTracks: function() {
+    pollScrobbles: function() {
         if (!this.isLoggedIn())
             return;
 
-        this.recentTracklist.fetch();
+        this.recentScrobbles.fetch();
     },
 
     navigateToLatestTrackIfNeeded: function() {
-        var track = this.recentTracklist.first();
-        if (this.autoLoadNowPlaying && track.isNowPlaying())
+        var scrobble = this.recentScrobbles.first();
+        var track = scrobble.getTrack();
+        if (this.autoLoadNowPlaying && scrobble.isNowPlaying())
             Dispatch.visitTrack(track);
     },
 

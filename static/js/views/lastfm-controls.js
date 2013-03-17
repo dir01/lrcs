@@ -1,14 +1,14 @@
 define([
     'lib/backbone',
     'core/tools',
-    'collections/lastfm-recent-tracklist',
-    'views/lastfm-recent-tracklist'
-], function(Backbone, Tools, LastFmRecentTracklist, LastFmRecentTracklistView) {
+    'collections/lastfm-scrobble-list',
+    'views/lastfm-scrobble-list'
+], function(Backbone, Tools, LastFmScrobbleList, LastFmScrobbleListView) {
 
 'use strict';
 
 
-var NUMBER_OF_RECENT_TRACKS_TO_SHOW = 15;
+var NUMBER_OF_SCROBBLES_TO_SHOW = 15;
 
 
 var LastFmControlsView = Backbone.View.extend({
@@ -26,12 +26,12 @@ var LastFmControlsView = Backbone.View.extend({
 
         this.username = options.username;
 
-        this.recentTracklist = new LastFmRecentTracklist([], {
+        this.recentScrobbles = new LastFmScrobbleList([], {
             username: this.username,
-            number: NUMBER_OF_RECENT_TRACKS_TO_SHOW
+            number: NUMBER_OF_SCROBBLES_TO_SHOW
         });
 
-        this.views.recentTracklist = new LastFmRecentTracklistView({ collection: this.recentTracklist });
+        this.views.recentScrobbles = new LastFmScrobbleListView({ collection: this.recentScrobbles });
     },
 
     disconnectAccount: function(event) {
@@ -43,7 +43,7 @@ var LastFmControlsView = Backbone.View.extend({
         var templateVars = this.getTemplateVars(),
             html = this.template(templateVars);
         this.$el.html(html);
-        this.$el.append(this.views.recentTracklist.el);
+        this.$el.append(this.views.recentScrobbles.el);
     },
 
     getTemplateVars: function() {
@@ -52,8 +52,8 @@ var LastFmControlsView = Backbone.View.extend({
         };
     },
 
-    getRecentTracklistCollection: function() {
-        return this.recentTracklist;
+    getRecentScrobbles: function() {
+        return this.recentScrobbles;
     }
 
 });

@@ -1,9 +1,8 @@
 define([
-    'lib/moment',
     'core/cached-model',
     'core/tools',
     'core/lastfm'
-], function(Moment, CachedModel, Tools, LastFm) {
+], function(CachedModel, Tools, LastFm) {
 
 'use strict';
 
@@ -64,10 +63,6 @@ var Track = CachedModel.extend({
             this.getTitle() == track.getTitle();
     },
 
-    isNowPlaying: function() {
-        return this.get('isNowPlaying');
-    },
-
     hasSameAlbumAs: function(track) {
         return Boolean(track) &&
             this.getAlbumArtist() == track.getAlbumArtist() &&
@@ -76,17 +71,6 @@ var Track = CachedModel.extend({
 
     hasAlbum: function() {
         return Boolean(this.get('album'));
-    },
-
-    getTimePlayedString: function() {
-        if (this.isNowPlaying())
-            return "playing now";
-        else {
-            var timePlayed = this.get('timePlayed');
-            if (timePlayed)
-                return Moment.unix(timePlayed).fromNow();
-        }
-        return "never";
     },
 
     getImage: function() {
@@ -107,10 +91,6 @@ var Track = CachedModel.extend({
 
     getAlbumTitle: function() {
         return this.get('album');
-    },
-
-    getTimePlayed: function() {
-        return this.get('timePlayed');
     }
 
 });
