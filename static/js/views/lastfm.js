@@ -1,11 +1,12 @@
 define([
     'lib/jquery',
+    'lib/underscore',
     'lib/backbone',
     'core/dispatch',
     'core/tools',
     'views/lastfm-controls',
     'views/lastfm-login-form'
-], function($, Backbone, Dispatch, Tools, LastFmControlsView, LastFmLoginFormView) {
+], function($, _, Backbone, Dispatch, Tools, LastFmControlsView, LastFmLoginFormView) {
 
 'use strict';
 
@@ -39,6 +40,8 @@ var LastFmView = Backbone.View.extend({
 
         this.recentScrobbles = controlsView.getRecentScrobbles();
         this.listenTo(this.recentScrobbles, 'reset', this.navigateToLatestTrackIfNeeded);
+
+        this.listenTo(Dispatch, Dispatch.NAVIGATE.TRACK_PAGE, this.toggleAutoloadingOnTrackChange);
 
         this.setAutoLoadNowPlaying(true);
         this.startWatching();
@@ -78,6 +81,14 @@ var LastFmView = Backbone.View.extend({
             return;
 
         this.recentScrobbles.fetch();
+    },
+
+    toggleAutoloadingOnTrackChange: function(track) {
+        var scrobble = this.recentScrobbles.first();
+        if (_.isUndefined(scrobble))
+            return;
+        var scrobbledTrack = scrobble.getTrack();
+        this.setAutoLoadNowPlaying(scrobble.isNowPlaying() && track.isEqualTo(scrobbledTrack));
     },
 
     navigateToLatestTrackIfNeeded: function() {

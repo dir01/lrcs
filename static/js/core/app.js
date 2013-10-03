@@ -70,7 +70,6 @@ var App = Backbone.View.extend({
     showTrack: function(track) {
         this.views.main.setTrack(track);
         this.views.main.show();
-        //this.views.lastfm.setAutoLoadNowPlaying(track.isNowPlaying());
         this.views.lastfm.collapse();
 
         this.$title.text(track.toString() + ' at ' + this.title);
