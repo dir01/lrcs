@@ -72,8 +72,8 @@ var Tools = {
         return str
             .replace(/\([Ff]eat\..+?\)/, '')
             .replace(/\([Ff]t\.? .+?\)/, '')
-            .replace(/ [Ff]eat\.? .+?/, '')
-            .replace(/ [Ff]t\.? .+?/, '');
+            .replace(/ [Ff]eat\.? .+/, '')
+            .replace(/ [Ff]t\.? .+/, '');
     },
 
     removeExplicitness: function(str) {
