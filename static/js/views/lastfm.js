@@ -94,8 +94,11 @@ var LastFmView = Backbone.View.extend({
     navigateToLatestTrackIfNeeded: function() {
         var scrobble = this.recentScrobbles.first();
         var track = scrobble.getTrack();
-        if (this.autoLoadNowPlaying && scrobble.isNowPlaying())
+        if (this.autoLoadNowPlaying && scrobble.isNowPlaying()) {
+            // FIXME: We pretty much re-visit active track every tick of updating scrobbles
+            // I'm not sure if that's bad or not, but it's _some_ sort of an overhead
             Dispatch.visitTrack(track);
+        }
     },
 
     switchToView: function(view) {
