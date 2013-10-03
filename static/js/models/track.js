@@ -18,20 +18,6 @@ var Track = CachedModel.extend({
         if (method !== 'read')
             throw new Error;
 
-        var success = options.success;
-        options.success = function(response) {
-            if (success)
-                success(model, response, options);
-            model.trigger('sync', model, response, options);
-        };
-
-        var error = options.error;
-        options.error = function(response) {
-            if (error)
-                error(model, response, options);
-            model.trigger('error', model, response, options);
-        };
-
         var promise = LastFm.getTrackInfo(this.getArtist(), this.getTitle());
         promise.always(this._fetchDone);
         promise.done(options.success);
