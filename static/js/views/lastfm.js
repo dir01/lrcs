@@ -85,10 +85,17 @@ var LastFmView = Backbone.View.extend({
 
     toggleAutoloadingOnTrackChange: function(track) {
         var scrobble = this.recentScrobbles.first();
-        if (_.isUndefined(scrobble))
-            return;
-        var scrobbledTrack = scrobble.getTrack();
-        this.setAutoLoadNowPlaying(scrobble.isNowPlaying() && track.isEqualTo(scrobbledTrack));
+        var autoloadingEnabled;
+        if (_.isUndefined(scrobble)) {
+            // if we don't have a scrobble yet, but the user is already
+            // visiting a track page, assume he doesn't want to autoload
+            // his latest scrobble immediately after loading
+            autoloadingEnabled = false;
+        } else {
+            var scrobbledTrack = scrobble.getTrack();
+            autoloadingEnabled = scrobble.isNowPlaying() && track.isEqualTo(scrobbledTrack)
+        }
+        this.setAutoLoadNowPlaying(autoloadingEnabled);
     },
 
     navigateToLatestTrackIfNeeded: function() {
