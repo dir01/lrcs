@@ -93,7 +93,7 @@ var LastFmView = Backbone.View.extend({
             autoloadingEnabled = false;
         } else {
             var scrobbledTrack = scrobble.getTrack();
-            autoloadingEnabled = scrobble.isNowPlaying() && track.isEqualTo(scrobbledTrack)
+            autoloadingEnabled = track.isEqualTo(scrobbledTrack);
         }
         this.setAutoLoadNowPlaying(autoloadingEnabled);
     },
