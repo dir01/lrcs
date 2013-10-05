@@ -25,8 +25,6 @@ var App = Backbone.View.extend({
 
     views: {},
 
-    firstVisit: true,
-
     initialize: function() {
         LastFm.initialize({ apiKey: Tools.getMeta('last-fm-api-key') });
 
@@ -58,13 +56,10 @@ var App = Backbone.View.extend({
 
     showIndex: function() {
         this.views.main.hide();
-        this.views.lastfm.setAutoLoadNowPlaying(this.firstVisit);
         this.views.lastfm.expand();
 
         this.$title.text(this.title);
         this.$body.addClass('index');
-
-        this.firstVisit = false;
     },
 
     showTrack: function(track) {
@@ -74,8 +69,6 @@ var App = Backbone.View.extend({
 
         this.$title.text(track.toString() + ' at ' + this.title);
         this.$body.removeClass('index');
-
-        this.firstVisit = false;
     }
 
 });
