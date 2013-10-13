@@ -37,8 +37,7 @@ var LastFmScrobbleView = Backbone.View.extend({
     templateVars: function() {
         return {
             path: this.track.getPath(),
-            artist: this.track.getArtist(),
-            title: this.track.getTitle(),
+            fullTrackName: this.track.toString(),
             timePlayed: this.scrobble.getTimePlayedString()
         }
     },
