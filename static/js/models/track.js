@@ -30,7 +30,7 @@ var Track = CachedModel.extend({
     },
 
     toString: function() {
-        return this.getArtist() + ' - ' + this.getTitle();
+        return this.getArtist() + ' – ' + this.getTitle();
     },
 
     getPath: function() {
